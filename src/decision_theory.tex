@@ -1,0 +1,226 @@
+\chapter{Decision theory}
+
+For the given observation $\mathcal{X}$, we decide to take an action $a \in \mathcal{A}$.
+An action is a map $a : \mathcal{X} \to \mathcal{A}$ with $a(X)$ being the decision taken.
+
+$L(\theta, a)$ denoted as the "loss function", it is the loss incurred when state is $\theta$ 
+and an action $a$ is taken.
+
+\begin{equation}
+    L : \Theta \times \mathcal{A} \to \mathbb{R}.
+\end{equation}
+
+\section{Conditional Distributions}
+
+Recall the definition of conditional probabilities: For two sets 
+$A$ and $B$, with $P(A) \neq 0$, the conditional probability of $B$ 
+given that $A$ is true is defined as 
+
+\begin{equation}
+    \mathbb{P}(B \> | \> A) := \frac{\mathbb{P}(A \cap B)}{\mathbb{P}(A)}.
+\end{equation}
+
+\begin{example}
+    Let $X$ and $Y$ be two jointly continuous random variable with joint density function
+    \[
+        f_{XY}(x, y) = \begin{cases}
+            x^2 + \frac{1}{3}y, & -1 \leq x \leq 1,\> 0 \leq y \leq 1\\
+            0 & \text{otherwise}
+        \end{cases}.
+    \]
+
+    For $0 \leq y \leq 1$, find the conditional pdf of $X$ given $Y = y$.
+\end{example}
+\begin{solution}
+    First we find the marginal distribution of $Y$, which we can obtain by integrating 
+    along with $x$.
+    \begin{align*}
+        f_Y(y) = \int_{-1}^{1} f_{XY}(x,y)\> \mathrm{d}x &= 
+        \int_{-1}^{1} \left( x^2 + \frac{1}{3}y \right) \> \mathrm{d}x\\
+        &= \frac{1}{3}x^3 + \frac{1}{3}xy \bigg \vert^1_{-1}\\
+        &= \frac{2}{3}(1+y).
+    \end{align*}
+
+    The conditional distribution of $X$ given $Y=y$ is 
+    \[
+        f_{X|Y=y}(x) = \frac{f_{XY}(x,y)}{f_Y(y)} 
+        = \frac{x^2 + \mfrac{1}{3}y}{\mfrac{2}{3}(1+y)}
+        = \frac{3x^2 + y}{2(1+y)}, \quad -1 \leq x \leq 1,\> 0 \leq y \leq 1
+    \]
+\end{solution}
+
+\begin{definition}[Unbiased estimator]
+    The estimator $\hat{\mu}$ is unbiased if $\bias(\hat{\mu} \> | \> \theta) = 0$
+\end{definition}
+
+\begin{example}[Two-sample mean problems]
+    Consider the observations $X_1, X_2, \ldots, X_m \sim \mathcal{N}(\mu, \sigma^2)$ response 
+    under control treatment. And $Y_1, Y_2, \ldots, Y_n \sim \mathcal{N}(\mu + \Delta, \sigma^2)$
+    are explanatory data response under test treatment where $\mu \in \mathbb{R}, \sigma^2 \in \mathbb{R}_+$.
+    $\sigma^2$ is unknown variance and $\Delta \in \mathbb{R}$ is unknown treatment effect.
+
+    We define two testing hypotheses:
+    \[
+        H_0 : P \in \{ P : \Delta = 0 \} = \{ P_\theta : \theta \in \Theta_0 \}
+    \]
+    \[
+        H_1 : P \in \{ P : \Delta \neq 0 \} = \{ P_\theta : \theta \notin \Theta_0 \}
+    \]
+    By construct decision rule accepting null hypothesis $H_0$ if estimate of $\Delta$ 
+    is significantly far away from zero. For instance, $\hat{\Delta} = \bar{Y} - \bar{X}$ to be 
+    the estimate difference in sample means. Since $\sigma$ is unknown, we use $\hat{\sigma}$ to estimate 
+    true $\sigma$. The decision procedure is 
+    \[
+        \delta(X,Y) = \begin{cases}
+            1 & \text{if } |\mfrac{\hat{\Delta}}{\hat{\sigma}}| < c\\[0.8em]
+            0 & \text{if } |\mfrac{\hat{\Delta}}{\hat{\sigma}}| \geq c
+        \end{cases}
+    \]
+
+    We again define a zero-one loss function to make decision 
+    \begin{equation*}
+        L(\theta, a) = \begin{cases}
+            0 & \text{if } \theta \in \Theta_a \quad \text{(correct action)}\\
+            1 & \text{if } \theta \notin \Theta_a \quad \text{(wrong action)}\\
+        \end{cases}.
+    \end{equation*}
+
+    The risk function is linear combination of the loss of correct and wrong actions,
+    \begin{align*}
+        R(\theta, \delta) &= L(\theta, 0)P_\theta \left(\delta(X,Y) = 0 \right) +
+        L(\theta, 1)P_\theta \left(\delta(X,Y) = 1 \right)\\
+        &= \begin{cases}
+            P_\theta \left(\delta(X,Y) = 1 \right) & \text{if } \theta \in \Theta_0\\
+            P_\theta \left(\delta(X,Y) = 0 \right) & \text{if } \theta \notin \Theta_0
+        \end{cases}
+    \end{align*}
+\end{example}
+
+\begin{example}[Statistical testing]
+    We are going to use the random variable $X \sim P_\theta$ with sample space $\mathcal{X}$ and 
+    parameter space $\Theta$, we want to test the testing hypothesis
+    \[
+        H_0 : \theta \in \Theta_0
+    \]
+    against 
+    \[
+        H_1 : \theta \notin \Theta_0.
+    \]
+    We construct the critical region of a test $\delta$ as  
+    \[
+        C = \{ x : \delta(x) = 1 \}.
+    \]
+    with zero-one loss. Note that 
+    \begin{itemize}
+        \item Type I error: the test $\delta(X)$ rejects $H_0$ when $H_0$ is true.
+        \item Type II error: the test $\delta(X)$ accepts $H_0$ when $H_0$ is false.
+    \end{itemize}
+    
+    The risk under zero-one loss as 
+    \begin{align*}
+        R(\theta, \delta) &= P_\theta (\delta(X) = 1 \> | \> \theta) \quad \text{if } \theta \in \Theta_0\\
+        &= \text{Probability of Type I error}.
+    \end{align*}
+    \begin{align*}
+        R(\theta, \delta) &= P_\theta (\delta(X) = 0 \> | \> \theta) \quad \text{if } \theta \notin \Theta_0\\
+        &= \text{Probability of Type II error}.
+    \end{align*}
+\end{example}
+
+\begin{example}[Statistical testing with two different hypothesis subspace]
+    We are going to use the random variable $X \sim P_\theta$ with sample space $\mathcal{X}$ and 
+    parameter space $\Theta$, we want to test the testing hypothesis
+    \[
+        H_0 : \theta \in \Theta_0
+    \]
+    against 
+    \[
+        H_1 : \theta \notin \Theta_0.
+    \]
+    We construct the critical region of a test $\delta$ as  
+    \[
+        C = \{ x : \delta(x) = 1 \}.
+    \]
+    with zero-one loss. Note that 
+    \begin{itemize}
+        \item Type I error: the test $\delta(X)$ rejects $H_0$ when $H_0$ is true.
+        \item Type II error: the test $\delta(X)$ accepts $H_0$ when $H_0$ is false.
+    \end{itemize}
+    
+    The risk under zero-one loss as 
+    \begin{align*}
+        R(\theta, \delta) &= P_\theta (\delta(X) = 1 \> | \> \theta) \quad \text{if } \theta \in \Theta_0\\
+        &= \text{Probability of Type I error}.
+    \end{align*}
+    \begin{align*}
+        R(\theta, \delta) &= P_\theta (\delta(X) = 0 \> | \> \theta) \quad \text{if } \theta \notin \Theta_0\\
+        &= \text{Probability of Type II error}.
+    \end{align*}
+\end{example}
+
+\section{Value-at-risk}
+
+\begin{example}[Confidence Interval]
+    We altering the previous decision framework setup:
+    \begin{itemize}
+        \item $X$ is a random variable with probability $P_\theta$.
+        \item The parameter of interest is $\mu(\theta)$.
+        \item Define $\mathfrak{U} = \{ \mu = \mu(\theta) : \theta \in \Theta \}$.
+        \item Objective: we want to construct an interval estimation of $\mu(\theta)$.
+        \item Action space: $\mathcal{A} = \{ \mathbf{a} = [\underline{a}, \overline{a}] :  \underline{a} < \overline{a} \in \mathfrak{U} \}$.
+        \item Interval Estimator: define a map $\hat{\mu}(X) : \mathcal{X} \to \mathcal{A}$, that is 
+            $\hat{\mu}(X) = [\hat{\mu}_{\textsf{Lower}}(X), \hat{\mu}_{\textsf{Upper}}(X)]$
+    \end{itemize}
+
+    Note that $\theta$ is not random, the interval is random given a fixed $\theta$. We have to use 
+    Bayesian models to compute 
+    \[
+        \mathbb{P} \left[ \mu(\theta) \in [\hat{\mu}_{\textsf{Lower}}(X), \hat{\mu}_{\textsf{Upper}}(X)] \> | \> X = x \right].
+    \]
+    We define the zero-one loss function
+    \[
+        L(\theta, (\underline{a}, \overline{a})) = \begin{cases}
+            1 & \text{if } \underline{a} > \mu(\theta) \text{ or } \overline{a} < \mu(\theta)\\
+            0 & \text{otherwise}.
+        \end{cases}
+    \]
+    The risk function under zero-one loss is 
+    \begin{align*}
+        R(\theta, \hat{\mu}(X)) &= \mathbb{E}_X[L(\theta, \hat{\mu}(X)) \> | \> \theta]\\
+        &= P_\theta \left( \hat{\mu}_{\textsf{Lower}}(X) > \mu(\theta) \> \text{or} \>  
+        \hat{\mu}_{\textsf{Upper}}(X) < \mu(\theta) \right)\\
+        &= 1 - P_\theta \left( \hat{\mu}_{\textsf{Lower}}(X) \leq \mu(\theta) \leq \hat{\mu}_{\textsf{Upper}}(X) \> | \> \theta \right).
+    \end{align*}
+    It is said that the interval estimator $\hat{\mu}(\theta)$ has confidence level $1-\alpha$ if 
+    \[
+    P_\theta \left( \hat{\mu}_{\textsf{Lower}}(X) \leq \mu(\theta) \leq \hat{\mu}_{\textsf{Upper}}(X) \> | \> \theta \right) \geq (1 - \alpha) \quad 
+    \forall \theta \in \Theta.
+    \]
+    Equivalently, we can said $R(\theta, \hat{\mu}(X)) \leq \alpha$ for all $\theta \in \Theta$.
+\end{example}
+
+\section{Admissible}
+
+On basis of performance measure by the risk function $R(\theta, \delta)$, some rules are obviously bad. We said that 
+a decision procedure $\delta (\cdot)$ is inadmissible if $\exists \delta'$ such that
+\begin{equation}
+    R(\theta, \delta') \leq R(\theta, \delta) \quad \forall \theta \in \Theta
+\end{equation}
+with strict inequality for some $\theta$.
+
+\begin{example}
+    Suppose, for $n \geq 2$, the observations $X_1, X_2, \ldots, X_n$ be i.i.d with mean 
+    $g(\theta) := \mathbb{E}_\theta[X_i] = \mu$, and $Var[X_i] = 1$ for all $i$. We take quadratic loss 
+    \[
+        L(\theta, a) := |\mu_X - a|^2.
+    \]
+    Consider the decision 
+    \[
+    \delta'(X_1, X_2, \ldots, X_n) := \bar{X}_n = \frac{X_1 + X_2 + \cdots + X_n}{n},
+    \]
+    and $\delta(X_1, X_2, \ldots, X_n) := X_1$. Then for all $\theta$, we have 
+    \[
+        R(\theta, \delta') = \frac{1}{n}, \quad R(\theta, \delta) = 1.
+    \]
+    Therefore $\delta$ is inadmissible.
+\end{example}

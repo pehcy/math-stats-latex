@@ -1,0 +1,194 @@
+\ProvidesPackage{styles}
+\usepackage{amsmath, nccmath}
+\usepackage{amssymb}
+\usepackage{amsbsy}
+\usepackage{derivative}
+\usepackage{bbm}
+\usepackage{graphicx}
+\usepackage[export]{adjustbox}
+\newcommand\sbullet[1][.5]{\mathbin{\vcenter{\hbox{\scalebox{#1}{$\bullet$}}}}}
+\usepackage{amsthm}
+\usepackage{thmtools}
+\usepackage{mdframed}
+\usepackage{mathtools, cuted}
+\usepackage{actuarialsymbol}
+\usepackage{tabularx}
+\usepackage{xcolor,colortbl}
+\usepackage{booktabs}
+\usepackage{titlesec}
+\usepackage{algorithm}
+\usepackage{algorithmic}
+\usepackage{array}
+\usepackage[most]{tcolorbox}
+\usepackage{cmupint}
+\usepackage{pifont}
+\DeclareMathOperator*{\argmax}{arg\,max}
+\DeclareMathOperator*{\argmin}{arg\,min}
+\DeclareMathOperator*{\bias}{Bias}
+\DeclareRobustCommand{\bxseries}{\fontseries{bx}\selectfont}
+\DeclareTextFontCommand{\textbx}{\fontseries{bx}}
+\newcommand{\Lim}[1]{\raisebox{0.5ex}{\scalebox{0.8}{$\displaystyle \lim_{#1}\;$}}}
+\renewcommand{\labelitemi}{{\color{red!70!white}\ding{118}}}
+
+%\usepackage{mathrsfs}
+%\usepackage{titletoc}
+
+\usepackage{tikz}
+\usetikzlibrary{decorations.pathreplacing,arrows.meta,calc}
+\tikzstyle{every picture}+=[remember picture]
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.16}
+\usetikzlibrary{arrows,chains,matrix,positioning,scopes}
+\makeatletter
+
+\usepackage{enumerate}
+\usepackage[inline]{enumitem}
+\usepackage{setspace}
+\singlespacing
+\setlength{\parindent}{2em}
+\setlength{\parskip}{0.5em}
+
+\usepackage{fancybox}
+\usepackage{framed}
+\usepackage{ragged2e}
+
+%\theoremstyle{definition}
+%\newtheorem{definition}{Definition}[section]
+% \newtheorem{theorem}{Theorem}[section]
+% \newtheorem{axiom}{Axiom}[section]
+\newtheorem*{remark}{Remark}
+%\newmdtheoremenv{definition}{Definition}[section]
+
+\newcommand\norm[1]{\left\lVert#1\right\rVert}
+
+\newtheoremstyle{break}{0pt}{0pt}{\normalfont}{0pt}{\bfseries}{}{\newline}{\thmname{#1} \thmnumber{#2} \quad \thmnote{\textbf#3}}
+\declaretheorem[numberwithin=chapter,style=break,name=Theorem]{theorem}
+
+\tcolorboxenvironment{theorem}{ 
+  breakable,
+  colback=green!5,
+  colframe={green!55!black},
+}
+
+\newtheoremstyle{break}{0pt}{0pt}{\normalfont}{0pt}{\bfseries}{}{\newline}{\thmname{#1} \thmnumber{#2} \quad \thmnote{\textbf#3}}
+\declaretheorem[numberwithin=chapter,style=break,name=Definition]{definition}
+
+\tcolorboxenvironment{definition}{ 
+  breakable,
+  colback=red!5,
+  colframe={red!55!black},
+}
+
+\newtheoremstyle{break}{0pt}{0pt}{\normalfont}{0pt}{\bfseries}{}{\newline}{\thmname{#1} \thmnumber{#2} \quad \thmnote{\textbf#3}}
+\declaretheorem[numberwithin=chapter,style=break,name=Lemma]{lemma}
+
+\tcolorboxenvironment{lemma}{ 
+  breakable,
+  colback=orange!5,
+  colframe={orange!55!black},
+}
+
+\usepackage{thmtools}
+
+\declaretheoremstyle[
+spaceabove=6pt, spacebelow=6pt,
+headfont={\color{orange!55!black} \ding{46} \normalfont\bfseries},
+notefont=\mdseries, notebraces={(}{)},
+bodyfont=\normalfont,
+postheadspace=1em,
+numberwithin=section
+]{exstyle}
+\declaretheoremstyle[
+spaceabove=6pt, spacebelow=6pt,
+headfont={\color{green!55!black} \ding{47} \normalfont\bfseries},
+notefont=\mdseries, notebraces={(}{)},
+bodyfont=\normalfont,
+postheadspace=1em,
+headpunct={},
+qed=\ding{111},
+numbered=no
+]{solstyle}
+\declaretheorem[style=exstyle]{example}
+\declaretheorem[style=solstyle]{solution}
+
+%\usepackage[most]{tcolorbox}
+%\newtcbtheorem{policy}{Policy Type}{enhanced,frame empty,interior empty,colframe=ForestGreen!50!white,coltitle=ForestGreen!50!black,fonttitle=\bfseries,colbacktitle=ForestGreen!15!white,borderline={0.5mm}{0mm}{ForestGreen!15!white},borderline={0.5mm}{0mm}{ForestGreen!50!white,dashed},attach boxed title to top center={yshift=-2mm},boxed title style={boxrule=0.4pt},varwidth boxed title}{th}
+%\newtcbtheorem{policy}{Policy Type}{fonttitle=\bfseries\upshape,fontupper=\itshape,colframe=blue!0!black,colback=white!99,colbacktitle=blue!20!white,coltitle=blue!75!black}{th}
+
+\usepackage[lastexercise,answerdelayed]{exercise}
+\counterwithin{Exercise}{section}
+\counterwithin{Answer}{section}
+\newcommand{\AtBeginExerciseHeader}{\hspace{-0.75cm}}
+\renewcommand{\ExerciseHeader}{\AtBeginExerciseHeader \textbf{\ExerciseHeaderDifficulty \ExerciseName~\ExerciseHeaderNB} \quad }
+%\renewcommand{\ExerciseHeader}{\textbf{\ExerciseName~\ExerciseHeaderNB}\quad}
+\renewcommand{\AnswerHeader}{\AtBeginExerciseHeader \textbf{\AnswerName~\ExerciseHeaderNB}\smallskip\newline}
+
+\titleformat{\chapter}[display]
+  {\sffamily\bfseries\filright}
+  {\hrule height 0pt \Huge\color{fireEngRed}\thechapter\hrule}
+  {-\baselineskip}
+  {\Huge\strut}
+\titlespacing*{\chapter}
+  {0pt}
+  {-\topskip}
+  {2\normalbaselineskip}
+
+%\titleformat{\chapter}
+%  {\normalfont\LARGE\bfseries}{\thechapter}{1em}{}
+%\titlespacing*{\chapter}{0pt}{3.5ex plus 1ex minus .2ex}{2.3ex plus .2ex}
+
+% \usepackage{txfonts}
+\usepackage{tgpagella}
+
+
+%\usepackage{mathptmx, newtxmath}
+%\usepackage{libertine}
+%\usepackage[T1]{fontenc}
+%\usepackage[libertine]{newtxmath}
+
+% \usepackage[scaled=0.85]{DejaVuSansMono}
+\usepackage{minted}
+
+%% Section/Subsection Font Family
+\titleformat{\section}
+  {\fontfamily{qhv}\selectfont\bfseries\Large}
+  {\thesection}
+  {1em}
+  {}
+\titleformat{\subsection}
+  {\fontfamily{qhv}\selectfont\bfseries\large}
+  {\thesubsection}
+  {1em}
+  {}
+
+\usepackage[most]{tcolorbox}
+\tcbuselibrary{minted,skins}
+
+\newtcblisting{pycode}[1][]{
+  listing engine=minted,
+  colback=pybg,
+  colframe=white,
+  listing only,
+  minted style=manni,
+  minted language=python,
+  minted options={linenos=true,numbersep=3mm,texcl=true,baselinestretch=1.1, #1}
+}
+
+\newtcblisting{rcode}{
+  listing engine=minted,
+  colback=codeblockbg,
+  colframe=black!50,
+  listing only,
+  minted style=pastie,
+  minted language=r,
+  minted options={linenos=true,numbersep=3mm,texcl=true,baselinestretch=1.1},
+  left=5mm,enhanced,
+  overlay={\begin{tcbclipinterior}\fill[black!25] (frame.south west)
+            rectangle ([xshift=5mm]frame.north west);\end{tcbclipinterior}}
+}
+
+\definecolor{codeblockbg}{rgb}{0.97,0.97,0.97}
+
+\definecolor{pybg}{rgb}{0.98,0.98,0.98}
+%\newminted{pycon}{bgcolor=pybg, linenos=true, tabsize=4}
+%\usemintedstyle{vs}

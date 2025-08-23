@@ -1,0 +1,540 @@
+\chapter{Random Variables}
+
+\section{Density function}
+
+By definition, a random variable $X$ is a function with domain the sample
+ space and range a subset of the real numbers. For example, in rolling two
+ dice $X$ might represent the sum of the points on the two dice. Similarly, in
+ taking samples of college students $X$ might represent the number of hours
+ per week a student studies, a students GPA, or a students height.
+ The notation $X(s) = x$ means that $x$ is the value associated with the out
+come s by the random variable $X$
+
+There are three types of random variables: discrete random variables, con
+tinuous random variables, and mixed random variables.
+
+\begin{example}
+    A committee of 4 is selected from a group consisting of 5 men and 5 women. 
+    Let $X$ be the random variable that represents the number of women in the committee. 
+    Find the probability mass distribution of $X$.
+\end{example}
+\begin{solution}
+    For $x = 0, 1,2, 3, 4$ we have 
+    \[
+        p_X(x) = \frac{\displaystyle {5 \choose x} {5 \choose 4-x}}{\displaystyle {10 \choose 4}} \quad 
+        x = 0,1,2,3,4.
+    \]
+    The probability mass function can be described by the table
+    \begin{center}
+        \begin{tabular}{c|c|c|c|c|c}
+            $x$ & 0 & 1 & 2 & 3 & 4\\
+            \hline
+            $p(x)$ & $\mfrac{5}{210}$ & $\mfrac{50}{210}$ & $\mfrac{100}{210}$ & $\mfrac{50}{210}$ & $\mfrac{5}{210}$
+        \end{tabular}
+    \end{center}
+\end{solution}
+
+\section{Cumulative Distribution}
+First, we prove that the probability is a continuous set function. In order to do that, we 
+need the following definitions:
+
+\begin{definition}[Increasing and Decreasing sequence of events]
+    A sequence of sets $\{E_n \}^\infty_{n=1}$ is said to be increasing if 
+    \[
+        E_1 \subset E_2 \subset \ldots \subset E_n \subset E_{n+1} \subset \ldots
+    \]
+    whereas it is said to be a decreasing sequence if 
+    \[
+        E_1 \supset E_2 \supset \ldots \supset E_n \supset E_{n+1} \supset \ldots.
+    \]
+\end{definition}
+
+\begin{lemma}
+    If $\{E_n\}_{n \geq 1}$ is either an increasing or decreasing sequence of events then 
+    \begin{equation}
+        \Lim{n \to \infty} \mathbb{P}[E_n] = \mathbb{P}[\Lim{n \to \infty} E_n].
+    \end{equation}
+    that is 
+    \begin{equation}
+        \mathbb{P} \left[ \bigcup^{\infty}_{n=1} E_n \right] = \Lim{n \to \infty} \mathbb{P}[E_n]
+        \quad \text{ for increasing sequence},
+    \end{equation}
+    and 
+    \begin{equation}
+        \mathbb{P} \left[ \bigcap^{\infty}_{n=1} E_n \right] = \Lim{n \to \infty} \mathbb{P}[E_n]
+        \quad \text{ for decreasing sequence},
+    \end{equation}
+\end{lemma}
+\begin{proof}
+    Firstly, suppose that $E_n \subset E_{n+1}$ for all $n \geq 1$. Define the events
+    \begin{align*}
+        &F_1 = E_1\\
+        &F_n = E_n \cap E^c_{n-1}, \quad n > 1
+    \end{align*}
+
+    Note that for $n > 1$, $F_n$ consists of those outcomes in $E_n$ that are not in any of the earlier $E_n$
+    $\forall i < n$. Clearly, for $i \neq j$ we have $F_i \cap F_j = \varnothing$. Also, 
+    $\bigcup^\infty_{n=1} F_n = \bigcup^\infty_{n=1} E_n$ and for $n \geq 1$ we have 
+    $\bigcup^n_{i=1} F_i = \bigcup^n_{i=1} E_i$. From these properties we have 
+
+    \begin{align*}
+        \mathbb{P}\left[ \Lim{n \to \infty} E_n \right] = \mathbb{P} \left[ \bigcup^\infty_{n=1} E_n \right]
+        &= \mathbb{P} \left[ \bigcup^\infty_{n=1} F_n \right]\\
+        &= \sum_{n=1}^{\infty} \mathbb{P}[F_n]\\
+        &= \Lim{n \to \infty} \sum^n_{i=1} \mathbb{P}[F_i]\\
+        &= \Lim{n \to \infty} \mathbb{P} \left[ \bigcup^n_{i=1} F_i \right]\\
+        &= \Lim{n \to \infty} \mathbb{P} \left[ \bigcup^n_{i=1} E_i \right]\\
+        &= \Lim{n \to \infty} \mathbb{P}[E_n].
+    \end{align*}
+
+    On the other hand, now suppose that the sequence $\{E_n \}_{n \geq 1}$ is a decreasing sequence of events. Then 
+    $\{ E^c_{n}\}_{n \geq 1}$ is an increasing sequence of events. Hence, from the previous part we have 
+    \[
+        \mathbb{P} \left[ \bigcup^\infty_{n=1} E^c_{n} \right] = \Lim{n \to \infty}[E^c_n].
+    \] 
+    By De Morgan's law we have $\bigcup^\infty_{n=1} E^c_n = \left( \bigcap^\infty_{n=1} E_n \right)^c$. And  
+    \[
+        \mathbb{P} \left[ \left( \bigcap^\infty_{n=1} E_n \right)^c \right] = \Lim{n \to \infty} \mathbb{P}[E^c_n].
+    \]
+    Equivalently,
+    \[
+        1 - \mathbb{P}\left[ \bigcap^\infty_{n=1} E_n \right] = \Lim{n \to \infty} (1 - \mathbb{P}[E_n])
+        = 1 - \Lim{n \to \infty}\mathbb{P}[E_n]
+    \]
+    or 
+    \[
+        \mathbb{P}\left[ \bigcap^\infty_{n=1} E_n \right] = \Lim{n \to \infty} \mathbb{P}[E_n].
+    \]
+\end{proof}
+
+\begin{theorem}[Properties of Cumulative Distribution Function]
+    If $F_X(x)$ is a cumulative distribution function, then
+    \begin{enumerate}
+        \item $F_X(-\infty) = \Lim{x \downarrow -\infty} F_X(x) = 0$.
+        \item $F_X(+\infty) = \Lim{x \to +\infty} F_X(x) = 1$.
+        \item $F_X(x)$ is always \textit{monotonically increasing}. That said, if $x_1 < x_2$, then 
+            $F_X(x_1) < F_X(x_2)$.
+    \end{enumerate}
+\end{theorem}
+\begin{proof}
+    \begin{enumerate}
+        \item Note that $\lim_{x \downarrow -\infty} F(x) = \lim_{n \to \infty}F(x_n)$ where $\{x_n \}$ 
+            is a decreasing sequence such that $x_n \downarrow -\infty$. Define
+            \[
+                E_n = \{ s \in \Omega: X(s) \leq x_n \}.
+            \]
+            Then we have the nested chain $E_1 \supseteq E_2 \supseteq \ldots$. Moreover,
+            \[
+                \varnothing = \bigcap^\infty_{n=1} E_n.
+            \]
+            By previous proposition, we find 
+            \[
+                \lim_{x \to \infty} F(x) = \lim_{n \downarrow -\infty} F(x_n) = 
+                \lim_{n \to \infty} \mathbb{P}[E_n] 
+                = \mathbb{P} \left[ \bigcap^\infty_{n=1} E_n \right] = \mathbb{P}[\varnothing] = 0.
+            \]
+        
+        \item In the other hand, suppose that $\lim_{x \to \infty} F(x) = \lim_{n \to \infty}F(x_n)$ where $\{x_n \}$ 
+            is a increasing sequence such that $x_n \to \infty$. We reuse back the definition of $E_n$ that is
+            \[
+                E_n = \{ s \in \Omega: X(s) \leq x_n \}.
+            \]
+            Then we have the nested chain in the opposite direction $E_1 \subseteq E_2 \subseteq \ldots$. Moreover,
+            \[
+                \Omega = \bigcup^\infty_{n=1} E_n
+            \]
+            By previous proposition, we find 
+            \[
+                \lim_{x \to \infty} F(x) = \lim_{n \to \infty} F(x_n) = 
+                \lim_{n \to \infty} \mathbb{P}[E_n] 
+                = \mathbb{P} \left[ \bigcup^\infty_{n=1} E_n \right] = \mathbb{P}[\Omega] = 1.
+            \]
+        
+        \item Consider two real numbers $a,b$ such that $a < b$. Then 
+        \[
+            \{ s \in \Omega: X(s) \leq a \} \subset \{ s \in \Omega: X(s) \leq b \}.
+        \]
+        This implies that $\mathbb{P}[X \leq a] < \mathbb{P}[X \leq b]$. Hence, $F(a) < F(b)$.
+    \end{enumerate}
+\end{proof}
+
+\begin{example}
+    Let $X$ be a random variable with probability density function
+    \[
+        f_X(x) = \begin{cases}
+            2 - 4|x| & \text{if } \mfrac{1}{2} < x < -\mfrac{1}{2}\\
+            0 & \text{otherwise}.
+        \end{cases}
+    \]
+    \begin{enumerate}
+        \item Find the variance of $X$.
+        \item Find the cumulative function $F(x)$ of $X$.
+    \end{enumerate}
+\end{example}
+\begin{solution}
+    \begin{enumerate}
+        \item Since the density function $f(x)$ is odd in $\left( -\mfrac{1}{2}, \mfrac{1}{2} \right)$, we have 
+            $\mathbb{E}[X] = 0$. Therefore
+            \begin{align*}
+                Var[X] = \mathbb{E}[X^2] - 0 &= \int_{-1/2}^{0} x^2(2 + 4x)\> \mathrm{d}x +
+                    \int_{0}^{1/2} x^2(2 - 4x)\> \mathrm{d}x\\
+                    &= \frac{1}{24}.
+            \end{align*}
+
+        \item The cumulative function is
+        \begin{align*}
+            F(x) &= \begin{cases}
+                0 & \text{if } x < -\mfrac{1}{2}\\
+                \int_{-1/2}^{x} (2+4t)\> \mathrm{d}t & \text{if } -\mfrac{1}{2} \leq x \leq 0\\
+                \int_{-1/2}^{0} (2+4t)\> \mathrm{d}t + \int_{0}^{x} (2-4t)\> \mathrm{d}t & \text{if } 0 \leq x \leq \mfrac{1}{2}\\
+                1 & \text{if } x > \mfrac{1}{2}\\
+            \end{cases}\\
+            &= \begin{cases}
+                0 & \text{if } x < -\mfrac{1}{2}\\
+                2x^2 + 2x + \mfrac{1}{2} & \text{if } -\mfrac{1}{2} \leq x \leq 0\\
+                -2x^2 + 2x + \mfrac{1}{2} & \text{if } 0 \leq x \leq \mfrac{1}{2}\\
+                1 & \text{if } x > \mfrac{1}{2}\\
+            \end{cases}
+        \end{align*}
+    \end{enumerate}
+\end{solution}
+
+\section{Percentiles and Quantiles}
+
+\subsection{Mode}
+In the discrete case, the mode is the value that is most likely to be sampled. In the continuous 
+case, the mode is where $f(x)$ is at its peak.
+
+\begin{example}
+    The lifetime of a light bulb has density function, $f_X$, where $f_X(x)$ is proportional to 
+    $\displaystyle \frac{x^2}{1 + x^3}$, $0 < x < 5$, and 0 otherwise.
+
+    Calculate the mode of this distribution.
+\end{example}
+\begin{solution}
+    Given the lifetime of a light bulb $X$ has density function
+    \[
+        f_X(x) =  \frac{cx^2}{1 + x^3}.
+    \]
+    Compute the first and second order derivative of $f$.
+    \begin{align*}
+        \odv{f}{x} = \frac{(1+x^3) \odv*{}{x} (cx^2) - cx^2 \odv*{}{x}(1+x^3)}{(1+x^3)^2}
+        = \frac{2cx-cx^4}{(1+x^3)^2}.
+    \end{align*}
+    \begin{align*}
+        \odv[order=2]{f}{x} &= \frac{(1+x^3)^2 \odv*{}{x} (2cx - cx^4) - (2cx - cx^4) \odv*{}{x}(1+x^3)^2}{(1+x^3)^4}\\
+        &= \frac{(1+x^3)^2 (2c - 4cx^3) - 6x^2(2cx - cx^4)(1+x^3)}{(1+x^3)^4}\\
+        &= \frac{(1+x^3) (2c - 4cx^3) - 6x^2(2cx - cx^4)}{(1+x^3)^3}\\
+        &= \frac{}{}
+    \end{align*}
+\end{solution}
+
+By inspection, $\displaystyle \odv[order=2]{f}{x} < 0$. And so $\displaystyle \odv{f}{x} = 0$ is maximum point in $(0, 5)$. Solve 
+for $x$ of the following equation:
+\[
+\frac{2cx-cx^4}{(1+x^3)^2} = 0 
+\]
+Since $(1+x^3)^2 > 0$, we can remove it safely from the equation.
+
+\section{Expected Value and Moments}
+
+For a random variable $X$, the expected value is denoted $\mathbb{E}[X]$, or $\mu_X$ or simply $\mu$.
+The expected value is called the expectation of $X$, which is the "average" over the range of values 
+that distribution $X$ can be. You may said the expectation is the "center" of the distribution.
+
+\begin{definition}[Expectation value]
+    Let $(\Omega, \mathbb{P})$ be a probability space, let $E \subseteq \mathbb{R}$ be countable, 
+    and let $X$ be a $E$-valued random variable on $(\Omega, \mathbb{P})$. The expectation of $X$, if it exists, is 
+    defined by 
+    \begin{equation}
+        \mathbb{E}[X] := \sum_{e \in E} e\, f_X(e).
+    \end{equation}
+\end{definition}
+
+\begin{lemma}
+    Let $(\Omega, \mathbb{P})$ be a probability space, let $E \subseteq \mathbb{R}$ be countable set and 
+    let $X$ be an $E$-valued random variable on $(\Omega, \mathbb{P})$. Then 
+    \[
+        \mathbb{E}[X] = \sum_{\omega \in \Omega} X(\omega) \mathbb{P}[\{ \omega \}].
+    \]
+\end{lemma}
+\begin{proof}
+    Recall that 
+    \[
+        \Omega = \bigcup_{e \in E} \{ X = e \}
+    \]
+    and the events $\{ X = e \}$ are mutually exclusive. Hence
+    \begin{align*}
+        \sum_{\omega \in \Omega} X(\omega) \mathbb{P}[\{ \omega \}] &= 
+        \sum_{e \in E} \sum_{\omega \in \{X = e\} } X(\omega) \mathbb{P}[\{ \omega \}]\\
+        &= \sum_{e \in E} e \, \mathbb{P}\{ X = e \}\\
+        &= \sum_{e \in E} e\, f_X(e)
+    \end{align*}
+    as what we expected.
+\end{proof}
+
+\begin{example}
+    Let $X$ be a random variable representing the value shown a fair six-sided die is rolled.
+    Then $X \sim \text{discreteU}(\{1,2,3,4,5,6\})$, and $f_X(k) = \frac{1}{6}$ for each number.
+    \[
+        \mathbb{E}[X] = 1 \times \frac{1}{6} + 2 \times \frac{1}{6} + 3 \times \frac{1}{6} 
+        + 4 \times \frac{1}{6} + 5 \times \frac{1}{6} + 6 \times \frac{1}{6} = 3.5
+    \]
+    So the expected value of a die rolled is 3.5.
+\end{example}
+
+\begin{example}
+    If $f(x) = (k + 1)x^2$ for $0 < x < 1$, find the moment generating function.
+\end{example}
+\begin{solution}
+    Since $f$ is a density function, thus $\int_{0}^{1} f(x) \mathrm{d}x = 1$, it follows that 
+    \[
+        (k+1)\times \frac{1}{3} = 1
+    \]
+    so that $k = 2$ and now $f(x) = 3x^2$ for $0 < x < 1$. Then the moment generating function is 
+    \begin{align*}
+        M_X(t) = \int_{0}^{1} e^{tx}(3x^2) \> \mathrm{d}x
+        &= \int_{0}^{1} 3x^2 \mathrm{d}\bigg( \frac{e^{tx}}{t}\bigg)\\
+        &= \frac{3x^2e^{tx}}{t} \bigg \vert^{x= 1}_{x=0} - \int_{0}^{1} \frac{6xe^{tx}}{t} \> \mathrm{d}x\\
+        &= \frac{3e^{t}}{t} - \left[ \frac{6xe^{tx}}{t^2} \bigg \vert^{x=1}_{x=0} - \int_{0}^{1} \frac{6xe^{tx}}{t^2} \> \mathrm{d}x \right]\\
+        &= \frac{3e^{t}}{t} - \frac{6e^{t}}{t^2} + \frac{6(e^t - 1)}{t^3}\\
+        &= \frac{e^t(6 - 6t + 3t^2)}{t^3} - \frac{6}{t^3}.
+    \end{align*}
+\end{solution}
+
+
+\subsection{Variance}
+
+Variance is a measure of the "dispersion" of $X$ about the mean. 
+
+\begin{definition}[Variance]
+    The variance of distribution $X$ is sum of squared loss
+    \begin{equation}
+        Var[X] := \mathbb{E}_X (X_i - \mu_X)^2 = \mathbb{E}[X^2] - (\mathbb{E}[X])^2
+    \end{equation}
+\end{definition}
+
+A large variance indicates significant levels of probability or density from points far away 
+from the mean. The variance must be always $\geq 0$ (Since everything is squared). The 
+variance of $X$ is equal to zero only if $X$ is a fixed single point and with probability 1 
+at that point; In other words, the function of $X$ is a constant function (For example, $x \sim f_X(x) = 6$, then $Var[X] = 0$).
+
+The standard deviation of the random variable $X$ is the square root 
+
+\begin{theorem}[Chebyshev's Theorem]
+    Let $X$ be a random variable with mean $\mu_X$ and finite variance $\sigma^2$. 
+    Then,
+    \begin{equation}
+        \mathbb{P}[\,|X - \mu_X| < k\sigma] \geq 1 - \frac{1}{k^2}
+    \end{equation}
+    or 
+    \begin{equation}
+        \mathbb{P}[\,|X - \mu_X| \geq k\sigma] \leq \frac{1}{k^2} 
+    \end{equation}
+    for some constant $k > 0$.
+\end{theorem}
+
+\subsection{The Coefficient of Variation}
+\begin{definition}[Coefficient of Variation]
+    The coefficient of variation is 
+    \begin{equation}
+        CV = \frac{\sigma_X}{\mu_X} = \frac{\sqrt{Var[x]}}{\mathbb{E}[X]}.
+    \end{equation}
+\end{definition}
+
+A higher CV implies greater variability, while a lower CV suggests more consistency or reliability of 
+the data. Imagine if we have two datasets:
+\begin{itemize}
+    \item Dataset $A$ has a mean of 10 and standard deviation of 2, and $CV_A = 2/10 = 1/5$.
+    \item Dataset $B$ has a mean of 100 and standard deviation of 10, and $CV_B = 10/100 = 1/10$.
+\end{itemize}
+While dataset $B$ has higher standard deviation, but it has a lower $CV$ compared to dataset $A$. This indicating
+$B$ less reliable variation to the mean.
+
+\section{Discrete Random Variables}
+
+\subsection{Binomial distribution}
+
+A Bernoulli trial is an experiment with only two outcomes: \textbf{Success} and \textbf{failure}. 
+The probability of a success is denoted by $p$ and that of a failure by $q=1-p$. Moreover, 
+$p$ and $q$ are related by the formula
+\[
+    p + q = 1.
+\]
+
+A Bernoulli experiment is a sequence of independent Bernoulli trials. Let $X$ represent the number of successes 
+that occur in $n$ independent Bernoulli trials. Then $X$ is said to be a Binomial random variable $(n,p)$. 
+If $n = 1$, then $X$ is said to be a Bernoulli random variable.
+
+\begin{theorem}
+    Let $(\Omega, \mathbb{P})$ be a probability space, let $p \in [0,1]$ and let $X_1, X_2, \ldots, X_n : \Omega \to \{0, 1\}$ be 
+    independent random variables such that each $X_i \sim \text{Bernoulli}(p)$. Then 
+    \[
+        X_1 + X_2 + \cdots + X_n \sim \text{Bin}(n,p).
+    \]
+\end{theorem}
+
+\subsection{Geometric distribution}
+
+A geometric random variable with parameter $p$, $0 < p < 1$ has a probability mass function
+\begin{equation}
+    p_X(n) = \mathbb{P}(X = n) = p(1-p)^{n-1}, \quad n=1,2,\ldots.
+\end{equation}
+
+Note that $p_X(n) \geq 0$ and 
+\begin{equation}
+    \sum^\infty_{n=1} p(1-p)^{n-1} = \frac{p}{1-(1-p)} = 1.
+\end{equation}
+
+A geometric random variable models the number of successive independent
+ Bernoulli trials that must be performed to obtain the $r$-st success . For
+ example, the number of flips of a fair coin until the $r$-st head appears follows
+ a geometric distribution.
+
+\begin{example}
+    Consider the experiment of rolling a pair of fair dice.
+    \begin{enumerate}
+        \item What is the probability of getting a sum of 11?
+        \item If you roll two dice repeatedly, what is the probability that the first sum of 11 
+            occurs on the 8-th roll?
+    \end{enumerate}
+\end{example}
+\begin{solution}
+    \begin{enumerate}
+        \item A sum of 11 occurs when the pair of dice show either $(5,6)$ or $(6, 5)$ so that the 
+            required probability is $\mfrac{2}{36} = \mfrac{1}{18}$.
+        \item Let $X$ be the number of rolls on which the first sum of 11 happened. Then 
+            $X$ is a geometric random variable with probability $p = \mfrac{1}{18}$. Thus
+            \[
+                \mathbb{P}[X = 8] = \frac{1}{18} \left( 1 - \frac{1}{18} \right)^7 = 0.0372.
+            \]
+    \end{enumerate}
+\end{solution}
+
+\section{Continuous Probability Distributions}
+
+\subsection{Uniform Probability Distribution}
+
+\begin{definition}[Uniform Distribution]
+    If $a < b$, a random variable $X$ is said to have a continuous uniform distribution if 
+    \begin{equation}
+        f_X(x) = \begin{cases}
+            \mfrac{1}{b - a}, & \text{if } a \leq x \leq b\\
+            0 & \text{elsewhere}.
+        \end{cases}
+    \end{equation}
+\end{definition}
+
+\begin{theorem}[Mean and variance of Uniform Distribution]
+    If $X$ is a continuous uniform distribution on the interval $[a,b]$, then the mean is
+    \begin{equation}
+        \mu_X = \mathbb{E}[X] = \frac{a + b}{2}
+    \end{equation}
+
+    and 
+    \begin{equation}
+        \sigma^2_X = Var[X] = \frac{(b - a)^2}{12}
+    \end{equation}
+\end{theorem}
+
+\begin{proof}
+    Given $X$ is a continuous uniform distribution on the interval $[a,b]$, with $a < b$. Then the 
+    expectation of $X$ is 
+    \begin{align*}
+        \mu_X = \mathbb{E}[X] = \int_{a}^{b} x\, \frac{1}{b - a} dx
+        &= \frac{x^2}{2(b - a)} \bigg \vert^{x = b}_{x = a}\\[0.5em]
+        &= \frac{b^2 - a^2}{2(b-a)}\\[0.5em]
+        &= \frac{(b-a)(b+a)}{2(b-a)}\\[0.5em]
+        &= \frac{a+b}{2}.
+    \end{align*}
+
+    Now we continue to work on the variance for $X$. But before that, we need to find the expectation of $X^2$.
+    \begin{align*}
+        \mathbb{E}[X^2] = \int_{a}^{b} x^2\, \frac{1}{b - a} dx
+        &= \frac{x^3}{3(b - a)} \bigg \vert^{x = b}_{x = a}\\[0.5em]
+        &= \frac{b^3 - a^3}{3(b-a)} \\[0.5em]
+        &= \frac{(b-a)(b^2 + ab + a^2)}{3(b-a)}\\[0.5em]
+        &= \frac{a^2 + ab + b^2}{3}
+    \end{align*}
+
+    The variance of $X$ is 
+    \begin{align*}
+        \sigma^2_X = Var[X] &= \mathbb{E}[X^2] - (\mathbb{E}[X])^2\\[0.5em]
+        &= \frac{a^2 + ab + b^2}{3} - \left( \frac{a+b}{2} \right)^2\\[0.5em]
+        &= \frac{4(b^2 + ab + a^2) - 3(a+b)^2}{12}\\[0.5em]
+        &= \frac{a^2 - 2ab + b^2}{12}\\[0.5em]
+        &= \frac{(b-a)^2}{12}
+    \end{align*}
+    which is what we expected.
+\end{proof}
+
+\section{Normal Distribution}
+
+
+
+\section{Gamma Distribution}
+
+Some random variables can yield distributions of data are skewed right and is non-symmetric.
+
+\begin{definition}[Gamma Distribution]
+    Let $X$ be a random variable followed \textit{gamma distribution} with parameters $\alpha > 0$ and 
+    $\beta$. The density function of $X$ is 
+    \begin{equation}
+        f_X(x) = \begin{cases}
+            \displaystyle \frac{x^{\alpha - 1}\, e^{-x/\beta}}{\beta^\alpha\, \Gamma(\alpha)}, & \text{if } x \geq 0\\
+            0 & \text{elsewhere}.
+        \end{cases}
+    \end{equation}
+\end{definition}
+
+\begin{theorem}[Mean and variance of Gamma Distribution]
+    If $X$ is a gamma distribution with parameters $\alpha > 0$ and $\beta > 0$, then the mean and 
+    variance are 
+    \begin{equation}
+        \mu_X = \alpha \beta
+    \end{equation}
+    \begin{equation}
+        \sigma^2 = \alpha \beta^2.
+    \end{equation}
+\end{theorem}
+
+\begin{proof}
+    Using the moment generating function approach to find mean and variance,
+    \begin{align*}
+        M_X(t) &= \int_{0}^{\infty} e^{tx}\, \frac{x^{\alpha - 1}\, e^{-x/\beta}}{\beta^\alpha\, \Gamma(\alpha)}\> dx \\[0.5em]
+        &= \frac{1}{\beta^\alpha} \int_{0}^{\infty} \frac{x^{\alpha - 1}\, e^{-x \left( \mfrac{1}{\beta}-t \right)} }{\Gamma(\alpha)} \> dx \\[0.5em]
+        &= \frac{1}{\beta^\alpha} \int_{0}^{\infty} \frac{x^{\alpha - 1}\, e^{-x / \left( \mfrac{\beta}{1 - \beta t } \right)} }{\Gamma(\alpha)} \> dx \\[0.5em]
+        &= \frac{\left( \mfrac{\beta}{1 - \beta t } \right)^\alpha}{\beta^\alpha} \int_{0}^{\infty} \frac{x^{\alpha - 1}\, e^{-x/ \left( \mfrac{\beta}{1 - \beta t } \right)} }{\Gamma(\alpha) \left( \mfrac{\beta}{1 - \beta t } \right)^\alpha } \> dx \\[0.5em]
+    \end{align*}
+    Now observe that 
+    \[
+        \int_{0}^{\infty} \frac{x^{\alpha - 1}\, e^{-x/ \left( \mfrac{\beta}{1 - \beta t } \right)} }{\Gamma(\alpha) \left( \mfrac{\beta}{1 - \beta t } \right)^\alpha } \> dx = 1
+    \]
+    as integrating $x$ along the entire curve will give us 1. Thus, 
+    \begin{equation}
+        M_X(t) = \frac{\left( \mfrac{\beta}{1 - \beta t } \right)^\alpha}{\beta^\alpha} \times 1  = \frac{1}{(1 - \beta t )^\alpha}.
+    \end{equation}
+
+    That is to say, recall that the $k$-th derivative of $M_X(t)$ with respect to $t$ as at $t = 0$, is the 
+    $\mathbb{E}[X^k]$. From here we compute
+    \[
+        \mathbb{E}[X] = \dot{M}_X(0) = \alpha \beta (1 - \beta t)^{-\alpha - 1} \big \vert_{t = 0} = \alpha \beta.
+    \]
+    \[
+        \mathbb{E}[X^2] = \ddot{M}_X(0) = -\alpha (1 + \alpha) \beta^2 (1 - \beta t)^{-\alpha - 2} \big \vert_{t = 0} = \alpha (1 + \alpha) \beta^2.
+    \]
+    And so the variance is 
+    \begin{align*}
+        Var[X] &= \mathbb{E}[X^2] - (\mathbb{E}[X])^2 \\
+        &= \alpha (\alpha + 1) \beta^2 - (\alpha \beta)^2\\
+        &= \alpha \beta^2.
+    \end{align*}
+    and we are done.
+\end{proof}
+
+\subsection{Chi-square distribution}
+
+\begin{definition}
+    If $X$ is a gamma distribution with parameters $\alpha = \nu / 2$ and $\beta = 2$, then $X$ is 
+    a $\chi^2$-distribution with $\nu$ degree of freedom. (with $\nu > 0$)
+\end{definition}

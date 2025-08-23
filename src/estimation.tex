@@ -1,0 +1,131 @@
+\chapter{Estimation}
+
+\begin{definition}[Estimator]
+    An \textbf{estimator} is a formula, that tells 
+    how to calculate the value of an estimate based 
+    on the observations contained in a sample.
+\end{definition}
+
+For example, the sample mean 
+\[
+    \bar{X} = \frac{X_1 + X_2 + \cdots + X_n}{n}
+\]
+is a rule that tells us how to calculate the estimate of the population mean $\mu$ based on the observations in a sample.
+
+\begin{theorem}[Mean Squared Error]
+    For an estimator $\hat{\mu}(X)$ of $\mu = \mu(\theta)$, the mean-squared error is 
+    \begin{equation}
+        MSE(\hat{\mu}) = Var[\hat{\mu}(X) \> | \> \theta] + \bias(\hat{\mu} \> | \> \theta)^2
+    \end{equation}
+    where $\bias (\hat{\mu} \> | \> \theta) = \mathbb{E}_\theta [\hat{\mu}(X) \> | \> \theta] - \mu$.
+\end{theorem}
+\begin{proof}
+    Consider the following decision framework:
+    \begin{itemize}
+        \item $X \sim P_\theta,\> \theta \in \Theta$.
+        \item The parameter of interest, $\mu(\theta)$ is a certain function.
+        \item Action space, $\mathcal{A} = \{ \mu = \mu(\theta), \> \theta \in \Theta \}$.
+        \item Decision procedure (or estimator), $\hat{\mu}(X) : \mathcal{X} \to \mathcal{A}$.
+        \item Squared error loss as loss function: $L(\theta, a) = [a - \mu(\theta)]^2$.
+    \end{itemize}
+    with the setup above, the MSE is equal to the risk of decision,
+    \begin{align*}
+        R(\theta, \hat{\mu}(X)) &= \mathbb{E}[L(\left(\theta, \hat{\mu}(X) \right) \> | \> \theta]\\
+        &= \mathbb{E}[\left(\hat{\mu}(X) - \mu(\theta) \right)^2 \> | \> \theta]\\
+        &= \mathbb{E}[\left(\hat{\mu}(X) - \mu \right)^2 \> | \> \theta]\\
+        &= Var[\hat{\mu}(X) \> | \> \theta] + 
+            \big(\underbrace{\mathbb{E}[\hat{\mu}(X) \> | \> \theta] - \mu}_{\bias(\hat{\mu} | \theta)} \big)^2
+    \end{align*}
+\end{proof}
+
+\section{Evaluating the Estimators}
+
+\begin{example}
+    Let $X_1, X_2, X_3$ be a random sample of size 3 from a population with pmf 
+    \[
+        f(x|\lambda) = \begin{cases}
+            \mfrac{\lambda^x\, e^{-\lambda}}{x!} & x = 0, 1, 2, \ldots\\
+            0 & \text{otherwise}
+        \end{cases}
+    \]
+    where $\lambda > 0$ is a parameter. Are the following estimators of $\lambda$ unbiased?
+    \[
+        \hat{\lambda}_1 = \frac{1}{4}(X_1 + 2X_2 + X_3), \quad \hat{\lambda}_2 = \frac{1}{9}(4X_1 + 3X_2 + 2X_3) 
+    \]
+    Given, $\hat{\lambda}_1$ and $\hat{\lambda}_2$ which one is more efficient? 
+    
+    Hence, find an unbiased estimator of $\lambda$ that is more efficient than both $\hat{\lambda}_1$ and $\hat{\lambda}_2$.
+\end{example}
+\begin{solution}
+    Given the observations $X_1, X_2, X_3$ are i.i.d with $X_i \sim Poisson(\lambda)$, we have
+    \[
+        \mathbb{E}[X_i] = Var[X_i] = \lambda \quad \forall i = 1,2,3.
+    \]
+    It is easy to see that 
+    \begin{align*}
+        \mathbb{E}[\hat{\lambda}_1] &= \frac{1}{4}(\mathbb{E}[X_1] + 2\mathbb{E}[X_2] + \mathbb{E}[X_3]) = \frac{1}{4}(\lambda + 2\lambda + \lambda) = \lambda,\\
+        \mathbb{E}[\hat{\lambda}_2] &= \frac{1}{9}(4\mathbb{E}[X_1] + 3\mathbb{E}[X_2] + 2\mathbb{E}[X_3]) = \frac{1}{9}(4\lambda + 3\lambda + 2\lambda) = \lambda.
+    \end{align*}
+    Thus, both $\hat{\lambda}_1$ and $\hat{\lambda}_2$ are unbiased estimators of $\lambda$.
+    Next, we compute the variances of both estimators,
+    \begin{align*}
+        Var[\hat{\lambda}_1] &= \frac{1}{16}(Var[X_1] + 4Var[X_2] + Var[X_3]) = \frac{1}{16}(\lambda + 4\lambda + \lambda) = \frac{3\lambda}{8},\\
+        Var[\hat{\lambda}_2] &= \frac{1}{81}(16Var[X_1] + 9Var[X_2] + 4Var[X_3]) = \frac{1}{81}(16\lambda + 9\lambda + 4\lambda) = \frac{29\lambda}{81}.
+    \end{align*}
+    By inspection, since $\frac{3}{8} = 0.375 > \frac{29}{81} \approx 0.358$, the estimator $\hat{\lambda}_2$ is more efficient than $\hat{\lambda}_1$.
+    We have seen in previous section that the sample mean is always an unbiased estimator of the population mean irrespective of the population distribution. 
+    The variance of the sample mean is always equal to $\frac{\sigma^2}{n}$, where $\sigma^2$ is the population variance and $n$ is the sample size. Thus 
+    \[
+        Var[\bar{X}] = \frac{Var[X_i]}{3} = \frac{1}{3}\lambda.
+    \]
+    The sample mean has even smaller variance than both $\hat{\lambda}_1$ and $\hat{\lambda}_2$. Thus, $\bar{X} = \mfrac{1}{3}\lambda$ is an unbiased estimator of $\lambda$ that is more efficient than both $\hat{\lambda}_1$ and $\hat{\lambda}_2$.
+\end{solution}
+
+\textbf{Rule of thumb choosing a good estimator}:
+\begin{itemize}
+    \item Unbiasedness: $\mathbb{E}[\hat{\theta}] = \theta$.
+    \item Minimum variance: A good estimator should has smaller $Var[\hat{\theta}]$, the smaller the better.
+\end{itemize}
+
+\section{Point Estimators}
+A \textbf{point estimator} is a function of the sample data that provides a single value as an estimate of an unknown population parameter. Since the estimator is calculated from a random sample, it is itself a random variable and has a probability distribution, called the \textbf{sampling distribution}.
+
+The sampling distribution of a point estimator describes how the estimator varies from sample to sample. Key properties of the sampling distribution include its mean (which relates to bias) and its variance (which relates to the precision of the estimator). Understanding the sampling distribution is fundamental for assessing the reliability of an estimator, constructing confidence intervals, and performing hypothesis tests.
+
+% Table fits to paper width using tabularx
+\begin{table}[h!]
+\renewcommand{\arraystretch}{1.2}
+\begin{tabularx}{\textwidth}{p{2.5cm}|l|l|X|l|X}
+    & Target Parameter & Sample size & Point Estimator & $\mathbb{E}[\theta]$ & Standard Error \\
+    \hline
+    Population Mean & $\mu$ & $n$ & $\bar{X} = \frac{1}{n}\sum_{i=1}^n X_i$ & $\mu$ & $\frac{\sigma}{\sqrt{n}}$ \\
+    Proportion & $p$ & $n$ & $\hat{p} = \frac{1}{n}\sum_{i=1}^n X_i$ & $p$ & $\sqrt{\frac{p(1-p)}{n}}$ \\
+    Difference in Means & $\mu_1 - \mu_2$ & $m, n$ & $\bar{X} - \bar{Y}$ & $\mu_1 - \mu_2$ & $\sqrt{\frac{\sigma_1^2}{m} + \frac{\sigma_2^2}{n}}$ \\
+    Difference in Proportions & $p_1 - p_2$ & $m, n$ & $\hat{p}_1 - \hat{p}_2$ & $p_1 - p_2$ & $\sqrt{\frac{p_1(1-p_1)}{m} + \frac{p_2(1-p_2)}{n}}$ \\
+    \hline
+\end{tabularx}
+\end{table}
+
+\begin{example}
+     In a random sample of 80 components of a certain
+ type, 12 are found to be defective.
+ \begin{enumerate}
+    \item Find a point estimate of the proportion of non-defective components.
+    \item Find the standard error of the point estimate.
+ \end{enumerate}
+\end{example}
+\begin{solution}
+    \begin{enumerate}
+        \item With $p$ as the proportion of non-defective components,
+        the point estimate for proportion is
+        \[
+            \hat{p} = \frac{80-12}{80} = 0.85.
+        \]
+        
+        \item The standard error of the point estimate of non-defective proportion is
+        \[
+            SE(\hat{p}) = \sqrt{\frac{\hat{p}(1-\hat{p})}{n}} = \sqrt{\frac{0.85 \times 0.15}{80}} \approx 0.0399.
+        \]
+    \end{enumerate}
+\end{solution}
+
