@@ -106,11 +106,11 @@ We will first state the Weak Law of Large Numbers (WLLN),
     Let $\{X_n\}_{n \geq 1}$ be a sequence of i.i.d random variables, each with mean 
     $\mathbb{E}[X_i] = \mu$ and standard deviation $\sigma$, we define 
     \[
-        \bar{X}_n = \frac{X_1 + X_2 + \cdots + X_n}{n}.
+        \ols{X}_n = \frac{X_1 + X_2 + \cdots + X_n}{n}.
     \]
     The Weak Law of Large Numbers (WLLN) states that for all $\epsilon > 0$, we have 
     \begin{equation}
-        \Lim{n \to \infty} \mathbb{P}[\, |\bar{X}_n - \mu| > \epsilon] = 0.
+        \Lim{n \to \infty} \mathbb{P}[\, |\ols{X}_n - \mu| > \epsilon] = 0.
     \end{equation}
 \end{theorem}
 
@@ -119,7 +119,7 @@ We will first state the Weak Law of Large Numbers (WLLN),
     $X_1, X_2, \ldots, X_n$ are identically independent, there is no 
     correlation between them, thus
     \begin{align*}
-        Var[\bar{X}_n] &= Var \left[ \frac{X_1 + X_2 + \cdots + X_n}{n} \right]\\
+        Var[\ols{X}_n] &= Var \left[ \frac{X_1 + X_2 + \cdots + X_n}{n} \right]\\
         &= \frac{1}{n^2} Var[X_1 + X_2 + \cdots + X_n]\\
         &= \frac{1}{n^2} [Var X_1 + Var X_2 + \cdots + Var X_n]\\
         &= \frac{1}{n^2} (\underbrace{\sigma^2 + \sigma^2 + \cdots + \sigma^2}_{n \text{ times}})\\
@@ -128,10 +128,10 @@ We will first state the Weak Law of Large Numbers (WLLN),
     \end{align*}
 
     Notice that the mean of each $X_i$ in the sequence is also equal to the mean of the sample average, 
-    said $\mathbb{E}[X_i] = \mu$. We can now apply Chebyshev's inequality on $\bar{X}_n$ to get, for all 
+    said $\mathbb{E}[X_i] = \mu$. We can now apply Chebyshev's inequality on $\ols{X}_n$ to get, for all 
     $\epsilon > 0$, 
     \[
-        \mathbb{P}[\, |\bar{X}_n - \mu| > \epsilon] \leq \frac{\sigma^2}{n\epsilon^2}.
+        \mathbb{P}[\, |\ols{X}_n - \mu| > \epsilon] \leq \frac{\sigma^2}{n\epsilon^2}.
     \]
     So that 
 \end{proof}
@@ -140,36 +140,36 @@ We will first state the Weak Law of Large Numbers (WLLN),
     Let $\{X_n\}_{n \geq 1}$ be a sequence of i.i.d random variables, each with mean 
     $\mathbb{E}[X_i] = \mu$ and standard deviation $\sigma$, then 
     \begin{equation}
-        \mathbb{P}[\Lim{n \to \infty} \bar{X}_n = \mu] = 1. 
+        \mathbb{P}[\Lim{n \to \infty} \ols{X}_n = \mu] = 1. 
     \end{equation}
 \end{theorem}
 
 \begin{proof}
     By Markov's inequality that 
     \[
-        \mathbb{P} \left[ \frac{1}{n}|\bar{X}_n - n\mu| \geq n^{-\gamma}\right] 
-        \leq \frac{\mathbb{E}[(\mfrac{\bar{X}_n}{n} - \mu)^4]}{n^{-4\gamma}} = Kn^{-2+4\gamma}.
+        \mathbb{P} \left[ \frac{1}{n}|\ols{X}_n - n\mu| \geq n^{-\gamma}\right] 
+        \leq \frac{\mathbb{E}[(\mfrac{\ols{X}_n}{n} - \mu)^4]}{n^{-4\gamma}} = Kn^{-2+4\gamma}.
     \]
     Define for all $\gamma \in \left(0, \frac{1}{4}\right)$, and let 
     \[
-        An = \left\{ \frac{1}{n}|\bar{X}_n - n\mu| \geq n^{-\gamma} \right\} \Rightarrow 
+        A_n = \left\{ \frac{1}{n}|\ols{X}_n - n\mu| \geq n^{-\gamma} \right\} \Rightarrow 
         \sum_{n \geq 1} \mathbb{P}[A_n] < \infty \Rightarrow 
         \mathbb{P}[A] = 0
     \]
     by the first Borel-Cantelli lemma, where $A = \bigcap_{n \geq 1} \bigcup_{m \geq n} A_n$. But now, the event 
     $A^c$ happened if and only if 
     \[
-        \exists N\, \forall n \geq N \> \left| \frac{\bar{X}_n}{n} - \mu \right| < n^{-\gamma} 
-        \Rightarrow \frac{\bar{X}_n}{n} \xrightarrow[]{p} \mu.
+        \exists N\, \forall n \geq N \> \left| \frac{\ols{X}_n}{n} - \mu \right| < n^{-\gamma} 
+        \Rightarrow \frac{\ols{X}_n}{n} \xrightarrow[]{p} \mu.
     \]
 \end{proof}
 
 \begin{theorem}[Central Limit Theorem]
     Let $\{X_n\}_{n \geq 1}$ be a sequence of i.i.d random variable whose memoment generating function 
     exist in a neighborhood of 0. Let $\mathbb{E}[X_i] = \mu$ and $Var[X_i] = \sigma^2 > 0$. Define
-    $\bar{X} = \mfrac{1}{n} \sum^n_{i=1} X_i$. Then 
+    $\ols{X} = \mfrac{1}{n} \sum^n_{i=1} X_i$. Then 
     \begin{equation}
-        Z = \frac{\sqrt{n} (\bar{X}_i - \mu)}{\sigma} \xrightarrow[]{d} \mathcal{N}(0,1)
+        Z = \frac{\sqrt{n} (\ols{X}_i - \mu)}{\sigma} \xrightarrow[]{d} \mathcal{N}(0,1)
     \end{equation}
     or 
     \begin{equation}
@@ -178,15 +178,15 @@ We will first state the Weak Law of Large Numbers (WLLN),
 \end{theorem}
 
 \begin{example}
-    Let $\bar{X}_n$ be the sample mean from a random sampling of size 
+    Let $\ols{X}_n$ be the sample mean from a random sampling of size 
     $n = 100$ from $\chi^2_{50}$. Compute approximate value of 
-    $\mathbb{P}(49 < \bar{X} < 51)$.
+    $\mathbb{P}(49 < \ols{X} < 51)$.
 \end{example}
 \begin{solution}
-    Because $\bar{X}$ followed Chi-squared distribution with degree of freedom 50, then the mean and variance are 
+    Because $\ols{X}$ followed Chi-squared distribution with degree of freedom 50, then the mean and variance are 
     $\mathbb{E}[X_i] = 50$ and $Var[X_i] = 2(50) = 100$. By Central Limit Theorem, 
     \begin{align*}
-        \mathbb{P}(49 < \bar{X} < 51) &\simeq  
+        \mathbb{P}(49 < \ols{X} < 51) &\simeq  
         \mathbb{P} \left[ \frac{\sqrt{100} (49 - \mathbb{E}[X_i])}{\sqrt{Var[X_i]}} < Z < \frac{\sqrt{100} (51 - \mathbb{E}[X_i])}{\sqrt{Var[X_i]}} \right]\\
         &\simeq \mathbb{P} \left[ \frac{\sqrt{100} (49 - 50)}{\sqrt{100}} < Z < \frac{\sqrt{100} (51 - 50)}{\sqrt{100}} \right]\\
         &\simeq \mathbb{P} \left[ -1 < Z < 1 \right]\\
@@ -206,7 +206,7 @@ We will first state the Weak Law of Large Numbers (WLLN),
 \begin{example}
     If the random variable $X \sim \text{Gamma}(\mu, 1)$, show that 
     \[
-        \frac{\sqrt{n}(\bar{X}_n - \mu)}{\sqrt{\bar{X}_n}} \xrightarrow[]{d} \mathcal{N}(0,1)
+        \frac{\sqrt{n}(\ols{X}_n - \mu)}{\sqrt{\ols{X}_n}} \xrightarrow[]{d} \mathcal{N}(0,1)
     \]
 \end{example}
 \begin{solution}
@@ -214,17 +214,17 @@ We will first state the Weak Law of Large Numbers (WLLN),
     $X$ and if $Y_n$ converges in probability to a constant $c$. Then $X_n / Y_n$
     converges in distribution to $X/c$. By the central limit theorem we have 
     \[
-        \sqrt{n}(\bar{X}_n - \mu) \xrightarrow[]{d} \mathcal{N}(0, Var[X_i]).
+        \sqrt{n}(\ols{X}_n - \mu) \xrightarrow[]{d} \mathcal{N}(0, Var[X_i]).
     \]
     and in this case $\mathbb{E}X_i = Var[X_i] = \mu$, thus we obtained
     \[
-        \sqrt{n}(\bar{X}_n - \mu) \xrightarrow[]{d} \mathcal{N}(0, \mu).
+        \sqrt{n}(\ols{X}_n - \mu) \xrightarrow[]{d} \mathcal{N}(0, \mu).
     \]
-    Replacing the theorem denominator $Y_n$ with $\bar{X}_n$, which $\bar{X}_n$ converges to constant $\mu$ 
+    Replacing the theorem denominator $Y_n$ with $\ols{X}_n$, which $\ols{X}_n$ converges to constant $\mu$ 
     in probability. Hence
     \[
-        \frac{\sqrt{n}(\bar{X}_n - \mu)}{\sqrt{\bar{X}_n}} \xrightarrow[]{d} \mathcal{N}\left(\frac{0}{\mu}, \frac{\mu}{\mu}\right)
-        \Longrightarrow \frac{\sqrt{n}(\bar{X}_n - \mu)}{\sqrt{\bar{X}_n}} \xrightarrow[]{d} \mathcal{N}(0,1)
+        \frac{\sqrt{n}(\ols{X}_n - \mu)}{\sqrt{\ols{X}_n}} \xrightarrow[]{d} \mathcal{N}\left(\frac{0}{\mu}, \frac{\mu}{\mu}\right)
+        \Longrightarrow \frac{\sqrt{n}(\ols{X}_n - \mu)}{\sqrt{\ols{X}_n}} \xrightarrow[]{d} \mathcal{N}(0,1)
     \]
     and we are done with the proof.
 \end{solution}
