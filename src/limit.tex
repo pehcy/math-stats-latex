@@ -35,7 +35,7 @@ consider as the weakest type of convergence.
     \begin{align*}
         F_{Y_n}(y) &= \mathbb{P}\left[ \frac{1}{n}X_n \leq y \right]\\
         &= \mathbb{P}\left[ X_n \leq ny \right]\\
-        &= 1 - \left( 1- \frac{\lambda}{n} \right)^{\lfloor ny \rfloor }.
+        &= 1 - \left( 1- \frac{\lambda}{n} \right)^{\text{floor}(ny)}.
     \end{align*}
     and taking limit for $n \to +\infty$ we have 
     \begin{align*}
@@ -203,6 +203,42 @@ We will first state the Weak Law of Large Numbers (WLLN),
     \end{itemize}
 \end{theorem}
 
+\begin{proof}
+    We will prove both parts of Slutsky's theorem.
+    
+    \textbf{Part 1:} We want to show that $Y_nX_n \xrightarrow{d} cX$.
+    
+    Since $Y_n \xrightarrow{p} c$, for any $\epsilon > 0$, we have $\mathbb{P}[|Y_n - c| > \epsilon] \to 0$ as $n \to \infty$.
+    This implies that $Y_n$ is bounded in probability, and we can write $Y_n = c + (Y_n - c)$ where $(Y_n - c) \xrightarrow{p} 0$.
+    
+    Now, $Y_nX_n = cX_n + (Y_n - c)X_n$. Since $X_n \xrightarrow{d} X$ and multiplication by the constant $c$ is a continuous operation, we have $cX_n \xrightarrow{d} cX$.
+    
+    For the second term, we need to show that $(Y_n - c)X_n \xrightarrow{p} 0$. Since $Y_n - c \xrightarrow{p} 0$ and $X_n$ is bounded in probability (as it converges in distribution), their product converges to 0 in probability.
+    
+    By Slutsky's theorem for sums (which we prove next), we get $Y_nX_n = cX_n + (Y_n - c)X_n \xrightarrow{d} cX + 0 = cX$.
+    
+    \textbf{Part 2:} We want to show that $X_n + Y_n \xrightarrow{d} X + c$.
+    
+    We use characteristic functions. Let $\phi_{X_n}(t)$, $\phi_X(t)$, and $\phi_{Y_n}(t)$ denote the characteristic functions of $X_n$, $X$, and $Y_n$, respectively.
+    
+    The characteristic function of $X_n + Y_n$ is given by:
+    \begin{align*}
+        \phi_{X_n + Y_n}(t) &= \mathbb{E}[e^{it(X_n + Y_n)}] = \mathbb{E}[e^{itX_n}e^{itY_n}]
+    \end{align*}
+    
+    Since $Y_n \xrightarrow{p} c$, we have $e^{itY_n} \xrightarrow{p} e^{itc}$ by the continuous mapping theorem.
+    
+    Using the fact that $X_n \xrightarrow{d} X$ implies $\phi_{X_n}(t) \to \phi_X(t)$, and that convergence in probability preserves the limit of expectations for bounded random variables, we get:
+    \begin{align*}
+        \lim_{n \to \infty} \phi_{X_n + Y_n}(t) &= \lim_{n \to \infty} \mathbb{E}[e^{itX_n}e^{itY_n}] \\
+        &= \mathbb{E}[e^{itX}] \cdot e^{itc} \\
+        &= \phi_X(t) \cdot e^{itc} \\
+        &= \phi_{X + c}(t)
+    \end{align*}
+    
+    Since the characteristic function of $X_n + Y_n$ converges pointwise to the characteristic function of $X + c$, we conclude that $X_n + Y_n \xrightarrow{d} X + c$.
+\end{proof}
+
 \begin{example}
     If the random variable $X \sim \text{Gamma}(\mu, 1)$, show that 
     \[
@@ -245,6 +281,77 @@ We will first state the Weak Law of Large Numbers (WLLN),
         \item[$\bullet$] $\mfrac{1}{X_n} \xrightarrow[]{p} \mfrac{1}{c}$ for all $c \neq 0$.
     \end{itemize}
 \end{theorem}
+
+\begin{proof}
+    We will prove each part of the theorem.
+    
+    \textbf{Part 1:} We want to show that $aX_n + bY_n \xrightarrow{p} ac + bd$.
+    
+    For any $\epsilon > 0$, we have:
+    \begin{align*}
+        |aX_n + bY_n - (ac + bd)| &= |a(X_n - c) + b(Y_n - d)| \\
+        &\leq |a||X_n - c| + |b||Y_n - d|
+    \end{align*}
+    
+    By the triangle inequality, for any $\delta > 0$:
+    \begin{align*}
+        &\mathbb{P}[|aX_n + bY_n - (ac + bd)| > \epsilon] \\
+        &\leq \mathbb{P}[|a||X_n - c| + |b||Y_n - d| > \epsilon] \\
+        &\leq \mathbb{P}[|a||X_n - c| > \epsilon/2] + \mathbb{P}[|b||Y_n - d| > \epsilon/2] \\
+        &= \mathbb{P}[|X_n - c| > \mfrac{\epsilon}{2a}] + \mathbb{P}[|Y_n - d| > \mfrac{\epsilon}{2b}], \quad \forall a, b > 0
+    \end{align*}
+    
+    Since $X_n \xrightarrow{p} c$ and $Y_n \xrightarrow{p} d$, both terms on the right approach 0 as $n \to \infty$.
+    
+    \textbf{Part 2:} We want to show that $X_n Y_n \xrightarrow{p} cd$.
+    
+    We can write:
+    \begin{align*}
+        X_n Y_n - cd &= X_n Y_n - cY_n + cY_n - cd \\
+        &= Y_n(X_n - c) + c(Y_n - d)
+    \end{align*}
+    
+    Since $Y_n \xrightarrow{p} d$, the sequence $\{Y_n\}$ is bounded in probability. That is, for any $\delta > 0$, there exists $M > 0$ such that $\mathbb{P}[|Y_n| > M] < \delta$ for all $n$ sufficiently large.
+    
+    For any $\epsilon > 0$:
+    \begin{align*}
+        |X_n Y_n - cd| &= |Y_n(X_n - c) + c(Y_n - d)| \\
+        &\leq |Y_n||X_n - c| + |c||Y_n - d|
+    \end{align*}
+    
+    Given $\epsilon > 0$, choose $\delta > 0$ such that:
+    \begin{align*}
+        &\mathbb{P}[|X_n Y_n - cd| > \epsilon] \\
+        &\leq \mathbb{P}[|Y_n||X_n - c| + |c||Y_n - d| > \epsilon] \\
+        &\leq \mathbb{P}[|Y_n||X_n - c| > \epsilon/2] + \mathbb{P}[|c||Y_n - d| > \epsilon/2]
+    \end{align*}
+    
+    For the first term, using the boundedness of $Y_n$ and convergence of $X_n$, and for the second term using convergence of $Y_n$, both approach 0 as $n \to \infty$.
+    
+    \textbf{Part 3:} We want to show that $\frac{1}{X_n} \xrightarrow{p} \frac{1}{c}$ for $c \neq 0$.
+    
+    Since $c \neq 0$, there exists $\delta > 0$ such that $|c| > \delta > 0$. Because $X_n \xrightarrow{p} c$, for any $\epsilon > 0$, we have $\mathbb{P}[|X_n - c| > \epsilon] \to 0$.
+    
+    In particular, $\mathbb{P}[|X_n - c| > \delta/2] \to 0$, which implies $\mathbb{P}[|X_n| > \delta/2] \to 1$. This means $X_n$ is bounded away from 0 in probability.
+    
+    Now, for any $\epsilon > 0$:
+    \begin{align*}
+        \left|\frac{1}{X_n} - \frac{1}{c}\right| &= \left|\frac{c - X_n}{X_n c}\right| = \frac{|X_n - c|}{|X_n||c|}
+    \end{align*}
+    
+    On the event $\{|X_n| > \delta/2\}$, we have:
+    \begin{align*}
+        \left|\frac{1}{X_n} - \frac{1}{c}\right| \leq \frac{2|X_n - c|}{\delta|c|}
+    \end{align*}
+    
+    Therefore:
+    \begin{align*}
+        \mathbb{P}\left[\left|\frac{1}{X_n} - \frac{1}{c}\right| > \epsilon\right] &\leq \mathbb{P}[|X_n| \leq \delta/2] + \mathbb{P}\left[\frac{2|X_n - c|}{\delta|c|} > \epsilon, |X_n| > \delta/2\right] \\
+        &\leq \mathbb{P}[|X_n| \leq \delta/2] + \mathbb{P}\left[|X_n - c| > \frac{\epsilon\delta|c|}{2}\right]
+    \end{align*}
+    
+    As $n \to \infty$, both terms approach 0, completing the proof.
+\end{proof}
 
 \section{Order Statistics}
 

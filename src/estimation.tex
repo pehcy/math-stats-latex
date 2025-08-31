@@ -247,11 +247,12 @@ estimator (MVUE)} of $\theta$.
 
 The method of moments is a technique for estimating population parameters by equating sample moments to theoretical moments. Moments are quantitative measures related to the shape of a distribution, such as the mean (first moment), variance (second moment), skewness (third moment), and kurtosis (fourth moment).
 The method of moments involves the following steps:
+
 \begin{enumerate}
-    \item Identify the moments of the population distribution that correspond to the parameters you want to estimate
-    \item Calculate the sample moments from your data
-    \item Set the sample moments equal to the theoretical moments and solve for the parameters
-    \item   Use the resulting equations to derive estimates for the parameters based on the sample data
+    \item Calculate the theoretical (population) moments as functions of the unknown parameters.
+    \item Calculate the corresponding sample moments from the observed data.
+    \item Set the population moments equal to the sample moments to create a system of equations.
+    \item Solve the system of equations for the unknown parameters to obtain the MoM estimators.
 \end{enumerate}
 
 \begin{example}
@@ -356,10 +357,10 @@ The method of moments involves the following steps:
     \begin{equation*}
     \begin{tikzpicture}[remember picture, overlay, baseline=(eq.base)]
         \node[anchor=base west] (eq) at (0,0) {$
-            \displaystyle \sum_{i=1}^{n} (X_i - \ols{X})^2 = \sum_{i=1}^{n} X_i^2 - n(\ols{X})^2 \tag{{\color{cyan} $\bigstar$}}
+            \displaystyle \sum_{i=1}^{n} (X_i - \ols{X})^2 = \sum_{i=1}^{n} X_i^2 - n(\ols{X})^2 \tag{{\color{red} $\bigstar$}}
         $};
         \node[anchor=base west, right=5.5cm of eq] (tag) {};
-    \draw[cyan, thick, dashed] (tag.west) -- (eq.east);
+    \draw[red, thick, dashed] (tag.west) -- (eq.east);
     \end{tikzpicture}
     \hspace{7.7cm} \label{eq:es1.0}
     \end{equation*}
@@ -457,6 +458,16 @@ Maximizing the log-likelihood function is equivalent to maximizing the likelihoo
 \subsection{MLE based on grouped data}
 
 In some cases, data may be grouped into intervals or categories, and we may not have access to the individual data points. In such situations, we can still use the maximum likelihood estimation (MLE) method to estimate parameters based on the grouped data.
+
+In the complete data case, the likelihood is measured by the density (or probability) $f(x_i)$ at the known data point $x_i$. The likelihood function is the product of those densities for the points in the sample. In the interval grouped data case, we measure likelihood of a point as the probability of the interval in which that point occurs. For a data point in the interval $(c_{j-1}, c_j]$, the probability of that interval is $[F(c_j; \theta) - F(c_{j-1}; \theta)]$. The likelihood function is the product of those interval probabilities for all of the sample points. Since there are $n_j$ sample points in the interval $(c_{j-1}, c_j]$, the likelihood function will include a factor of $[F(c_j; \theta) - F(c_{j-1}; \theta)]^{n_j}$ for those $n_j$ points. The overall likelihood function is the product of all of those factors:
+
+\begin{definition}[MLE based on grouped data]
+    If the data is grouped into $k$ intervals with counts $n_1, n_2, \ldots, n_k$ in each interval, the likelihood function for the grouped data is given by
+    \[
+        L(\theta|x) = \prod_{j=1}^{k} [F(c_j|\theta) - F(c_{j-1}|\theta)]^{n_j},
+    \]
+    where $F(x|\theta)$ is the cumulative distribution function (CDF) of the underlying distribution, and $[c_{j-1}, c_j)$ is the $j$-th interval.
+\end{definition}
 
 \begin{example}
     For a group of insurance policies, you are given:
@@ -557,5 +568,32 @@ In some cases, data may be grouped into intervals or categories, and we may not 
             &= c (1 - e^{-5\theta})^{10} e^{-50\theta},
         \end{align*}
         where $c = 1$ is a constant. To find the value of $\theta$ that maximizes $L(\theta)$, we take the logarithm of the likelihood function:
+    
+        \item In another case, if we assume that the data follow the uniform distribution on the interval $(0, \theta)$, then the cdf is given by
+        \[
+            F(x|\theta) = \begin{cases}
+                \frac{x}{\theta} & 0 < x < \theta\\
+                0 & \text{otherwise}
+            \end{cases}
+        \]
+        The likelihood function is given by
+        \begin{align*}
+            L(\theta) &= [F(5|\theta)]^{n_1} [F(10|\theta) - F(5|\theta)]^{n_2} [F(25|\theta) - F(10|\theta)]^{n_3} [1 - F(25|\theta)]^{n_4}\\
+            &= \left(\frac{5}{\theta}\right)^4 \left(\frac{10}{\theta} - \frac {5}{\theta}\right)^7 \left(\frac{25}{\theta} - \frac{10}{\theta}\right)^6 \left(1 - \frac{25}{\theta}\right)^3\\
+            &= c \theta^{-20} (\theta - 25)^3,
+        \end{align*}
+        where $c = 5^4 \times 5^7 \times 15^6$ is a constant. To find the value of $\theta$ that maximizes $L(\theta)$, we take the logarithm of the likelihood function:
+        \[
+            \ell(\theta) = \ln L(\theta) = \ln c - 20 \ln \theta + 3 \ln(\theta - 25).
+        \]
+        Next, we differentiate $\ell(\theta)$ with respect to $\theta$ and set it to zero:
+        \begin{align*}
+            \frac{\mathrm{d}\ell(\theta)}{\mathrm{d}\theta} &= -\frac{20}{\theta} + \frac{3}{\theta - 25} = 0\\
+            \Rightarrow -20(\theta - 25) + 3\theta &= 0\\
+            \Rightarrow -20\theta + 500 + 3\theta &= 0\\
+            \Rightarrow -17\theta + 500 &= 0\\
+            \Rightarrow \hat{\theta} &= \frac{500}{17} \approx 29.41.
+        \end{align*}
+        Thus, the maximum likelihood estimate of $\theta$ is $\hat{\theta} = \frac{500}{17} \approx 29.41$. 
     \end{enumerate}
 \end{solution}

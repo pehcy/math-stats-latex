@@ -31,6 +31,9 @@
 \newcommand{\Lim}[1]{\raisebox{0.5ex}{\scalebox{0.8}{$\displaystyle \lim_{#1}\;$}}}
 \renewcommand{\labelitemi}{{\color{red!70!white}\ding{118}}}
 
+\newcommand\uprob[2][]{\underset{#1}{\mathbb{P}}\mleft[\,#2\,\mright]}
+\newcommand\cprob[3][]{\mathbb{P}_{#1}\mleft[\,#2\;\middle\vert\;#3\,\mright]}
+
 %command for alg-closure that automatically adapts its 'bar' to the arg based on the args length (including '\')
 \newcommand{\ols}[1]{\mskip.5\thinmuskip\overline{\mskip-.5\thinmuskip {#1} \mskip-.5\thinmuskip}\mskip.5\thinmuskip} % overline short
 \newcommand{\olsi}[1]{\,\overline{\!{#1}}} % overline short italic
@@ -151,23 +154,29 @@ numbered=no
 % \usepackage{txfonts}
 \usepackage{tgpagella}
 
+%\usepackage[lcgreekalpha]{stix} % main and math font of the document (STIX)
+%\usepackage[scale=.94]{tgheros} % Sans font is TG-Heros
+%\usepackage{inconsolata} % mono-spaced font
 
 %\usepackage{mathptmx, newtxmath}
 %\usepackage{libertine}
 %\usepackage[T1]{fontenc}
 %\usepackage[libertine]{newtxmath}
 
+\usepackage{fontspec}
+\setsansfont{Archia-Regular}[Path=src/fonts/, Extension=.otf]
+
 % \usepackage[scaled=0.85]{DejaVuSansMono}
 \usepackage{minted}
 
 %% Section/Subsection Font Family
 \titleformat{\section}
-  {\fontfamily{qhv}\selectfont\bfseries\Large}
+  {\sffamily\bfseries\Large}
   {\thesection}
   {1em}
   {}
 \titleformat{\subsection}
-  {\fontfamily{qhv}\selectfont\bfseries\large}
+  {\sffamily\bfseries\large}
   {\thesubsection}
   {1em}
   {}

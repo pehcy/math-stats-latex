@@ -1,0 +1,276 @@
+\chapter{Sufficiency}
+
+\begin{definition}[Sufficiency]
+    A statistic $T(X)$ is sufficient for parameter $\theta \in \Theta$ if 
+    the conditional distribution of the sample $X$ given the statistic $T(X)$ 
+    does not depend on the parameter $\theta$.
+    In other words, once we know the value of the sufficient statistic, 
+    the sample provides no additional information about the parameter.
+\end{definition}
+
+\begin{example}
+    If $X_1, X_2, \ldots, X_n$ are i.i.d. random samples from the Bernoulli distribution with parameter $p$, then the sum of the samples
+    with denisty function
+    \[
+        f_X(x|\theta) = \begin{cases} 
+            \theta^x (1-\theta)^{1-x}, & x = 0, 1\\
+            0 & \text{otherwise}.
+        \end{cases}
+    \]
+    where $0 < \theta < 1$. Show that the statistic $T(X) = \sum_{i=1}^n X_i$ is a sufficient statistic for $\theta$.
+\end{example}
+\begin{solution}
+    First, we find the joint density function of the sample:
+    \[
+        f_X(x|\theta) = \prod_{i=1}^n f_{X_i}(x_i|\theta) = \prod_{i=1}^n \theta^{x_i} (1-\theta)^{1-x_i} = \theta^{\sum_{i=1}^n x_i} (1-\theta)^{n - \sum_{i=1}^n x_i}.
+    \]
+    Since each $X_i$ is either 0 or 1, the sum $\sum_{i=1}^n x_i$ counts the number of successes (1s) in the sample. Let $T(X) = \sum_{i=1}^n X_i$. Then we can rewrite the joint density function as:
+    \[
+        Y = \sum_{i=1}^n X_i \sim Bin(n, \theta),
+    \]
+    Thus, the joint density function can be expressed as:
+    \[
+        Y \sim g(y) = {n \choose y} \theta^y (1-\theta)^{n-y}, \quad y = 0, 1, \ldots, n.
+    \]
+
+\end{solution}
+
+However, the sufficient statistics are not unique. For example, if $T(X)$ is a sufficient statistic, then any one-to-one function of $T(X)$ is also a sufficient statistic.
+the observation $X$ itself is always a sufficient for $\theta$, but it is not very useful since it does not reduce the data; 
+Said, if we take $T(X) = X$, then $g(t, \theta) = f_X(t|\theta)$ and $h(x) = 1$.
+
+\begin{definition}[Minimal sufficient statistic]
+    A sufficient statistic $T(X)$ is minimal sufficient if it is a function of every other sufficient statistic. 
+    For example, if $S(X)$ is another sufficient statistic, then 
+    \[ S(X) = S(Y) \implies T(X) = T(Y). \]
+\end{definition}
+
+\begin{lemma}[Rao Blackwell Theorem]
+    If $T(X)$ is a sufficient statistic for parameter $\theta$, and $\hat{\theta}$ is an unbiased estimator of $\theta$ 
+    with $\mathbb{E}[\hat{\theta}] < \infty$ for all $\theta \in \Theta$. Let $\hat{\theta}^* = \mathbb{E}[\hat{\theta}|T(X)]$, then $\hat{\theta}^* = \mathbb{E}[\hat{\theta} | T]$, then 
+    \begin{equation}
+        \mathbb{E}[(\hat{\theta}^* - \theta)^2] \leq \mathbb{E}[(\hat{\theta} - \theta)^2].
+    \end{equation}
+    The inequality is strict unless $\hat{\theta}$ is a function of $T(X)$.
+\end{lemma}
+\begin{proof}
+    By the law of conditional expectation, we have
+    \[
+        \mathbb{E}[\hat{\theta}^*] = \mathbb{E}[\mathbb{E}[\hat{\theta}|T]] = \mathbb{E}[\hat{\theta}] = \theta,
+    \]
+    so $\hat{\theta}$ and $\hat{\theta}^*$ are having the same bias. By the conditional variance formula, we have
+    \[
+        \mathbb{E}[\hat{\theta}] = \mathbb{E}[Var(\hat{\theta}|T)] + Var(\mathbb{E}[\hat{\theta}|T]) = \mathbb{E}[Var(\hat{\theta}|T)] + Var(\hat{\theta}^*).
+    \]
+    Hence $Var[\hat{\theta}^*] \geq Var[\hat{\theta}]$, and so
+    $MSE[\hat{\theta}^*] \geq MSE[\hat{\theta}]$.
+\end{proof}
+
+\begin{theorem}[Cramér-Rao lower bound]
+    Let $X_1, X_2, \ldots, X_n$ be a random sample from a distribution with density function $f(x|\theta)$ where $\theta \in \Theta \subseteq \mathbb{R}$. Suppose the following regularity conditions hold:
+    \begin{enumerate}
+        \item The support of $f(x|\theta)$ does not depend on $\theta$.
+        \item $\frac{\partial}{\partial \theta} \ln f(x|\theta)$ exists for all $x$ and $\theta$.
+        \item $\mathbb{E}\left[\frac{\partial}{\partial \theta} \ln f(X|\theta)\right] = 0$ for all $\theta$.
+        \item $0 < I_X(\theta) = \mathbb{E}\left[\left(\frac{\partial}{\partial \theta} \ln f(X|\theta)\right)^2\right] < \infty$ for all $\theta$.
+    \end{enumerate}
+    If $T = T(X_1, \ldots, X_n)$ is any unbiased estimator of $\theta$ with finite variance, then
+    \[
+        \text{Var}(T) \geq \frac{1}{nI_X(\theta)},
+    \]
+    where $I_X(\theta)$ is the Fisher information of a single observation. Equality holds if and only if there exists a function $g(\theta)$ such that
+    \[
+        T - \theta = g(\theta) \sum_{i=1}^n \frac{\partial}{\partial \theta} \ln f(X_i|\theta).
+    \]
+\end{theorem}
+
+\begin{proof}
+    Let $S(\theta) = \sum_{i=1}^n \frac{\partial}{\partial \theta} \ln f(X_i|\theta)$ be the score function for the sample. By the regularity conditions, we have $\mathbb{E}[S(\theta)] = 0$ and $\text{Var}(S(\theta)) = nI_X(\theta)$.
+    
+    Since $T$ is an unbiased estimator of $\theta$, we have $\mathbb{E}[T] = \theta$. Taking the derivative with respect to $\theta$ and using the regularity conditions to interchange the order of differentiation and integration:
+    \[
+        1 = \frac{d}{d\theta}\mathbb{E}[T] = \mathbb{E}\left[\frac{\partial T}{\partial \theta}\right] = \mathbb{E}\left[T \cdot \frac{\partial}{\partial \theta} \ln f(X_1, \ldots, X_n|\theta)\right] = \mathbb{E}[T \cdot S(\theta)].
+    \]
+    
+    Now, since $\mathbb{E}[T] = \theta$ and $\mathbb{E}[S(\theta)] = 0$, we have:
+    \[
+        \text{Cov}(T, S(\theta)) = \mathbb{E}[T \cdot S(\theta)] - \mathbb{E}[T] \mathbb{E}[S(\theta)] = 1 - \theta \cdot 0 = 1.
+    \]
+    
+    By the Cauchy-Schwarz inequality:
+    \[
+        (\text{Cov}(T, S(\theta)))^2 \leq \text{Var}(T) \cdot \text{Var}(S(\theta)),
+    \]
+    which gives us:
+    \[
+        1 \leq \text{Var}(T) \cdot nI_X(\theta).
+    \]
+    
+    Therefore:
+    \[
+        \text{Var}(T) \geq \frac{1}{nI_X(\theta)}.
+    \]
+    
+    Equality holds in the Cauchy-Schwarz inequality if and only if $T - \mathbb{E}[T]$ and $S(\theta) - \mathbb{E}[S(\theta)]$ are linearly dependent, i.e., there exists a constant $g(\theta)$ such that:
+    \[
+        T - \theta = g(\theta)(S(\theta) - 0) = g(\theta)S(\theta).
+    \]
+\end{proof}
+
+\begin{remark}
+    An unbiased estimator $T$ that achieves the Cramér-Rao lower bound is called an \emph{efficient estimator} or \emph{minimum variance unbiased estimator (MVUE)}. When such an estimator exists, it is unique and coincides with the maximum likelihood estimator under regularity conditions. The Fisher information $I_X(\theta)$ measures the amount of information about $\theta$ contained in a single observation, and the Cramér-Rao bound shows that no unbiased estimator can have variance smaller than the reciprocal of the total Fisher information.
+\end{remark}
+
+\section{Variance of estimators based on sufficient statistics}
+
+All estimators can be regarded random variables, and we can compare their variances.
+therefore the maximum likelihood estimator can also be a random variable.
+
+\begin{definition}[Fisher information]
+    The Fisher information of a random variable $X$ with density function $f(x|\theta)$ is defined as
+    \[
+        I_X(\theta) = \mathbb{E}\left[\frac{\partial^2}{\partial \theta^2} \ln f(X|\theta) \right] = \mathbb{E}\left[ \left( \frac{\partial}{\partial \theta} \ell(\theta) \right)^2 \right].
+    \]
+    If $T(X)$ is a sufficient statistic for $\theta$, then the Fisher information contained in $T(X)$ is equal to the Fisher information contained in the sample $X$, i.e.,
+    \[
+        I_T(\theta) = I_X(\theta).
+    \]
+\end{definition}
+
+\subsection{Delta method -- Variance of functions of estimators}
+
+\begin{theorem}
+    Suppose that $g(\theta)$ is a function of estimator.
+    The delta method provides a way to approximate the variance of a function of an estimator.
+    This approximate of the variance is given by
+    \begin{equation}
+        Var(g(\hat{\theta})) \approx [\dot{g}(\theta)]^2\, Var[\hat{\theta}].
+    \end{equation}
+\end{theorem}
+
+\begin{example}
+    Given $g(s,t) = \mfrac{s}{t}$, $h(s,t) = \ln s$ and 
+    $\hat{\theta}_1$ and $\hat{\theta}_2$ are unbiased estimators of $\theta_1$ and $\theta_2$. Based 
+    on a particular sample, the maximum likelihood estimates of $\theta_1$ and $\theta_2$ are $\hat{\theta}_1 = 3.2$ and $\hat{\theta}_2 = 11.8$, 
+    and the log-likelihood is $\ell(\theta_1, \theta_2) = -2\theta_1^2 \theta_2 - \theta_2^3$.
+\end{example}
+\begin{solution}
+    We first compute the Fisher information matrix:
+    \[
+        \frac{\partial^2}{\partial \theta_1^2} \ell(\theta_1, \theta_2) = -4\theta_2, \quad
+        \frac{\partial^2}{\partial \theta_2^2} \ell(\theta_1, \theta_2) = -6\theta_2, \quad
+        \frac{\partial^2}{\partial \theta_1 \partial \theta_2} \ell(\theta_1, \theta_2) = -4\theta_1.
+    \]
+    The information matrix is 
+    \[
+        I_X(\theta) = -\mathbb{E} \begin{bmatrix}
+            \frac{\partial^2}{\partial \theta_1^2} \ell(\theta_1, \theta_2) & \frac{\partial^2}{\partial \theta_1 \partial \theta_2} \ell(\theta_1, \theta_2) \\
+            \frac{\partial^2}{\partial \theta_1 \partial \theta_2} \ell(\theta_1, \theta_2) & \frac{\partial^2}{\partial \theta_2^2} \ell(\theta_1, \theta_2)
+        \end{bmatrix} = \begin{bmatrix}
+            4\theta_2 & 4\theta_1 \\
+            4\theta_1 & 6\theta_2
+        \end{bmatrix}.
+    \]
+    The covariance matrix of the MLEs is given by the inverse of the Fisher information matrix evaluated at the MLEs:
+    \[
+        \Sigma = I_X(\theta)^{-1} = \begin{bmatrix}
+            4\theta_2 & 4 \theta_1 \\
+            4\theta_1 & 6 \theta_2
+        \end{bmatrix}^{-1} = \frac{1}{12 \theta_2^2 - 8\theta^2_1} \begin{bmatrix}
+            3\theta_2 & -2\theta_1 \\
+            -2\theta_1 & 2\theta_2
+        \end{bmatrix}.
+    \]
+    The estimated covariance matrix is obtained by substituting the MLEs:
+    \begin{align*}
+        \hat{\Sigma} 
+        = \frac{1}{12 \hat{\theta}_2^2 - 8\hat{\theta}^2_1} \begin{bmatrix}
+            3\hat{\theta}_2 & -2\hat{\theta}_1 \\
+            -2\hat{\theta}_1 & 2\hat{\theta}_2
+        \end{bmatrix}
+        &= \frac{1}{12(11.8)^2 - 8(3.2)^2} \begin{bmatrix}
+            3(11.8) & -2(3.2) \\
+            -2(3.2) & 2(11.8)
+        \end{bmatrix}\\ 
+        &= \begin{bmatrix}
+            0.0222787 & -0.00402779 \\
+            -0.00402779 & 0.0148525
+        \end{bmatrix}\\[0.6em]
+        &= \begin{bmatrix}
+            Var(\hat{\theta}_1) & \cov(\hat{\theta}_1, \hat{\theta}_2)\\
+            \cov(\hat{\theta}_1, \hat{\theta}_2) & Var(\hat{\theta}_2)
+        \end{bmatrix}.
+    \end{align*}
+
+    \begin{enumerate}
+        \item Now take partial derivatives of $g(s,t)$ with respect to $s$ and $t$:
+        \[
+            g_s(s,t) = \frac{\partial g}{\partial s} = \frac{1}{t} \Longrightarrow g_s(\hat{\theta}_1, \hat{\theta}_2) = \frac{1}{11.8},
+        \]
+        \[
+            g_t(s,t) = \frac{\partial g}{\partial t} = -\frac{s}{t^2} \Longrightarrow g_t(\hat{\theta}_1, \hat{\theta}_2) = -\frac{3.2}{(11.8)^2}.
+        \]
+        Hence, 
+        let $\mathbf{w} = \begin{bmatrix}
+            g_s(\hat{\theta}_1, \hat{\theta}_2) &
+            g_t(\hat{\theta}_1, \hat{\theta}_2)
+        \end{bmatrix} = \begin{bmatrix}
+            \mfrac{1}{11.8} &
+            -\mfrac{3.2}{11.8^2}
+        \end{bmatrix}$.
+        the approximate variance of $g(\hat{\theta}_1, \hat{\theta}_2)$ is
+        \begin{align*}
+            Var(g(\hat{\theta}_1, \hat{\theta}_2)) &\approx \mathbf{w} \hat{\Sigma} \mathbf{w}^T \\
+            &= \begin{bmatrix}
+                \mfrac{1}{11.8} &
+                -\mfrac{3.2}{11.8^2}
+            \end{bmatrix}
+            \begin{bmatrix}
+                0.0222787 & -0.00402779 \\
+                -0.00402779 & 0.0148525
+            \end{bmatrix}
+            \begin{bmatrix}
+                \mfrac{1}{11.8} \\[0.6em]
+                -\mfrac{3.2}{11.8^2}
+            \end{bmatrix}\\[0.6em]
+            &= 0.000208785.
+        \end{align*}
+
+        \item Continue with $h(s,t)$: take partial derivatives of $h(s,t)$ with respect to $s$ and $t$:
+        \[
+            h_s(s,t) = \frac{\partial h}{\partial s} = \frac{1}{s} \Longrightarrow h_s(\hat{\theta}_1, \hat{\theta}_2) = \frac{1}{3.2},
+        \]
+        \[
+            h_t(s,t) = \frac{\partial h}{\partial t} = 0 \Longrightarrow h_t(\hat{\theta}_1, \hat{\theta}_2) = 0.
+        \]
+        The estimated covariance between $h(\hat{\theta}_1, \hat{\theta}_2)$ and $g(\hat{\theta}_1, \hat{\theta}_2)$ is
+        \begin{align*}
+            \cov(h(\hat{\theta}_1, \hat{\theta}_2), g(\hat{\theta}_1, \hat{\theta}_2)) &=
+            \begin{bmatrix}
+                \mfrac{1}{\hat{\theta}_1} &
+                -\mfrac{\hat{\theta}_1}{\hat{\theta}_2^2}
+            \end{bmatrix}
+            \begin{bmatrix}
+                0.0222787 & -0.00402779 \\
+                -0.00402779 & 0.0148525
+            \end{bmatrix}
+            \begin{bmatrix}
+                \mfrac{1}{\hat{\theta}_1} \\[0.6em]
+                0
+            \end{bmatrix}\\[0.6em]
+            &= \begin{bmatrix}
+                \mfrac{1}{11.8} &
+                -\mfrac{3.2}{11.8^2}
+            \end{bmatrix}
+            \begin{bmatrix}
+                0.0222787 & -0.00402779 \\
+                -0.00402779 & 0.0148525
+            \end{bmatrix}
+            \begin{bmatrix}
+                \mfrac{1}{3.2} \\[0.6em]
+                0
+            \end{bmatrix}\\[0.6em]
+            &= 6.2 \times 10^{-3}
+        \end{align*}
+    \end{enumerate}
+\end{solution}
