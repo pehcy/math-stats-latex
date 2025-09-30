@@ -1,4 +1,53 @@
-\chapter{Sufficiency}
+\chapter{Evaluating the goodness of estimators}
+
+\section{Relative efficiency}
+
+It is usually possible to retrieve more than one unbiased estimator for the same target 
+parameter $\theta$. But we only prefer to use the estimator with the 
+\textbf{smaller variance}. That is, if $\widehat{\theta}_1$ and $\widehat{\theta}_2$ are 
+unbiased estimators for the same parameter $\theta$, we said that 
+$\widehat{\theta}_1$ is \textit{relatively more efficient} than $\widehat{\theta}_2$ 
+if 
+\[
+    Var(\widehat{\theta}_1) < Var(\widehat{\theta}_2). 
+\]
+In fact, this can be expressed as the ratio $ Var(\widehat{\theta}_1) / Var(\widehat{\theta}_2)$
+to measure the relative efficiency of these two unbiased estimators.
+
+\begin{definition}[Relative efficiency]
+    Given two unbiased estimators $\widehat{\theta}_1$ and $\widehat{\theta}_2$ for the 
+    same parameter $\theta$, with variances $Var(\widehat{\theta}_1)$ and $Var(\widehat{\theta}_2)$,
+    respectively. Then the efficiency of $\widehat{\theta}_1$ relative to $\widehat{\theta}_2$, 
+    wrote as $\textsf{eff}(\widehat{\theta}_1, \widehat{\theta}_2)$, is defined to be the ratio
+    \begin{equation}
+        \textsf{eff}(\widehat{\theta}_1, \widehat{\theta}_2) := \frac{Var(\widehat{\theta}_2)}{Var(\widehat{\theta}_1)}.
+    \end{equation}
+\end{definition}
+
+\begin{example}
+    If $Y_1, Y_2, \ldots, Y_n$ denote a random sample from the uniform distribution on the 
+    interval $(0, \theta)$. The two unbiased estimators for $\theta$ are 
+    \[
+        \widehat{\theta}_1 = 2 \ols{Y}, \quad \widehat{\theta}_2 = \left( \frac{n+1}{n}\right) Y_{(n)},
+    \]
+    where $Y_{(n)} = \max\{ Y_1, Y_2, \ldots, Y_n \}$. Find the efficiency of $\widehat{\theta}_1$ relative to $\widehat{\theta}_2$.
+\end{example}
+\begin{solution}
+    The mean of this order statistic is 
+    \begin{align*}
+        \mathbb{E}[Y_{(n)}] = \int^\theta_0 y \cdot n \left(\frac{y}{\theta}\right)^{n-1} \left(\frac{1}{\theta}\right)\, \mathrm{d}y
+        &= \frac{n}{\theta^n} \int^\theta_0 y^n \, \mathrm{d}y\\
+        &= \frac{n}{\theta^n} \left[ \frac{y^{n+1}}{n+1}\right]^{y=\theta}_{y=0}\\
+        &= \frac{n\theta}{n+1}.
+    \end{align*}
+    and it follows that 
+    \begin{align*}
+        \mathbb{E}[Y^2_{(n)}] = \int^\theta_0 y^2 \cdot n \left(\frac{y}{\theta}\right)^{n-1} \left(\frac{1}{\theta}\right)\, \mathrm{d}y
+        &= \frac{n}{\theta^n} \int^\theta_0 y^{} \, \mathrm{d}y\\
+        &= \frac{n}{\theta^n} \left[ \frac{y^{n+1}}{n+1}\right]^{y=\theta}_{y=0}\\
+        &= \frac{n\theta}{n+1}.
+    \end{align*}
+\end{solution}
 
 \begin{definition}[Sufficiency]
     A statistic $T(X)$ is sufficient for parameter $\theta \in \Theta$ if 
@@ -32,12 +81,42 @@
     \[
         Y \sim g(y) = {n \choose y} \theta^y (1-\theta)^{n-y}, \quad y = 0, 1, \ldots, n.
     \]
+\end{solution}
 
+\begin{example}
+    Let $X_1, \ldots, X_n$ be iid $N(\theta, \sigma_0^2)$ r.v.'s where $\sigma_0^2$ is known. Evaluate whether $T(X) = \left(\sum_{i=1}^n X_i\right)$ is sufficient for $\theta$.
+\end{example}
+\begin{solution}
+    We consider the transformation of $X = (X_1, X_2, \ldots, X_n)$ to $Y = (T, Y_2, Y_3, \ldots, Y_n)$ where $T = \sum X_i$ and $Y_2 = X_2 - X_1, Y_3 = X_3 - X_1, \ldots, Y_n = X_n - X_1$. The transformation is 1-1, and the Jacobian of the transformation is 1.
+
+    The joint distribution of $X | \theta$ is $N_n(\mu \times 1, \sigma_0^2 I_n)$, where $\mu$ represents the mean parameter $\theta$ and $1$ is the vector of ones. The joint distribution of $Y | \theta$ is $N_n(\mu_Y, \Sigma_{YY})$ where $\mu_Y = (n\theta, 0, 0, \ldots, 0)^T$ and the covariance matrix is
+    \[
+    \Sigma_{YY} = \left[\begin{array}{c|ccccc}
+        n\sigma_0^2 & 0 & 0 & 0 & \cdots & 0 \\[0.5em]
+        \hline
+        0 & 2\sigma_0^2 & \sigma_0^2 & \sigma_0^2 & \cdots & \sigma_0^2 \\[0.5em]
+        0 & \sigma_0^2 & 2\sigma_0^2 & \sigma_0^2 & \cdots & \sigma_0^2 \\[0.5em]
+        0 & \sigma_0^2 & \sigma_0^2 & 2\sigma_0^2 & \cdots & \sigma_0^2 \\[0.5em]
+        \vdots & \vdots & \vdots & \vdots & \ddots & \vdots \\[0.5em]
+        0 & \sigma_0^2 & \sigma_0^2 & \sigma_0^2 & \cdots & 2\sigma_0^2
+    \end{array}\right].
+    \]
+
+    Since $T$ and $(Y_2, \ldots, Y_n)$ are independent, it follows that $(Y_2, \ldots, Y_n)$ given $T = t$ has the unconditional distribution, which means $T$ is a sufficient statistic for $\theta$. 
+
+    We note that all functions of $(Y_2, \ldots, Y_n)$ are independent of $\theta$ and $T$, which yields independence of $\bar{X}$ and $s^2$ where 
+    \[
+        s^2 = \frac{1}{n-1}\sum_{i=1}^n (X_i - \bar{X})^2 = \frac{1}{n-1}\left[\sum_{j=1}^n (X_j - X_j)^2\right].
+    \]
 \end{solution}
 
 However, the sufficient statistics are not unique. For example, if $T(X)$ is a sufficient statistic, then any one-to-one function of $T(X)$ is also a sufficient statistic.
 the observation $X$ itself is always a sufficient for $\theta$, but it is not very useful since it does not reduce the data; 
 Said, if we take $T(X) = X$, then $g(t, \theta) = f_X(t|\theta)$ and $h(x) = 1$.
+
+But this is not much useful since it does not reduce the data.
+
+For example, if the sample space $\mathcal{X}^n$ is partitioned into subsets $\mathcal{A}_1, \mathcal{A}_2, \ldots, \mathcal{A}_k$ such that the conditional distribution of $X$ given $X \in \mathcal{A}_i$ does not depend on $\theta$, then the statistic $T(X)$ that indicates which subset $X$ belongs to is a sufficient statistic for $\theta$.
 
 \begin{definition}[Minimal sufficient statistic]
     A sufficient statistic $T(X)$ is minimal sufficient if it is a function of every other sufficient statistic. 
@@ -45,26 +124,91 @@ Said, if we take $T(X) = X$, then $g(t, \theta) = f_X(t|\theta)$ and $h(x) = 1$.
     \[ S(X) = S(Y) \implies T(X) = T(Y). \]
 \end{definition}
 
-\begin{lemma}[Rao Blackwell Theorem]
-    If $T(X)$ is a sufficient statistic for parameter $\theta$, and $\hat{\theta}$ is an unbiased estimator of $\theta$ 
-    with $\mathbb{E}[\hat{\theta}] < \infty$ for all $\theta \in \Theta$. Let $\hat{\theta}^* = \mathbb{E}[\hat{\theta}|T(X)]$, then $\hat{\theta}^* = \mathbb{E}[\hat{\theta} | T]$, then 
+\begin{theorem}
+    Consider a statistical decision problem with sample space 
+    \begin{itemize}
+        \item random variable $X$ with measure $\mathbb{P}_\theta$, the parameter 
+        $\theta \in \Theta$ 
+    \end{itemize}    
+\end{theorem}
+
+\begin{theorem}[Factorization theorem]
+    A statistic $T(X)$ with range $\mathcal{T}$ sufficient for parameter $\theta \in \Theta$ if and only if 
+    there exists functions 
     \begin{equation}
-        \mathbb{E}[(\hat{\theta}^* - \theta)^2] \leq \mathbb{E}[(\hat{\theta} - \theta)^2].
+        g(t, \theta) : \mathcal{T} \times \Theta \to [0, \infty) \quad \text{and} \quad h(x) : \mathcal{X}^n \to [0, \infty)
     \end{equation}
-    The inequality is strict unless $\hat{\theta}$ is a function of $T(X)$.
+    such that the joint density function of the sample can be factored as
+    \begin{equation}
+        p(x | \theta) = g(T(x), \theta) h(x), \quad \forall x \in \mathcal{X}^n, \theta \in \Theta.
+    \end{equation}
+\end{theorem}
+\begin{proof}
+    $(\Rightarrow)$ Consider the \textit{discrete case} where 
+    \[
+        p(x|\theta) = P(X = x | \theta).
+    \]
+    First of all, suppose $T$ is sufficient for $\theta$. Then, by definition, the conditional distribution of $X$ given $T(X) = t$ is independent of $\theta$ and 
+    we can write
+    \begin{align*}
+        \mathbb{P}_\theta(x) &= \mathbb{P}_\theta(X = x, T = t(x))\\
+        &= \mathbb{P}_\theta(X = x | T = t(x)) \mathbb{P}_\theta(T = t(x))\\
+        &= g(t(x), \theta) h(x)
+    \end{align*}
+    where $g(t, \theta) = \mathbb{P}_\theta(T = t)$ and 
+    \[
+        h(x) = \begin{cases}
+            \mathbb{P}_\theta(X = x | T = t(x)), & \text{if } \mathbb{P}_\theta(T = t(x)) > 0,\\
+            0, & \text{otherwise}.
+        \end{cases}
+    \]
+
+    $(\Leftarrow)$ Next, suppose that $\mathbb{P}_\theta(x)$ satisfies the factorization theorem, i.e.,
+    \[
+        \mathbb{P}_\theta(x) = g(T(x), \theta) h(x).
+    \]
+    Then, fix a statistic $t_0$ on $\mathbb{P}_\theta (T = t_0) > 0$ for some $\theta \in \Theta$. Then 
+\end{proof}
+
+\begin{lemma}[Rao Blackwell Theorem]
+    If $T(X)$ is a sufficient statistic for parameter $\theta$, and $\widehat{\theta}$ is an unbiased estimator of $\theta$ 
+    with $\mathbb{E}[\widehat{\theta}] < \infty$ for all $\theta \in \Theta$. Let $\widehat{\theta}^* = \mathbb{E}[\widehat{\theta}|T(X)]$, then $\widehat{\theta}^* = \mathbb{E}[\widehat{\theta} | T]$, then 
+    \begin{equation}
+        \mathbb{E}[(\widehat{\theta}^* - \theta)^2] \leq \mathbb{E}[(\widehat{\theta} - \theta)^2].
+    \end{equation}
+    The inequality is strict unless $\widehat{\theta}$ is a function of $T(X)$.
 \end{lemma}
 \begin{proof}
     By the law of conditional expectation, we have
     \[
-        \mathbb{E}[\hat{\theta}^*] = \mathbb{E}[\mathbb{E}[\hat{\theta}|T]] = \mathbb{E}[\hat{\theta}] = \theta,
+        \mathbb{E}[\widehat{\theta}^*] = \mathbb{E}[\mathbb{E}[\widehat{\theta}|T]] = \mathbb{E}[\widehat{\theta}] = \theta,
     \]
-    so $\hat{\theta}$ and $\hat{\theta}^*$ are having the same bias. By the conditional variance formula, we have
+    so $\widehat{\theta}$ and $\widehat{\theta}^*$ are having the same bias. By the conditional variance formula, we have
     \[
-        \mathbb{E}[\hat{\theta}] = \mathbb{E}[Var(\hat{\theta}|T)] + Var(\mathbb{E}[\hat{\theta}|T]) = \mathbb{E}[Var(\hat{\theta}|T)] + Var(\hat{\theta}^*).
+        \mathbb{E}[\widehat{\theta}] = \mathbb{E}[Var(\widehat{\theta}|T)] + Var(\mathbb{E}[\widehat{\theta}|T]) = \mathbb{E}[Var(\widehat{\theta}|T)] + Var(\widehat{\theta}^*).
     \]
-    Hence $Var[\hat{\theta}^*] \geq Var[\hat{\theta}]$, and so
-    $MSE[\hat{\theta}^*] \geq MSE[\hat{\theta}]$.
+    Hence $Var[\widehat{\theta}^*] \geq Var[\widehat{\theta}]$, and so
+    $MSE[\widehat{\theta}^*] \geq MSE[\widehat{\theta}]$.
 \end{proof}
+
+\section{Variance of estimators based on sufficient statistics}
+
+All estimators can be regarded random variables, and we can compare their variances.
+therefore the maximum likelihood estimator can also be a random variable.
+
+\begin{definition}[Fisher information]
+    The Fisher information of a random variable $X$ with density function $f(x|\theta)$ is defined as
+    \[
+        I_X(\theta) = \mathbb{E}\left[\frac{\partial^2}{\partial \theta^2} \ln f(X|\theta) \right] = \mathbb{E}\left[ \left( \frac{\partial}{\partial \theta} \ell(\theta) \right)^2 \right].
+    \]
+    If $T(X)$ is a sufficient statistic for $\theta$, then the Fisher information contained in $T(X)$ is equal to the Fisher information contained in the sample $X$, i.e.,
+    \[
+        I_T(\theta) = I_X(\theta).
+    \]
+\end{definition}
+
+One way to find a minimum variance unbiased estimator for a parameter is to use the Cramér-Rao lower bound or the Fisher 
+information inequality. 
 
 \begin{theorem}[Cramér-Rao lower bound]
     Let $X_1, X_2, \ldots, X_n$ be a random sample from a distribution with density function $f(x|\theta)$ where $\theta \in \Theta \subseteq \mathbb{R}$. Suppose the following regularity conditions hold:
@@ -121,37 +265,204 @@ Said, if we take $T(X) = X$, then $g(t, \theta) = f_X(t|\theta)$ and $h(x) = 1$.
     An unbiased estimator $T$ that achieves the Cramér-Rao lower bound is called an \emph{efficient estimator} or \emph{minimum variance unbiased estimator (MVUE)}. When such an estimator exists, it is unique and coincides with the maximum likelihood estimator under regularity conditions. The Fisher information $I_X(\theta)$ measures the amount of information about $\theta$ contained in a single observation, and the Cramér-Rao bound shows that no unbiased estimator can have variance smaller than the reciprocal of the total Fisher information.
 \end{remark}
 
-\section{Variance of estimators based on sufficient statistics}
-
-All estimators can be regarded random variables, and we can compare their variances.
-therefore the maximum likelihood estimator can also be a random variable.
-
-\begin{definition}[Fisher information]
-    The Fisher information of a random variable $X$ with density function $f(x|\theta)$ is defined as
+\begin{lemma}[Cramér-Rao lower bound - 1st theorem]
+    Let $X_1, X_2, \ldots, X_n$ be a random sample from a distribution with density function $f(x|\theta)$, 
+    where $\theta \in \Theta$ is a scalar parameter. Suppose $\widehat{\theta}$ be any unbiased estimator of $\theta$ with finite variance.
+    Suppose the likelihood function $L(\theta)$ is differentiable with respect to $\theta$ and satisfies
+    \begin{equation}
+        \odv{}{\theta} \int_{-\infty}^{\infty} \cdots \int_{-\infty}^{\infty} h(x_1, \ldots, x_n) L(\theta) \, dx_1 \cdots dx_n = \int_{-\infty}^{\infty} \cdots \int_{-\infty}^{\infty} h(x_1, \ldots, x_n) \odv{L(\theta)}{\theta} \, dx_1 \cdots dx_n.
+    \end{equation}
+    for any function $h(x_1, \ldots, x_n)$ with $\mathbb{E}[h(x_1, \ldots, x_n)] < \infty$. Then
+    \begin{equation}
+        \text{Var}(\widehat{\theta}) \geq \frac{1}{\mathbb{E} \left[ \left( \frac{\partial \ln L(\theta)}{\partial \theta} \right)^2 \right] } = \frac{1}{nI_X(\theta)},
+    \end{equation}
+\end{lemma}
+\begin{proof}
+    Since $L(\theta)$ is the joint density function of the sample, we have
     \[
-        I_X(\theta) = \mathbb{E}\left[\frac{\partial^2}{\partial \theta^2} \ln f(X|\theta) \right] = \mathbb{E}\left[ \left( \frac{\partial}{\partial \theta} \ell(\theta) \right)^2 \right].
+        \int_{-\infty}^{\infty} \cdots \int_{-\infty}^{\infty} L(\theta) \, dx_1 \cdots dx_n = 1. \label{eq:s1.0} \tag{{\color{cyan} $\clubsuit$}}
     \]
-    If $T(X)$ is a sufficient statistic for $\theta$, then the Fisher information contained in $T(X)$ is equal to the Fisher information contained in the sample $X$, i.e.,
+    Differentiating \eqref{eq:s1.0} with respect to $\theta$, we get
     \[
-        I_T(\theta) = I_X(\theta).
+        \int_{-\infty}^{\infty} \cdots \int_{-\infty}^{\infty} \odv{L(\theta)}{\theta} \, dx_1 \cdots dx_n = 0. \label{eq:s1.1} \tag{{\color{gray} $\spadesuit$}}
     \]
-\end{definition}
+    Rewriting \eqref{eq:s1.1} as 
+    \[
+        \int_{-\infty}^{\infty} \cdots \int_{-\infty}^{\infty} \frac{1}{L(\theta)} \odv{L(\theta)}{\theta} L(\theta) \, dx_1 \cdots dx_n = 0,
+    \]
+    so that 
+    \[
+        \int_{-\infty}^{\infty} \cdots \int_{-\infty}^{\infty} \theta \, \odv{\ln L(\theta)}{\theta} L(\theta) \, dx_1 \cdots dx_n = 0. \label{eq:s1.2} \tag{{\color{YellowOrange} $\blacklozenge$}}
+    \]
+
+    Since $\widehat{\theta}$ is an unbiased estimator of $\theta$, we can see that 
+    \[
+        \mathbb{E}[\widehat{\theta}] = \int_{-\infty}^{\infty} \cdots \int_{-\infty}^{\infty} \widehat{\theta} L(\theta) \, dx_1 \cdots dx_n = \theta. \label{eq:s1.3} \tag{{\color{ForestGreen} $\bigstar $}}
+    \]
+    Differentiating \eqref{eq:s1.3} with respect to $\theta$, we get
+    \[
+        \odv{}{\theta} \int_{-\infty}^{\infty} \cdots \int_{-\infty}^{\infty} \widehat{\theta} L(\theta) \, dx_1 \cdots dx_n = 1.
+    \]
+    Again, using the fact \eqref{eq:s1.0} with $h(X_1, X_2, \ldots, X_n) = \widehat{\theta}$, we have
+    \[
+        \int_{-\infty}^{\infty} \cdots \int_{-\infty}^{\infty} \widehat{\theta}\, \odv{L(\theta)}{\theta} \, dx_1 \cdots dx_n = 1.
+    \]
+    Rewriting the above equation as
+    \[
+        \int_{-\infty}^{\infty} \cdots \int_{-\infty}^{\infty} \widehat{\theta} \frac{1}{L(\theta)} \odv{L(\theta)}{\theta} L(\theta) \, dx_1 \cdots dx_n = 1,
+    \]
+    so that
+    \[
+        \int_{-\infty}^{\infty} \cdots \int_{-\infty}^{\infty} \widehat{\theta} \, \odv{\ln L(\theta)}{\theta} L(\theta) \, dx_1 \cdots dx_n = 1. \label{eq:s1.4} \tag{{\color{Red} $\heartsuit $}}
+    \]
+    From \eqref{eq:s1.2} and \eqref{eq:s1.4}, we have
+    \[
+        \int_{-\infty}^{\infty} \cdots \int_{-\infty}^{\infty} (\widehat{\theta} - \theta) \, \odv{\ln L(\theta)}{\theta} L(\theta) \, dx_1 \cdots dx_n = 1.
+    \]
+
+    By the Cauchy-Schwarz inequality, we have
+    \begin{align*}
+        1^2 &= \left( \int_{-\infty}^{\infty} \cdots \int_{-\infty}^{\infty} (\widehat{\theta} - \theta) \, \odv{\ln L(\theta)}{\theta} L(\theta) \, dx_1 \cdots dx_n \right)^2\\
+        &\leq \int_{-\infty}^{\infty} \cdots \int_{-\infty}^{\infty} (\widehat{\theta} - \theta)^2 L(\theta) \, dx_1 \cdots dx_n \\
+        &\quad \times \int_{-\infty}^{\infty} \cdots \int_{-\infty}^{\infty} \left( \odv{\ln L(\theta)}{\theta} \right)^2 L(\theta) \, dx_1 \cdots dx_n \\
+        1 &= \text{Var}(\widehat{\theta}) \, \mathbb{E} \left[ \left( \odv{\ln L(\theta)}{\theta} \right)^2 \right].
+    \end{align*}
+    Therefore,
+    \[
+        \text{Var}(\widehat{\theta}) \geq \frac{1}{\mathbb{E} \left[ \left( \pdv{\ln L(\theta)}{\theta} \right)^2 \right]}.
+    \]
+    and the proof is complete.
+\end{proof}
+
+\begin{corollary}[Cramér-Rao lower bound - 2nd theorem]
+    If $L(\theta)$ is twice differentiable with respect to $\theta$, then the inequality 
+    can be stated equivalently as
+    \begin{equation}
+        \text{Var}(\widehat{\theta}) \geq \frac{-1}{\mathbb{E} \left[ \pdv[order={2}]{\ln L(\theta)}{\theta} \right]}.
+    \end{equation}
+\end{corollary}
+\begin{proof}
+    If $L(\theta)$ is twice differentiable, then $\pdv[order={2}]{\ln L(\theta)}{\theta}$ exists. 
+    And since that $L(\theta)$ is maximum likelihood so we have
+    \[
+        \pdv[order={2}]{\ln L(\theta)}{\theta} < 0.
+    \]
+    Hence the sign of the right-hand side of the Cramér-Rao inequality must be negative.
+\end{proof}
+
+\begin{example}
+    Let $X_1, X_2, \ldots, X_n$ be a random samples from a distribution with density function
+    \[
+        f(x|\theta) = \begin{cases}
+            3\theta x^2 e^{-\theta x^3} & \text{if } 0 < x < \infty\\
+            0 & \text{otherwise}.
+        \end{cases}
+    \]
+    What is the Cramér-Rao lower bound for the variance of unbiased estimator of the parameter $\theta$?
+\end{example}
+\begin{solution}
+    Let $\widehat{\theta}$ be an unbiased estimator of $\theta$. Cramér-Rao lower bound for 
+    the variance of $\widehat{\theta}$ is given by
+    \[
+        \text{Var}(\widehat{\theta}) \geq \frac{-1}{\mathbb{E} \left[ \left( \odv{\ln L(\theta)}{\theta} \right)^2 \right]}.
+    \]
+    First, compute the likelihood function for the sample:
+    \[
+        L(\theta) = \prod_{i=1}^n f(x_i|\theta) = \prod_{i=1}^n 3\theta x_i^2 e^{-\theta x_i^3} = 3^n \theta^n \left(\prod_{i=1}^n x_i^2\right) \exp\left(-\theta \sum_{i=1}^n x_i^3\right).
+    \]
+    Take the log-likelihood:
+    \[
+        \ell(\theta) = \ln L(\theta) = n\ln 3 + n\ln \theta + 2\sum_{i=1}^n \ln x_i - \theta \sum_{i=1}^n x_i^3.
+    \]
+    Compute the first derivative with respect to $\theta$:
+    \[
+        \frac{\partial}{\partial \theta} \ell(\theta) = \frac{n}{\theta} - \sum_{i=1}^n x_i^3.
+    \]
+    Compute the second derivative:
+    \[
+        \frac{\partial^2}{\partial \theta^2} \ell(\theta) = -\frac{n}{\theta^2}.
+    \]
+    The Fisher information for one observation is
+    \[
+        I_X(\theta) = -\mathbb{E}\left[\frac{\partial^2}{\partial \theta^2} \ln f(X|\theta)\right] = \frac{1}{\theta^2}.
+    \]
+    For $n$ independent observations, the total Fisher information is $n I_X(\theta) = \frac{n}{\theta^2}$.
+
+    Therefore, the Cramér-Rao lower bound is
+    \[
+        \text{Var}(\widehat{\theta}) \geq \frac{1}{n I_X(\theta)} = \frac{\theta^2}{n}.
+    \]
+    where $L(\theta)$ denotes the likelihood function of the given random sample.
+\end{solution}
+
+\begin{example}
+    Let $X_1, X_2, \ldots, X_n$ denote a random sample from $Bin(1, p)$. We knew that $\ols{X}$ is an 
+    unbiased estimator of $p$ and that 
+    \[
+        Var(\ols{X}) = \frac{p(1-p)}{n}.
+    \]
+    Find the Cramér-Rao lower bound for the variance of every unbiased estimator of $p$.
+\end{example}
+\begin{solution}
+    This is a Bernoulli distribution with parameter $p$. The denisty function for each $X_i$ is 
+    \[
+        f(x|p) = p^x (1-p)^{1-x}, \quad x = 0,1.
+    \]
+    Taking logarithm on $f$,
+    \[
+        \ln f(x|p) = \ln p^x + \ln (1-p)^{1-x} = \fbox{$x \ln p + (1-x) \ln (1-p)$} \label{eq:s1.5} \tag{{\color{Red} $\blacklozenge $}}
+    \]
+    Compute the first and second order derivative of \eqref{eq:s1.5} with respect to $p$. The second 
+    order derivative will be the Fisher information. In this case we have only one parameter which is $p$, so the information 
+    is just a simple algebraic expression rather than a matrix.
+    \[
+        \frac{\partial \ln f(x|p)}{\partial p} = \frac{x}{p} + \frac{x-1}{1-p}
+    \]
+    \begin{align*}
+        \frac{\partial^2 \ln f(x|p)}{\partial p^2} &= -\frac{x}{p^2} + (-1)^2(x-1)(1-p)^{-2}\\
+        &= -\frac{x}{p^2} + \frac{x-1}{(1-p)^2}. \label{eq:s1.6} \tag{{\color{YellowOrange} $\blacktriangle$}}
+    \end{align*}
+    Hence we find the expectation of $x$ in \eqref{eq:s1.6}, that is
+    \begin{align*}
+        \mathbb{E}_X \left[ \frac{\partial^2 \ln f(x|p)}{\partial p^2} \right] &= \mathbb{E}_X \left[ -\frac{x}{p^2} + \frac{x-1}{(1-p)^2} \right]\\
+        &= - \frac{1}{p^2} \mathbb{E}_X[X] + \frac{1}{(1 - p)^2} \mathbb{E}_X[X - 1]\\
+        &= - \frac{p}{p^2} + \frac{p-1}{(1 - p)^2}\\
+        &= - \frac{1}{p(1-p)}.
+    \end{align*}
+    Therefore, the Cramér-Rao lower bound for the variance of unbiased estimator of $p$ is 
+    \[
+        Var(\widehat{p}) \geq - \frac{1}{-n I_X(p)} = \frac{1}{\displaystyle \frac{-n}{-p(1-p)}} = \frac{p(1-p)}{n}.
+    \]
+\end{solution}
 
 \subsection{Delta method -- Variance of functions of estimators}
 
-\begin{theorem}
+The Delta Method (DM) states that we can approximate the asymptotic behaviour of functions over a random variable, if the random variable is itself asymptotically normal. In practice, this theorem tells us that even if we do not know the expected value and variance of the function  
+$g(X)$ we can still approximate it reasonably. Note that by Central Limit Theorem we know that several important random variables and estimators are asymptotically normal, including the sample mean. We can therefore approximate the mean and variance of some transformation of the sample mean using its variance.
+
+More specifically, suppose that we have some sequence of random variables $\{X_n\}$, as $n \to \infty$,
+
+Given this, if $g$ is some smooth function (i.e. there are no discontinuous jumps in values) then the Delta Method states that:
+\begin{equation}
+    \frac{\sqrt{n} (g(X_n) - g(\mu))}{|\dot{g}(\mu)|\sigma} \approx \mathcal{N}(0,1)
+\end{equation}
+
+DM also generalizes to multidimensional functions, where instead of converging on the standard normal the random variable must converge in distribution to a multivariate normal, and the derivatives of  
+$g$ are replaced with the gradient of g (a vector of all partial derivatives).
+
+\begin{theorem}[Delta method]
     Suppose that $g(\theta)$ is a function of estimator.
     The delta method provides a way to approximate the variance of a function of an estimator.
     This approximate of the variance is given by
     \begin{equation}
-        Var(g(\hat{\theta})) \approx [\dot{g}(\theta)]^2\, Var[\hat{\theta}].
+        Var(g(\widehat{\theta})) \approx [\dot{g}(\theta)]^2\, Var[\widehat{\theta}].
     \end{equation}
 \end{theorem}
 
 \begin{example}
     Given $g(s,t) = \mfrac{s}{t}$, $h(s,t) = \ln s$ and 
-    $\hat{\theta}_1$ and $\hat{\theta}_2$ are unbiased estimators of $\theta_1$ and $\theta_2$. Based 
-    on a particular sample, the maximum likelihood estimates of $\theta_1$ and $\theta_2$ are $\hat{\theta}_1 = 3.2$ and $\hat{\theta}_2 = 11.8$, 
+    $\widehat{\theta}_1$ and $\widehat{\theta}_2$ are unbiased estimators of $\theta_1$ and $\theta_2$. Based 
+    on a particular sample, the maximum likelihood estimates of $\theta_1$ and $\theta_2$ are $\widehat{\theta}_1 = 3.2$ and $\widehat{\theta}_2 = 11.8$, 
     and the log-likelihood is $\ell(\theta_1, \theta_2) = -2\theta_1^2 \theta_2 - \theta_2^3$.
 \end{example}
 \begin{solution}
@@ -183,10 +494,10 @@ therefore the maximum likelihood estimator can also be a random variable.
     \]
     The estimated covariance matrix is obtained by substituting the MLEs:
     \begin{align*}
-        \hat{\Sigma} 
-        = \frac{1}{12 \hat{\theta}_2^2 - 8\hat{\theta}^2_1} \begin{bmatrix}
-            3\hat{\theta}_2 & -2\hat{\theta}_1 \\
-            -2\hat{\theta}_1 & 2\hat{\theta}_2
+        \widehat{\Sigma} 
+        = \frac{1}{12 \widehat{\theta}_2^2 - 8\widehat{\theta}^2_1} \begin{bmatrix}
+            3\widehat{\theta}_2 & -2\widehat{\theta}_1 \\
+            -2\widehat{\theta}_1 & 2\widehat{\theta}_2
         \end{bmatrix}
         &= \frac{1}{12(11.8)^2 - 8(3.2)^2} \begin{bmatrix}
             3(11.8) & -2(3.2) \\
@@ -197,30 +508,30 @@ therefore the maximum likelihood estimator can also be a random variable.
             -0.00402779 & 0.0148525
         \end{bmatrix}\\[0.6em]
         &= \begin{bmatrix}
-            Var(\hat{\theta}_1) & \cov(\hat{\theta}_1, \hat{\theta}_2)\\
-            \cov(\hat{\theta}_1, \hat{\theta}_2) & Var(\hat{\theta}_2)
+            Var(\widehat{\theta}_1) & \cov(\widehat{\theta}_1, \widehat{\theta}_2)\\
+            \cov(\widehat{\theta}_1, \widehat{\theta}_2) & Var(\widehat{\theta}_2)
         \end{bmatrix}.
     \end{align*}
 
     \begin{enumerate}
         \item Now take partial derivatives of $g(s,t)$ with respect to $s$ and $t$:
         \[
-            g_s(s,t) = \frac{\partial g}{\partial s} = \frac{1}{t} \Longrightarrow g_s(\hat{\theta}_1, \hat{\theta}_2) = \frac{1}{11.8},
+            g_s(s,t) = \frac{\partial g}{\partial s} = \frac{1}{t} \Longrightarrow g_s(\widehat{\theta}_1, \widehat{\theta}_2) = \frac{1}{11.8},
         \]
         \[
-            g_t(s,t) = \frac{\partial g}{\partial t} = -\frac{s}{t^2} \Longrightarrow g_t(\hat{\theta}_1, \hat{\theta}_2) = -\frac{3.2}{(11.8)^2}.
+            g_t(s,t) = \frac{\partial g}{\partial t} = -\frac{s}{t^2} \Longrightarrow g_t(\widehat{\theta}_1, \widehat{\theta}_2) = -\frac{3.2}{(11.8)^2}.
         \]
         Hence, 
         let $\mathbf{w} = \begin{bmatrix}
-            g_s(\hat{\theta}_1, \hat{\theta}_2) &
-            g_t(\hat{\theta}_1, \hat{\theta}_2)
+            g_s(\widehat{\theta}_1, \widehat{\theta}_2) &
+            g_t(\widehat{\theta}_1, \widehat{\theta}_2)
         \end{bmatrix} = \begin{bmatrix}
             \mfrac{1}{11.8} &
             -\mfrac{3.2}{11.8^2}
         \end{bmatrix}$.
-        the approximate variance of $g(\hat{\theta}_1, \hat{\theta}_2)$ is
+        the approximate variance of $g(\widehat{\theta}_1, \widehat{\theta}_2)$ is
         \begin{align*}
-            Var(g(\hat{\theta}_1, \hat{\theta}_2)) &\approx \mathbf{w} \hat{\Sigma} \mathbf{w}^T \\
+            Var(g(\widehat{\theta}_1, \widehat{\theta}_2)) &\approx \mathbf{w} \widehat{\Sigma} \mathbf{w}^T \\
             &= \begin{bmatrix}
                 \mfrac{1}{11.8} &
                 -\mfrac{3.2}{11.8^2}
@@ -238,24 +549,24 @@ therefore the maximum likelihood estimator can also be a random variable.
 
         \item Continue with $h(s,t)$: take partial derivatives of $h(s,t)$ with respect to $s$ and $t$:
         \[
-            h_s(s,t) = \frac{\partial h}{\partial s} = \frac{1}{s} \Longrightarrow h_s(\hat{\theta}_1, \hat{\theta}_2) = \frac{1}{3.2},
+            h_s(s,t) = \frac{\partial h}{\partial s} = \frac{1}{s} \Longrightarrow h_s(\widehat{\theta}_1, \widehat{\theta}_2) = \frac{1}{3.2},
         \]
         \[
-            h_t(s,t) = \frac{\partial h}{\partial t} = 0 \Longrightarrow h_t(\hat{\theta}_1, \hat{\theta}_2) = 0.
+            h_t(s,t) = \frac{\partial h}{\partial t} = 0 \Longrightarrow h_t(\widehat{\theta}_1, \widehat{\theta}_2) = 0.
         \]
-        The estimated covariance between $h(\hat{\theta}_1, \hat{\theta}_2)$ and $g(\hat{\theta}_1, \hat{\theta}_2)$ is
+        The estimated covariance between $h(\widehat{\theta}_1, \widehat{\theta}_2)$ and $g(\widehat{\theta}_1, \widehat{\theta}_2)$ is
         \begin{align*}
-            \cov(h(\hat{\theta}_1, \hat{\theta}_2), g(\hat{\theta}_1, \hat{\theta}_2)) &=
+            \cov(h(\widehat{\theta}_1, \widehat{\theta}_2), g(\widehat{\theta}_1, \widehat{\theta}_2)) &=
             \begin{bmatrix}
-                \mfrac{1}{\hat{\theta}_1} &
-                -\mfrac{\hat{\theta}_1}{\hat{\theta}_2^2}
+                \mfrac{1}{\widehat{\theta}_1} &
+                -\mfrac{\widehat{\theta}_1}{\widehat{\theta}_2^2}
             \end{bmatrix}
             \begin{bmatrix}
                 0.0222787 & -0.00402779 \\
                 -0.00402779 & 0.0148525
             \end{bmatrix}
             \begin{bmatrix}
-                \mfrac{1}{\hat{\theta}_1} \\[0.6em]
+                \mfrac{1}{\widehat{\theta}_1} \\[0.6em]
                 0
             \end{bmatrix}\\[0.6em]
             &= \begin{bmatrix}
@@ -274,3 +585,85 @@ therefore the maximum likelihood estimator can also be a random variable.
         \end{align*}
     \end{enumerate}
 \end{solution}
+
+\section*{Tutorials}
+
+\begin{mdframed}
+    \vspace{-0.25cm}
+    \hspace{-0.25cm}
+    \begin{Exercise}
+        If $X$ is uniformly distributed on the interval $(2\theta, 3\theta)$ where $\theta > 0$. 
+        And that $X_1, X_2, \ldots, X_n$ is a random sample from the distribution of $X$.
+        Find the bias in the maximum likelihood estimator of $\theta$.
+    \end{Exercise}
+
+    \begin{Exercise}
+        Let $X_1, X_2, \ldots, X_n$ be a random sample from a population 
+        $X \sim Poisson(\lambda)$, where $\lambda > 0$ is a parameter. Is the 
+        estimator $\ols{X}$ of $\lambda$ a consistent estimator of $\lambda$?
+    \end{Exercise}
+
+    \begin{Exercise}
+        Let $X_1, X_2, \ldots, X_n$ be a random sample from a population 
+        $X$ with density function 
+        \[
+            f(x|\theta) = \begin{cases}
+                \theta x^{\theta - 1} & \text{for } 0 < x < 1\\
+                0 & \text{otherwise},
+            \end{cases}
+        \]
+        where $\theta > 1$ is a parameter. Show that 
+        \[
+            -\frac{1}{n} \sum_{i=1}^{n} \ln(X_i) 
+        \]
+        is a uniform minimum variance unbiased estimator of $\mfrac{1}{\theta}$.
+    \end{Exercise}
+
+    \begin{Exercise}
+        Let $Y_1, Y_2, \ldots, Y_n$ denote a random sample from a population with mean $\mu$ and 
+        variance $\sigma^2$. Consider the following three estimators for $\mu$:
+        \[
+            \widehat{\mu}_1 = \frac{1}{2}(Y_1 + Y_2), \quad 
+            \widehat{\mu}_2 = \frac{1}{4}Y_1 + \frac{Y_2 + \ldots + Y_{n-1}}{2(n-2)} + \frac{1}{4}Y_n, \quad 
+            \widehat{\mu}_3 = \ols{Y}.
+        \]
+        \begin{enumerate}
+            \item Show that each of the three estimators is unbiased.
+            \item Find the efficiency of $\widehat{\mu}_3$ relative to $\widehat{\mu}_2$ and $\widehat{\mu}_1$, respectively.
+        \end{enumerate}
+    \end{Exercise}
+
+    \begin{Exercise}
+        \begin{enumerate}
+            \item State the definition of unbiased estimator.
+            \item Show that if $\widehat{\Theta}_1$ is an unbiased estimator for $\theta$, and $W$ is a zero mean random variable, then 
+            \[
+                \widehat{\Theta}_2 = \widehat{\Theta}_1 + W
+            \]
+            is also an unbiased estimator for $\theta$.
+            \item Show that if $\widehat{\Theta}_1$ is an unbiased estimator for $\theta$ such that $\mathbb{E}[\widehat{\Theta}_1] = a\theta + b$, where $a \neq 0$. Then 
+            \[
+                \widehat{\Theta}_2 = \frac{\widehat{\Theta}_1 - b}{a}
+            \]
+            is an unbiased estimator for $\theta$.
+        \end{enumerate}
+    \end{Exercise}
+
+    \begin{Exercise}
+        Given $\theta = \begin{bmatrix}
+            \theta_1 \\ \theta_2
+        \end{bmatrix}$
+        is a vector of parameters being estimated by maximum likelihood. You are 
+        given that the current value of the vector of estimates is 
+        $\widehat{\theta} = \begin{bmatrix}
+            30 \\ 2
+        \end{bmatrix}$ as well as the estimated information matrix 
+        \[
+            I(\widehat{\theta}) = \begin{bmatrix}
+                .075 & -.620\\
+                -.620 & 10.0
+            \end{bmatrix}.
+        \]
+        Determine the approximate variance of $\widehat{\theta}_1$.
+    \end{Exercise}
+\end{mdframed}

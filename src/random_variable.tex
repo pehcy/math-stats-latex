@@ -223,9 +223,9 @@ case, the mode is where $f(x)$ is at its peak.
     \end{align*}
     \begin{align*}
         \odv[order=2]{f}{x} &= \frac{(1+x^3)^2 \odv*{}{x} (2cx - cx^4) - (2cx - cx^4) \odv*{}{x}(1+x^3)^2}{(1+x^3)^4}\\
-        &= \frac{(1+x^3)^2 (2c - 4cx^3) - 6x^2(2cx - cx^4)(1+x^3)}{(1+x^3)^4}\\
-        &= \frac{(1+x^3) (2c - 4cx^3) - 6x^2(2cx - cx^4)}{(1+x^3)^3}\\
-        &= \frac{}{}
+        &= \frac{(1+x^3)^2 (2c - 4cx^3) - (2cx - cx^4) 2(1+x^3)(3x^2)}{(1+x^3)^4}\\
+        &= \frac{2c(1+x^3)(1 - 2x^3 - 3x^5)}{(1+x^3)^4}\\
+        &= \frac{2c(1 - 2x^3 - 3x^5)}{(1+x^3)^3}.
     \end{align*}
 \end{solution}
 
@@ -234,7 +234,14 @@ for $x$ of the following equation:
 \[
 \frac{2cx-cx^4}{(1+x^3)^2} = 0 
 \]
-Since $(1+x^3)^2 > 0$, we can remove it safely from the equation.
+Since $(1+x^3)^2 > 0$, we can remove it safely from the equation. Then 
+\begin{align*}
+    2cx - cx^4 = 0 &\implies x^4 - 2x = 0\\
+    &\implies x(x^3 - 2) = 0\\
+    &\implies x = 0 \text{ or } x = \sqrt[3]{2}.
+\end{align*}
+
+Since $x$ cannot be zero, thus the mode is $\sqrt[3]{2} = 1.26$.
 
 \section{Expected Value and Moments}
 

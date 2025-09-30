@@ -1,0 +1,105 @@
+\chapter{Nonparametric Statistics II -- Procedures that utilize data from three or more related samples}
+
+Frequently, we can greatly improve the ability to detect group differences in the variable of
+interest by dividing subjects into homogeneous subgroups, called blocks, and then making
+comparisons among subjects within the subgroups. We can do this by using randomized complete
+block design (two-way ANOVA). This technique extends the two-sample paired comparison model
+discussed in Chapter 4 to the case in which several samples are available for analysis. Thus, for
+three or more samples, a block is composed of three or more subjects, more generally referred to as
+experimental units, who are more homogeneous with respect to each other then with respect to
+subjects in another block. We could form blocks on the basis of age, education and physical
+condition. In certain situations a single subject may be a block.
+
+\section{Friedman Two-Way Analysis Of Variance by ranks}
+
+This test is a nonparametric analogue of the parametric two-way analysis of variance. We
+perform calculations on ranks, which may be derived from observations measured on a higher scale
+or may be the original observations themselves. The procedure may be used when for one reason or
+another it is undesirable to use the parametric two-way ANOVA. For example, the investigator may
+be unwilling to assume that the sampled populations are normally distributed, a requirement for the
+valid use of the parametric test. Also, in some cases only ranks may be available for analysis.
+
+The objective is to determine if we may conclude from sample evidence that there is a
+difference among treatment effects. We reason that if treatments do not differ in their effects, the
+median response of a population of subjects receiving a given treatment will be the same as the
+median response of a population of subjects receiving any one of the other treatments under study,
+after the effect of the blocking variable has been removed. Thus, if we are comparing $k$ samples
+
+\subsection{Ties}
+
+Theoretically, no ties should occur, since the variable whose values are ranked is assumed to
+be continuous. In practice, however, ties do occur, and we give tied observations the mean of the
+rank positions for which they are tied. Note that only ties within a given block are of concern.
+
+\begin{equation}
+    W = \frac{12 \sum^k_{j=1} R^2_j - 3b^2 k(k+1)^2}{b^2k(k^2 - 1) - b \left( \sum t^3 - \sum t \right)}
+\end{equation}
+
+The Friedman test is based on $b$ sets of ranks, and the treatments are ranked separately in
+each set. Such a ranking scheme allows for intrablock comparisons only, since interblock
+comparisons are not meaningful. When the number of treatments is small, this may pose a
+disadvantage. When situations arise in which comparability among blocks is desirable, the method
+of aligned ranks may be employed.
+
+\begin{enumerate}
+    \item Subtract from each observation within a block some measure of location such as the block
+mean or median. The resulting differences, called aligned observation, which keep their
+identities with respect to the block and treatment combination to which they belong, are then
+ranked from 1 to $\fbox{$kb$}$ relative to each other (the same as the \textbf{Kruskal-Wallis Test}).
+
+    \item If there is no treatment effect, we would expect each of the blocks to receive approximately
+the same sequence of aligned ranks. We would expect the treatment rank totals to be about
+equal. In the absence of ties, the aligned-ranks test statistic for the randomized complete
+block design is
+\begin{equation}
+    T = \frac{\displaystyle (k-1) \left[ \sum_{j=1}^{k} \widehat{R}^2_j - \frac{kb^2}{4}(kb+1)^2 \right]}{\displaystyle \left[ \frac{kb(kb+1)(2kb+1)}{6}\right] - \frac{1}{k} \sum_{i=1}^{b} \widehat{R}^2_j } \sim \chi^2_{k-1}.
+\end{equation}
+
+    \item If ties are present, replace the denominator of $T$ with 
+        \begin{equation}
+            \sum^b_{i=1} \sum^{k}_{j=1} \widehat{R}^2_{ij} - \frac{1}{k} \sum^b_{i=1} R^2_i.
+        \end{equation}
+
+\end{enumerate}
+
+\section{Page's Test for Ordered Alternatives}
+
+\begin{definition}[Page's test for Ordered Alternatives]
+    The testing hypotheses are 
+    \[
+        H_0 : \tau_1 = \tau_2 = \ldots = \tau_k
+    \]
+    versus
+    \[
+        H_1: \text{The treatment effects } \tau_1, \tau_2, \ldots, \tau_k \text{ are ordered in the form of } \tau_1 \leq \tau_2 \leq \ldots \leq \tau_k.
+    \]
+    The test statistic is 
+    \[
+        L = \sum^k_{j = 1} jR_j = R_1 + 2R_2 + 3R_3 + \cdots + kR_k
+    \]
+    where $R_j$ for $j = 1, 2, 3, \ldots, k$ are treatment rank sums obtained in the manner
+\end{definition}
+
+\begin{theorem}[Large Sample Approximation for Page's Test]
+    For large sample size, we use the test statistic:
+    \begin{equation}
+        z = \frac{\displaystyle L - \frac{bk(k+1)^2}{4} }{\sqrt{\displaystyle \frac{b(k^3 - k)^2}{144(k-1)}}} \sim N(0,1)
+    \end{equation}
+    Note that the large sample statistic follows standard normal instead of chi-square distribution.
+\end{theorem}
+
+\section{Durbin's Test for Incomplete Block Designs}
+
+In designing an experiment, the investigator may find that it is impossible or impractical to
+construct a randomized complete block design of the type discussed so far. It may be impossible or
+impractical to apply all treatments to each block. This becomes an important problem when the
+number of treatments is large and the size of the blocks is limited. For example, we are going to
+compare the effects of seven treatments by administering the treatments to laboratory animals, with
+litters serving as block. Because the subjects must meet certain criteria, we can use only three
+animals from each litter. These conditions suggest that we use an incomplete block design, since we
+cannot administer each treatment to an animal from each litter.
+
+The particular type of incomplete block design with which we are concerned is the balanced
+incomplete block design. In this design every possible pair of treatments appears the same number
+of times. Further, the balanced incomplete block design requires that each block contain the same
+number of subjects and that each treatment occur the same number of times.

@@ -13,7 +13,7 @@
 \usepackage{mathtools, cuted}
 \usepackage{actuarialsymbol}
 \usepackage{tabularx}
-\usepackage{xcolor,colortbl}
+\usepackage[dvipsnames]{xcolor,colortbl}
 \usepackage{booktabs}
 \usepackage{titlesec}
 \usepackage{algorithm}
@@ -102,6 +102,24 @@
   colframe={orange!55!black},
 }
 
+\newtheoremstyle{break}{0pt}{0pt}{\normalfont}{0pt}{\bfseries}{}{\newline}{\thmname{#1} \thmnumber{#2} \quad \thmnote{\textbf#3}}
+\declaretheorem[numberwithin=chapter,style=break,name=Axiom]{axiom}
+
+\tcolorboxenvironment{axiom}{ 
+  breakable,
+  colback=orange!5,
+  colframe={orange!55!black},
+}
+
+\newtheoremstyle{break}{0pt}{0pt}{\normalfont}{0pt}{\bfseries}{}{\newline}{\thmname{#1} \thmnumber{#2} \quad \thmnote{\textbf#3}}
+\declaretheorem[numberwithin=chapter,style=break,name=Corollary]{corollary}
+
+\tcolorboxenvironment{corollary}{ 
+  breakable,
+  colback=blue!5,
+  colframe={blue!55!black},
+}
+
 \usepackage{thmtools}
 
 \declaretheoremstyle[
@@ -119,7 +137,7 @@ notefont=\mdseries, notebraces={(}{)},
 bodyfont=\normalfont,
 postheadspace=1em,
 headpunct={},
-qed=\ding{111},
+qed=$\blacktriangleleft$,
 numbered=no
 ]{solstyle}
 \declaretheorem[style=exstyle]{example}
@@ -130,8 +148,8 @@ numbered=no
 %\newtcbtheorem{policy}{Policy Type}{fonttitle=\bfseries\upshape,fontupper=\itshape,colframe=blue!0!black,colback=white!99,colbacktitle=blue!20!white,coltitle=blue!75!black}{th}
 
 \usepackage[lastexercise,answerdelayed]{exercise}
-\counterwithin{Exercise}{section}
-\counterwithin{Answer}{section}
+\counterwithin{Exercise}{chapter}
+\counterwithin{Answer}{chapter}
 \newcommand{\AtBeginExerciseHeader}{\hspace{-0.75cm}}
 \renewcommand{\ExerciseHeader}{\AtBeginExerciseHeader \textbf{\ExerciseHeaderDifficulty \ExerciseName~\ExerciseHeaderNB} \quad }
 %\renewcommand{\ExerciseHeader}{\textbf{\ExerciseName~\ExerciseHeaderNB}\quad}
@@ -163,20 +181,25 @@ numbered=no
 %\usepackage[T1]{fontenc}
 %\usepackage[libertine]{newtxmath}
 
-\usepackage{fontspec}
-\setsansfont{Archia-Regular}[Path=src/fonts/, Extension=.otf]
+%\usepackage{fontspec}
+%\setsansfont{Archia-Regular}[Path=src/fonts/, Extension=.otf]
+%\usepackage{unicode-math}
+%\setmainfont{Source Serif Pro} % Sets the text font
 
+%\setmathfont{texgyretermesmath} % Sets the text font
+% \setmainfont{Source Serif Pro} % Sets the text font
+% \setmathfont{Heuristica}       % Sets the math font
 % \usepackage[scaled=0.85]{DejaVuSansMono}
 \usepackage{minted}
 
 %% Section/Subsection Font Family
 \titleformat{\section}
-  {\sffamily\bfseries\Large}
+  {\fontfamily{qhv}\selectfont\bfseries\Large}
   {\thesection}
   {1em}
   {}
 \titleformat{\subsection}
-  {\sffamily\bfseries\large}
+  {\fontfamily{qhv}\selectfont\bfseries\large}
   {\thesubsection}
   {1em}
   {}
