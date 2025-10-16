@@ -1,0 +1,166 @@
+\chapter{Analysis of Variance}
+
+The main idea of an ANOVA test is that if researchers ask if a set of sample means gives 
+evidence of differences in the population means, what matters is not how far apart 
+the sample means are, but how far apart they are \textit{relative to the variability of 
+individual observations}.
+
+\section{One-way ANOVA}
+
+\begin{lemma}
+    \label{lem:an01}
+    The total sum of squares is equal to the \textit{sum of within} and \textit{between sum of squares}, that is 
+    \begin{equation}
+        \CS{T} = \CS{W} + \CS{B}.
+    \end{equation}
+\end{lemma}
+\begin{proof}
+    Rewriting we have 
+    \begin{align*}
+        \CS{T} &= \sum^m_{i=1} \sum^n_{j=1} (Y_{ij} - \ols{Y}_{\bullet \bullet })\\
+        &= \sum^m_{i=1} \sum^n_{j=1} \left[ (Y_{ij} - \ols{Y}_{i \bullet }) + (Y_{i\bullet} - \ols{Y}_{\bullet \bullet }) \right]^2\\
+        &= \sum^m_{i=1} \sum^n_{j=1} (Y_{ij} - \ols{Y}_{i \bullet })^2 + \sum^m_{i=1} \sum^n_{j=1}(Y_{i\bullet} - \ols{Y}_{\bullet \bullet })^2
+        + 2 \sum^m_{i=1} \sum^n_{j=1} (Y_{ij} - \ols{Y}_{i \bullet })(Y_{i\bullet} - \ols{Y}_{\bullet \bullet })\\
+    \end{align*}
+    Hence we obtain the asserted result
+    \[
+        \CS{T} = \CS{W} + \CS{B}
+    \]
+    and the proof of the lemma is complete.
+\end{proof}
+
+\begin{theorem}
+    Suppose the one-way ANOVA model is given by the equation 
+    where the $\varepsilon_{ij}$'s are independent and normally 
+    distributed random variables with mean zero and variance 
+    $\sigma^2$ for $i = 1,2,\ldots, m$ and $j = 1,2,\ldots,n$.
+    
+    The null hypothesis 
+    \[
+        H_0 : \mu_1 = \mu_2 = \cdots = \mu_m = \mu
+    \]
+    is rejected whenever the statistics $\mathcal{F}$ satisfies 
+    \begin{equation}
+        \mathcal{F} = \frac{\CS{B} / (m-1)}{\CS{W} / [m(n-1)]} > F_\alpha(m-1, m(n-1)).
+    \end{equation}
+
+    where $\alpha$ is the significance level of the hypothesis test and $F_\alpha(m-1, m(n-1))$ 
+    denotes the $100(1 - \alpha)$-th percentile of the $F$-distribution with $m-1$ numerator 
+    and $m(n-1)$ denominator degrees of freedom.
+\end{theorem}
+\begin{proof}
+    Under the null hypothesis $H_0 : \mu_1 = \mu_2 = \cdots = \mu_m = \mu$, the likelihood function 
+    takes the form 
+    \begin{align*}
+        L(\mu, \sigma^2 | Y) &= \prod^m_{i=1} \prod^n_{j=1} \left\{ \frac{1}{\sqrt{2\sigma^2}}
+        \exp \left[ - \frac{(Y_{ij} - \mu)^2 }{2\sigma^2}\right] \right\}\\
+        &= \left( \frac{1}{ \sqrt{2\sigma^2}} \right)^{nm} \exp \left[ - \frac{1}{2\sigma^2} \sum^{m}_{i=1} \sum^n_{j=1} (Y_{ij} - \mu)^2\right]
+        \label{eq:an1.0} \tag{{\color{red} $\heartsuit $}}
+    \end{align*}
+    Maximizing the natural logarithm of the likelihood function \eqref{eq:an1.0}, we obtain 
+    \[
+        \widehat{\mu} = \ols{Y}_{\bullet \bullet} \quad \text{ and }
+        \quad 
+        \widehat{\sigma_{H_0}} = \frac{1}{mn} \CS{T}
+    \]
+    as the maximum likelihood estimators of $\mu$ and $\sigma^2$, respectively. Plugging these 
+    estimators back into \eqref{eq:an1.0}, we have the maximum likelihood function, that is,
+    \[
+        \max L(\mu, \sigma^2 | Y) = \left( \frac{1}{ \sqrt{2\widehat{\sigma^2_{H_0}}}} \right)^{nm} \exp \left[ - \frac{1}{2\widehat{\sigma^2_{H_0}}} \sum^{m}_{i=1} \sum^n_{j=1} (Y_{ij} - \ols{Y}_{\bullet \bullet})^2\right].
+    \]
+    Simplifying the above expression, we see that 
+    \begin{align*}
+        \max L(\mu, \sigma^2 | Y) &= \left( \frac{1}{ \sqrt{2\widehat{\sigma^2_{H_0}}}} \right)^{nm} \exp \left[ - \left(\frac{2}{nm} \CS{T} \right)^{-1} \sum^{m}_{i=1} \sum^n_{j=1} (Y_{ij} - \ols{Y}_{\bullet \bullet})^2\right]\\
+        &= \left( \frac{1}{ \sqrt{2\widehat{\sigma^2_{H_0}}}} \right)^{nm} \exp \left[ - \frac{nm}{2 \, \CS{T}} \CS{T} \right]\\
+        &=  \left( \frac{1}{ \sqrt{2\widehat{\sigma^2_{H_0}}}} \right)^{nm} e^{-\mfrac{nm}{2}}  \label{eq:an1.1} \tag{{\color{cyan} $\clubsuit $}}
+    \end{align*}
+
+    When no restrictions imposed, we obtain the maximum of the likelihood function from\\ \cref{lem:an01} as
+    \[
+        \max L(\mu_1, \mu_2, \ldots, \mu_m, \sigma^2 | Y)
+        = \left( \frac{1}{ \sqrt{2\widehat{\sigma^2_{H_0}}}} \right)^{nm} \exp \left[ - \frac{1}{2\widehat{\sigma^2_{H_0}}} \sum^{m}_{i=1} \sum^n_{j=1} (Y_{ij} - {\color{red} \ols{Y}_{i \bullet}})^2\right]
+        \label{eq:an1.2} \tag{{\color{orange!50!white} $\bigstar $}}
+    \]
+    notice that the grand mean $\ols{Y}_{\bullet \bullet}$ now replace by $\ols{Y}_{i \bullet}$, 
+    and $\widehat{\sigma^2_{H_0}}$ being replace by $\widehat{\sigma^2}$. Again 
+    simplying the expression above and 
+    \begin{align*}
+        \max L(\mu_1, \mu_2, \ldots, \mu_m, \sigma^2 | Y) &= \left( \frac{1}{ \sqrt{2\widehat{\sigma^2}}} \right)^{nm} \exp \left[ - \left(\frac{2}{nm} \CS{W} \right)^{-1} \sum^{m}_{i=1} \sum^n_{j=1} (Y_{ij} - \ols{Y}_{i \bullet})^2\right]\\
+        &= \left( \frac{1}{ \sqrt{2\widehat{\sigma^2}}} \right)^{nm} \exp \left[ - \frac{nm}{2 \, \CS{W}} \CS{W} \right]\\
+        &=  \left( \frac{1}{ \sqrt{2\widehat{\sigma^2}}} \right)^{nm} e^{-\mfrac{nm}{2}}.
+    \end{align*}
+
+    Next, we are going to find the likelihood ratio statistic $\Lambda$ for testing the null hypothesis $H_0$. 
+    Recall that the likelihood ratio statistic $\Lambda$ can be found by evaluating 
+    \[
+        \Lambda = \frac{\max L(\mu, \sigma^2)}{\max L(\mu_1, \mu_2, \ldots, \mu_m, \sigma^2)}.
+    \]
+    Using \eqref{eq:an1.1} divide \eqref{eq:an1.2}, we have 
+    \[
+        \Lambda = \left( \frac{\widehat{\sigma^2} }{\widehat{\sigma^2_{H_0}}} \right)^{\mfrac{nm}{2}}.
+    \]
+    Recall that the likelihood ratio test to reject the null hypothesis is 
+    \[
+        \Lambda < k_0 \implies \left( \frac{\widehat{\sigma^2} }{\widehat{\sigma^2_{H_0}}} \right)^{\mfrac{nm}{2}} < k_0 
+        \implies \frac{\widehat{\sigma^2_{H_0}}}{ \widehat{\sigma^2}} > \left( \frac{1}{k_0} \right)^{\mfrac{2}{nm}}
+    \]
+    Applying \cref{lem:an01},
+    \[
+        \frac{\CS{W} + \CS{B}}{\CS{W}} > \left( \frac{1}{k_0} \right)^{\mfrac{2}{nm}} \implies 
+        \frac{\CS{B}}{\CS{W}} > k' \label{eq:an1.3} \tag{{\color{gray} $\spadesuit $}}
+    \]
+    where $\displaystyle k' := \left( \frac{1}{k_0} \right)^{\mfrac{2}{nm}} - 1$. In order to find the 
+    cutoff point $k'$ in \eqref{eq:an1.3}. We apply \cref{lem:an01}. Thus 
+    \[
+        \mathcal{F} = \frac{\CS{B} / (m-1)}{\CS{W} / (m(n-1))} > \frac{m(n-1)}{m-1}k'.
+    \] 
+\end{proof}
+
+% Table fits to paper width using tabularx
+\begin{table}[h!]
+\renewcommand{\arraystretch}{1.2}
+\begin{tabularx}{\textwidth}{c|l l p{2.5cm} p{2.5cm}}
+    Source of Variation & Sums of squares & Degree of freedom & Mean squares & $\mathcal{F}$-statistic \\[0.6em]
+    \hline
+    Between & $\CS{B}$ & $m - 1$ & $\MS{B} = \mfrac{\CS{B}}{m-1}$ & $\displaystyle \mathcal{F} = \frac{\MS{B} }{\MS{W} }$ \\[0.6em]
+    Within & $\CS{W}$ & $N - m$ & $\MS{W} = \mfrac{\CS{W}}{N-m}$ & \\
+    \hline
+    Total & $\CS{W}$ & $N - 1$ & & \\
+\end{tabularx}
+\caption{One-way ANOVA table with unequal sample size}
+\end{table}
+
+\section{Test for the Homogeneity of Variances}
+
+One of the assumptions behind the ANOVA test is that the variances 
+of each samples under consideration should be the same for all population.
+
+The test statistic $B_c$ is given by
+\begin{equation}
+    B_c = \frac{(N -m) \ln S^2_p - \sum^m_{i=1} (n_i - 1) \ln S^2_i }{\displaystyle 1 + \frac{1}{3(m-1)} 
+    \left[ \sum^m_{i=1} \frac{1}{n_i - 1} - \frac{1}{N - m} \right]}
+\end{equation}
+where the pooled variance $S^2_p$ is given by
+\begin{equation}
+    S^2_p = \frac{\sum^m_{i=1} (n_i - 1) S^2_i}{N - m} = \MS{W}.
+\end{equation}
+The sampling distribution of $B_c$ is approximately chi-square with $m - 1$ degrees of freedom, that is,
+\[
+    B_c \sim \chi^2 (m-1)
+\]
+when $(n_i - 1) \geq 3$. Therefore the Barlett test rejects the null hypothesis 
+$H_0 : \sigma^2_1 = \sigma^2_2 = \cdots = \sigma^2_m$ at a significance level $\alpha$ if 
+\[
+    B_c \sim \chi^2_{1 - \alpha} (m-1)
+\]
+where $\chi^2_{1 - \alpha} (m-1)$ denotes the upper $(1 - \alpha) \times 100$ percentile of the chi-square 
+with $m-1$ degrees of freedom.
+
+\begin{definition}[Barlett's test]
+    The test statistic of Barlett's test is 
+    \begin{equation}
+        B_c = \frac{(N -m) \ln S^2_p - \sum^m_{i=1} (n_i - 1) \ln S^2_i }{\displaystyle 1 + \frac{1}{3(m-1)} 
+    \left[ \sum^m_{i=1} \frac{1}{n_i - 1} - \frac{1}{N - m} \right]}.
+    \end{equation}
+    Reject $H_0 : \sigma^2_1 = \sigma^2_2 = \cdots = \sigma^2_m$ if $B_c > \chi^2_\alpha(m-1)$.
+\end{definition}

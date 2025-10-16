@@ -347,13 +347,44 @@ $\theta \in \Theta^c_0$. The power function is similar to the MSE or risk functi
 \begin{solution}
     By Neyman-Pearson lemma, the rejection region of the most powerful test is of the form
     \begin{align*}
-        RR &= \{ (x_1, x_2, x_3) \in \mathbb{R}^3 \> \bigg \vert \> \frac{L(\theta_0 | x_1, x_2, x_3)}{L(\theta_1 | x_1, x_2, x_3)} \leq k \}\\
-        &= \{ (x_1, x_2, x_3) \in \mathbb{R}^3 \> \bigg \vert \> \frac{\prod_{i=1}^{3} f_X(x_i|\theta_0 = 1)}{\prod_{i=1}^{3} f_X(x_i|\theta_1 = 2)} \leq k \}\\
-        &= \{ (x_1, x_2, x_3) \in \mathbb{R}^3 \> | \> \frac{8 x_1 x_2 x_3}{27 x^2_1 x^2_2 x^2_3} \leq k \}\\
-        &= \{ (x_1, x_2, x_3) \in \mathbb{R}^3 \> | \> \frac{1}{x_1 x_2 x_3} \leq \frac{27}{8} k \}\\
-        &= \{ (x_1, x_2, x_3) \in \mathbb{R}^3 \> | \> x_1 x_2 x_3 \geq k' \}
+        RR &= \{ (x_1, x_2, x_3) \in \mathfrak{X} \> \bigg \vert \> \frac{L(\theta_0 | x_1, x_2, x_3)}{L(\theta_1 | x_1, x_2, x_3)} \leq k \}\\
+        &= \{ (x_1, x_2, x_3) \in \mathcal{I}^3 \> \bigg \vert \> \frac{\prod_{i=1}^{3} f_X(x_i|\theta_0 = 1)}{\prod_{i=1}^{3} f_X(x_i|\theta_1 = 2)} \leq k \}\\
+        &= \{ (x_1, x_2, x_3) \in \mathcal{I}^3 \> | \> \frac{8 x_1 x_2 x_3}{27 x^2_1 x^2_2 x^2_3} \leq k \}\\
+        &= \{ (x_1, x_2, x_3) \in \mathcal{I}^3 \> | \> \frac{1}{x_1 x_2 x_3} \leq \frac{27}{8} k \}\\
+        &= \{ (x_1, x_2, x_3) \in \mathcal{I}^3 \> | \> x_1 x_2 x_3 \geq k' \}
     \end{align*}
-\end{solution}
+    where $k'$ is some constant. Hence the most powerful test rejects $H_0$ is of the form 
+    ``Reject $H_0$ if $x_1 x_2 x_3 \geq k'$.``
+    
+    The value of $k'$ is determined by the size of the test, that is, $\alpha = 0.034$.
+    To evaluate the constant $k'$, we have to find the probability distribution of 
+    $X_1X_2X_3$. The distribution of $X_1 X_2 X_3$ is quite challenging to get. But we have shown that 
+    \[
+        -2(1 + \theta) \sum_{i=1}^{3} \ln X_i \sim \chi^2_6.
+    \]
+    Now we proceed to find the constant $k'$. Since
+    \begin{align*}
+        0.034 &= \alpha \\
+        &= \mathbb{P}[\text{Reject } H_0 \> | \> H_0 \text{ is true}]\\
+        &= \mathbb{P}[X_1 X_2 X_3 \geq k' \> | \> \theta = 1]\\
+        &= \mathbb{P}[ \ln (X_1 X_2 X_3) \geq \ln k' \> | \> \theta = 1] & \text{Taking logarithm.}\\
+        &= \mathbb{P}\left[ \sum^3_{i=1} \ln X_i \geq \ln k' \> \bigg \vert \> \theta = 1\right]\\
+        &= \mathbb{P}\left[ -2(1+\theta)\sum^3_{i=1} \ln X_i \geq -2(1+\theta) \ln k' \> \bigg \vert \> \theta = 1\right] & \text{ Multiply } -2(1+\theta) \text{ on both sides.}\\
+        &= \mathbb{P}\left[-4 \sum_{i=1}^{3} \ln X_i \geq -4 \ln k' \right]\\
+        &= \mathbb{P}\left[\chi^2_6 \geq -4 \ln k' \right]\\
+    \end{align*}
+    From the $\chi^2$ table, we have
+    \[
+        - 4 \ln k' = 1.4.
+    \]
+    Therefore
+    \[
+        k' = e^{-0.35} = \fbox{$0.7047$}.
+    \]
+    Thus, the most powerful test is given by ``Reject $H_0$ if $x_1 x_2 x_3 \geq 0.7047$.``
+
+    The critical region is the region above the surface $x_1 x_2 x_3 = 0.7047$ in the unit cube $\mathcal{I}^3 = [0,1]^3$.
+The following figure illustrates the rejection region.
 
 \begin{figure}[ht]
     \centering
@@ -377,8 +408,9 @@ $\theta \in \Theta^c_0$. The power function is similar to the MSE or risk functi
                 (axis cs:1,1,1) -- (axis cs:0.7074,1,1) -- (axis cs:1,0.7074,1) -- (axis cs:1,1,0.7074) -- cycle;
         \end{axis}
     \end{tikzpicture}
-    \caption{The rejection region is to the right of the surface $x_1 x_2 x_3 = 0.7074$.}
+    \caption{The rejection region is to the right of the surface $x_1 x_2 x_3 = 0.7074$.} (The shaded volume)
 \end{figure}
+\end{solution}
 
 \subsection{Likelihood Ratio Test}
 
@@ -660,5 +692,23 @@ $\frac{\alpha}{2}$ points of the chi-square distribution with $n-1$ degrees of f
         Find the likelihood ratio test for testing $H_0:\mu = \mu_0$ versus 
         $H_1:\mu \neq \mu_0$ when a random sample is drawn from 
         $N(\mu, 625)$.
+    \end{Exercise}
+
+    \begin{Exercise}
+        The daily output of 9 randomly selected operators was recorded before and after a two-week 
+        training programme:
+
+        \begin{center}
+            \begin{tabular}{c|ccccccccc}
+                Operator & A & B & C & D & E & F & G & H & I\\
+                \hline
+                Before & 52 & 72 & 58 & 55 & 67 & 63 & 56 & 69 & 57\\
+                After & 50 & 90 & 62 & 56 & 80 & 72 & 58 & 84 & 60\\
+            \end{tabular}
+        \end{center}
+
+        Assuming the change in the daily output follows a normal distribution, examine the 
+        hypothesis that the two-week training programme results in a significant increase in the 
+        mean daily output of the operators at the 5\% significance level.
     \end{Exercise}
 \end{mdframed}

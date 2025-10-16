@@ -18,9 +18,9 @@ to measure the relative efficiency of these two unbiased estimators.
     Given two unbiased estimators $\widehat{\theta}_1$ and $\widehat{\theta}_2$ for the 
     same parameter $\theta$, with variances $Var(\widehat{\theta}_1)$ and $Var(\widehat{\theta}_2)$,
     respectively. Then the efficiency of $\widehat{\theta}_1$ relative to $\widehat{\theta}_2$, 
-    wrote as $\textsf{eff}(\widehat{\theta}_1, \widehat{\theta}_2)$, is defined to be the ratio
+    wrote as $\textsf{Eff}(\widehat{\theta}_1, \widehat{\theta}_2)$, is defined to be the ratio
     \begin{equation}
-        \textsf{eff}(\widehat{\theta}_1, \widehat{\theta}_2) := \frac{Var(\widehat{\theta}_2)}{Var(\widehat{\theta}_1)}.
+        \textsf{Eff}(\widehat{\theta}_1, \widehat{\theta}_2) := \frac{Var(\widehat{\theta}_2)}{Var(\widehat{\theta}_1)}.
     \end{equation}
 \end{definition}
 
@@ -33,6 +33,19 @@ to measure the relative efficiency of these two unbiased estimators.
     where $Y_{(n)} = \max\{ Y_1, Y_2, \ldots, Y_n \}$. Find the efficiency of $\widehat{\theta}_1$ relative to $\widehat{\theta}_2$.
 \end{example}
 \begin{solution}
+    Because each $Y_i \sim U(0, \theta)$, we have
+    \[
+        \mu = \mathbb{E}[Y_i] = \mfrac{\theta}{2}, \quad \sigma^2 = Var(Y_i) = \frac{\theta^2}{12}.
+    \]
+    Therefore,
+    \[
+        \mathbb{E}[\widehat{\theta}_1] = \mathbb{E}(2\ols{Y}) = 2 \mathbb{E}(\ols{Y}) = 2 \mu = \theta,
+    \]
+    and that $\widehat{\theta}_1$ is unbiased, as claimed. Further we check that 
+    \[
+        Var(\widehat{\theta}_1) = Var(2\ols{Y}) = 4Var(\ols{Y}) = 4 \cdot \frac{\sigma^2}{n} = \frac{\theta^2}{3n},
+    \]
+
     The mean of this order statistic is 
     \begin{align*}
         \mathbb{E}[Y_{(n)}] = \int^\theta_0 y \cdot n \left(\frac{y}{\theta}\right)^{n-1} \left(\frac{1}{\theta}\right)\, \mathrm{d}y
@@ -41,13 +54,101 @@ to measure the relative efficiency of these two unbiased estimators.
         &= \frac{n\theta}{n+1}.
     \end{align*}
     and it follows that 
+    \[
+        \mathbb{E}\left[ \frac{n+1}{n}\, Y_{(n)} \right] = \theta;
+    \]
+    that is, $\widehat{\theta}_2$ is also an unbiased estimator of $\theta$. Since
     \begin{align*}
         \mathbb{E}[Y^2_{(n)}] = \int^\theta_0 y^2 \cdot n \left(\frac{y}{\theta}\right)^{n-1} \left(\frac{1}{\theta}\right)\, \mathrm{d}y
-        &= \frac{n}{\theta^n} \int^\theta_0 y^{} \, \mathrm{d}y\\
-        &= \frac{n}{\theta^n} \left[ \frac{y^{n+1}}{n+1}\right]^{y=\theta}_{y=0}\\
-        &= \frac{n\theta}{n+1}.
+        &= \frac{n}{\theta^n} \int^\theta_0 y^{n+1} \, \mathrm{d}y\\
+        &= \frac{n}{\theta^n} \left[ \frac{y^{n+2}}{n+2}\right]^{y=\theta}_{y=0}\\
+        &= \frac{n\theta^2}{n+2}.
     \end{align*}
+
+    we obtain
+    \begin{align*}
+        Var[Y_{(n)}] = \mathbb{E}[Y^2_{(n)}] - (\mathbb{E}[Y_{(n)}])^2
+        &= \frac{n\theta^2}{n+2} - \left(\frac{n\theta}{n+1}\right)^2\\
+        &= \theta^2 \left[ \frac{n}{n+2} - \frac{n^2}{(n+1)^2} \right]\\
+        &= \theta^2 \left[ \frac{n(n+1)^2 - n^2(n+2)}{(n+2)(n+1)^2} \right]\\
+        &= \theta^2 \left[ \frac{n^3 + 2n^2 + n - n^3 - 2n^2}{(n+2)(n+1)^2} \right]\\
+        &= \frac{n \theta^2}{(n+2)(n+1)^2}.
+    \end{align*}
+    and hence 
+    \begin{align*}
+        Var[\widehat{\theta}_2] &= Var\left[ \frac{n+1}{n} Y_{(n)} \right]\\
+        &= \left( \frac{n+1}{n} \right)^2 Var[Y_{(n)}]\\
+        &= \left( \frac{n+1}{n} \right)^2 \cdot \frac{n \theta^2}{(n+2)(n+1)^2}\\
+        &= \frac{\theta^2}{n(n+2)}.
+    \end{align*}
+    Therefore, the efficiency of $\widehat{\theta}_1$ relative to $\widehat{\theta}_2$ is
+    \[
+        \textsf{Eff}(\widehat{\theta}_1, \widehat{\theta}_2) = \frac{Var(\widehat{\theta}_2)}{Var(\widehat{\theta}_1)} = \frac{\theta^2/[n(n+2)]}{\theta^2/(3n)} = \frac{3}{n+2}.
+    \]
+    This efficiency is less than 1 if $n > 1$. That is, if $n > 1$, then $\widehat{\theta}_2$ must have a smaller variance than $\widehat{\theta}_1$.
+    And in result, $\theta_2$ is generally more preferable to $\theta_1$ when estimating $\theta$.
 \end{solution}
+
+\section{Consistency}
+
+\begin{definition}[Consistency]
+    An estimator $\widehat{\theta}_n$ is consistent for parameter $\theta$ if for every $\epsilon > 0$,
+    \begin{equation}
+        \Lim{n \to \infty} \mathbb{P}(|\widehat{\theta}_n - \theta| \geq \epsilon) = 0.
+    \end{equation}
+    In other words, $\widehat{\theta}_n$ converges in probability to $\theta$ as $n$ goes to infinity, denoted by 
+    \[
+        \widehat{\theta}_n \xrightarrow[]{p} \theta, \quad \text{as } n \to \infty.
+    \]
+\end{definition}
+
+\begin{theorem}
+    An unbiased estimator $\widehat{\theta}_n$ is consistent for parameter $\theta$ if
+    \begin{equation}
+        \Lim{n \to \infty} Var(\widehat{\theta}_n) = 0.
+    \end{equation}
+\end{theorem}
+
+\begin{example}
+    Let $X_1, X_2, \ldots, X_n$ be a random sample such that $\mathbb{E}[X_i] = \mu$, $\mathbb{E}[X^2_i] = \mu'_2$ and 
+    $\mathbb{E}[X^4_i] = \mu'_4$ are all finite. Show that 
+    \[
+        \widehat{\sigma}^2 = \frac{1}{n} \sum_{i=1}^n (X_i - \ols{X})^2
+    \]
+    is a consistent estimator of $\sigma^2 = Var(X_i)$.
+\end{example}
+\begin{solution}
+    We are going to use subscript $n$ on both $\widehat{\sigma}^2_n$ and $\ols{X}$ to explicitly 
+    convey their dependence on the value of the sample size $n$.
+    
+    From previous example, we had derived that 
+    \[
+        \widehat{\sigma}^2 = \frac{1}{n} \sum_{i=1}^n (X_i - \ols{X})^2
+        = \frac{1}{n-1} \left( \sum_{i=1}^n X^2_i - n \ols{X}_n^2 \right)
+        = \frac{n}{n-1} \left( \frac{1}{n} \sum_{i=1}^n X^2_i - \ols{X}_n^2 \right).
+    \]
+    The statistic $\mfrac{1}{n} \sum_{i=1}^n X^2_i$ is the average of $n$ independent 
+    and identically distributed random variables $X^2_1, X^2_2, \ldots, X^2_n$ with 
+    $\mathbb{E} [X^2_i] = \mu'_2$ and $V(X^2_i) = \mu'_4 - (\mu'_2)^2$. 
+
+    By the weak law of large numbers, we have
+    \[
+        \frac{1}{n} \sum_{i=1}^{n}X_i^2 \xrightarrow[]{p} \mu'_2, \quad \text{as } n \to \infty,
+    \]
+    and certainly $\ols{X}_n \xrightarrow[]{p} \mu$. And because the function $g(x) = x^2$ is continuous 
+    for all $x \in \mathbb{R}$. This implies that $\ols{X}^2_n \xrightarrow[]{p} \mu^2$. It follows that 
+    \[
+        \frac{1}{n} \sum_{i=1}^n X^2_i - \ols{X}_n^2 \xrightarrow[]{p} \sigma^2.
+    \]
+    Note that $\mfrac{n}{n-1} \to 1$ when $n$ goes to infinity. We can conclude that 
+    \[
+        \widehat{\sigma}^2_n \xrightarrow[]{p} (1)\sigma^2 = \sigma^2, \quad \text{as } n \to \infty.
+    \]
+    Equivalently, $\widehat{\sigma}^2_n$, the sample variance, is a consistent estimator of $\sigma^2$,
+    the population variance.
+\end{solution}
+
+\section{Sufficiency}
 
 \begin{definition}[Sufficiency]
     A statistic $T(X)$ is sufficient for parameter $\theta \in \Theta$ if 
@@ -169,6 +270,37 @@ For example, if the sample space $\mathcal{X}^n$ is partitioned into subsets $\m
     \]
     Then, fix a statistic $t_0$ on $\mathbb{P}_\theta (T = t_0) > 0$ for some $\theta \in \Theta$. Then 
 \end{proof}
+
+\begin{example}
+    Let $X_1, X_2, \ldots, X_n$ be a random sample from a distribution with density function
+    \[
+        f_X(x_i|\theta) = \begin{cases}
+            \displaystyle \frac{1}{\theta}e^{-x_i / \theta}, & 0 \leq x < \infty,\\
+            0, & \text{elsewhere}.
+        \end{cases}
+    \]
+    where parameter $\theta > 0$ for $i = 1, 2, \ldots, n$. Show that 
+    $\ols{X}$ is a sufficient statistic for the parameter $\theta$.
+\end{example}
+\begin{solution}
+    The likelihood $L(\theta)$ of the sample is the joint density of each $X_i$, that is 
+    \begin{align*}
+        L(x_1, x_2, \ldots, x_n | \theta) &= f(x_1, x_2, \ldots, x_n | \theta)\\
+        &= f(x_1 | \theta) \times f(x_2 | \theta) \times \cdots \times f(x_n | \theta)\\
+        &= \frac{1}{\theta^n} e^{-(x_1 + x_2 + \cdots + x_n)/\theta}\\
+        &= \frac{1}{\theta^n} e^{-n \overline{x}/\theta}\\
+    \end{align*}
+
+    Notice that $L(\theta)$ is a function only of two parameter: $\theta$ and $\overline{x}$, and that if
+    \[
+        g(\overline{x}, \theta) = \frac{1}{\theta^n} e^{-n \overline{x}/\theta} \quad \text{ and } \quad h(x_1, x_2, \ldots, x_n) = 1,
+    \]
+    then the likelihood can be factored as
+    \[
+        L(x_1, x_2, \ldots, x_n | \theta) = g(\overline{x}, \theta) h(x_1, x_2, \ldots, x_n).
+    \]
+    By the factorization theorem, $\overline{X}$ is a sufficient statistic for the parameter $\theta$.
+\end{solution}
 
 \begin{lemma}[Rao Blackwell Theorem]
     If $T(X)$ is a sufficient statistic for parameter $\theta$, and $\widehat{\theta}$ is an unbiased estimator of $\theta$ 
@@ -333,6 +465,326 @@ information inequality.
     \]
     and the proof is complete.
 \end{proof}
+
+What this saying is, for any unbiased estimator $\widehat{\theta}$ of $\theta$, its variance 
+(MSE) is at least $\mfrac{1}{I(\theta)}$. If we achieve this lower bound, meaning that our 
+variance is exactly equal to $\mfrac{1}{I(\theta)}$, then we have found the best possible 
+unbiased estimator for $\theta$. That is, we have found the \textbf{minimum variance unbiased estimator (MVUE)} for $\theta$.
+
+\begin{example}
+    Suppose that $Y_1, Y_2, \ldots, Y_n$ denote a random sample from the Weibull distribution with pdf 
+    \[
+        f_Y(y|\theta) = \begin{cases}
+            \displaystyle \frac{2y}{\theta} e^{-y^2 / \theta} & \text{for } y > 0\\
+            0 & \text{otherwise}
+        \end{cases}.
+    \]
+    Find an MVUE for $\theta$.
+\end{example}
+\begin{solution}
+    We begin using the factorization criterion to find the sufficient statistic that best summarizes 
+    the information about $\theta$.
+    \begin{align*}
+        L(y_1, y_2, \ldots, y_n | \theta) &= f_Y(y_1, y_2, \ldots, y_n | \theta)\\
+        &= \left( \frac{2y_1}{\theta} \right) e^{-y^2_1 / \theta} \times \left( \frac{2y_2}{\theta} \right) e^{-y^2_2 / \theta} \times \cdots \times \left( \frac{2y_n}{\theta} \right) e^{-y^2_n / \theta}\\
+        &= \underbrace{\left( \frac{2}{\theta} \right)^n \exp \left\{ -\frac{1}{\theta} \sum_{i=1}^{n} y^2_i \right\} }_{g'(\sum y_i | \theta)} \> \underbrace{(y_1 \times y_2 \times \cdots \times y_n)}_{h(y_1, y_2, \ldots, y_n)}
+    \end{align*}
+    Thus, $U = \sum_{i=1}^{n} Y^2_i$ is the minimal sufficient statistic for $\theta$ (by Factorization theorem). 
+
+    We now need to find a function of this statistic that is unbiased for $\theta$. Now let $W = Y^2_i$.
+    Using the method of transformation,
+    \begin{align*}
+        f_W(w) = f_Y(h^{-1}(w)) \odv{h^{-1}(w)}{w} = f_Y(\sqrt{w}) \odv{}{w}(\sqrt{w}),
+    \end{align*}
+    continue simplify the expression gives 
+    \[
+        f_W(w) = \frac{2}{\theta} \left( \sqrt{w} e^{-w/\theta} \right) \left( \frac{1}{2\sqrt{w}} \right)
+        = \frac{1}{\theta} e^{-w/\theta}, \quad w > 0.
+    \]
+    That is, $Y^2_i \sim Exp(\theta)$. As
+
+    \begin{equation}
+        \mathbb{E}[Y^2_i] = \theta
+    \end{equation}
+
+    and 
+    \begin{align*}
+        \mathbb{E}\left[\sum_{i=1}^{n} Y^2_i \right] &= \mathbb{E}[Y^2_1 + Y^2_2 + \cdots + Y^2_n]\\
+        &= \mathbb{E}[Y^2_1] + \mathbb{E}[Y^2_2] + \cdots + \mathbb{E}[Y^2_n] & \text{linearity or expectation}\\
+        &= \underbrace{\theta + \cdots + \theta}_{n \text{ times}}\\
+        &= n \theta.
+    \end{align*}
+\end{solution}
+
+\begin{example}[Simple linear regression]
+    Simple linear regression studies the relationship between the random response variable $Y$ 
+    and the explanatory variable $X$ by fitting a linear equation to observed data. The linear model is given by
+    \[
+        Y = \alpha + \beta X + \epsilon_i,
+    \]
+    where $\epsilon \sim N(0, \sigma^2)$ is the error term. The sufficient statistics for the parameters $\beta_0$, $\beta_1$, and $\sigma^2$ can be derived from the likelihood function.
+
+    The article ``Relating the Cetane Number of Biodiesel
+ Fuels to Their Fatty Acid Composition: A Critical Study``
+ (J. of Automobile Engr., 2009: 565-583) included the 
+following data on x = iodine value (g) and y = cetane
+ number for a sample of 14 biofuels (see next slide).
+The iodine value (x) is the amount of iodine necessary to 
+saturate a sample of 100 g of oil.
+
+\begin{table}[h!]
+    \centering
+    \small
+    \begin{tabular}{l|cccccccccccccccc}
+    \hline
+    $x$ & 132.0 & 129.0 & 120.0 & 113.2 & 105.0 & 92.0 & 84.0 & 83.2 & 88.4 & 59.0 & 80.0 & 81.5 & 71.0 & 69.2\\
+    \hline
+    $y$ & 46.0 & 48.0 & 51.0 & 52.1 & 54.0 & 52.0 & 59.0 & 58.7 & 61.6 & 64.0 & 61.4 & 54.6 & 58.8 & 58.0\\
+    \hline
+    \end{tabular}
+\end{table}
+
+\begin{figure}[ht]
+    \centering
+    \begin{tikzpicture}
+\begin{axis}[%
+    title={Scatter plot of iodine value and cetane number},
+    xlabel={Iodine Value (g)},
+    ylabel={Cetane Number},
+    scatter/classes={%
+    a={mark=o,draw=red}}]
+    \addplot[scatter,only marks,%
+    scatter src=explicit symbolic]%
+table[meta=label] {
+x y label
+132.0 46.0 a
+129.0 48.0 a
+120.0 51.0 a
+113.2 52.1 a
+105.0 54.0 a
+92.0 52.0 a
+84.0 59.0 a
+83.2 58.7 a
+88.4 61.6 a
+59.0 64.0 a
+80.0 61.4 a
+81.5 54.6 a
+71.0 58.8 a
+69.2 58.0 a
+};
+\end{axis}
+\end{tikzpicture}
+    \caption{The scatter plot of iodine value (x) and cetane number (y).}
+\end{figure}
+
+Under the additional assumption that $\varepsilon_i$'s are iid $N(0, \sigma^2)$, the likelihood function of the sample is
+\begin{align*}
+    L(\alpha, \beta, \sigma^2 | \mathbf{y}, \mathbf{x}) = \prod_{i=1}^n f_Y(y_i | x_i, \alpha, \beta, \sigma^2) &= \prod_{i=1}^n \frac{1}{\sqrt{2\pi\sigma^2}} \exp\left(-\frac{(y_i - \alpha - \beta x_i)^2}{2\sigma^2}\right)\\
+    &= \frac{1}{(2\pi\sigma^2)^{n/2}} \exp\left(-\frac{1}{2\sigma^2} \sum_{i=1}^n (y_i - \alpha - \beta x_i)^2\right). \label{eq:s2.1} \tag{{\color{gray} $\spadesuit $}} 
+\end{align*}
+
+Considering $(y_1, x_1), \ldots, (y_n, x_n)$ as $n$ pairs of data points plotted 
+in the $xy$-plane as the scatterplot in the previous figure.
+
+Think of drawing through this cloud of points a straight line that comes
+``as close as possible`` to all the points, measured by the vertical
+ distances from the points to the straight line. For any line 
+$y = \alpha + \beta x$, the vertical distance from the point $(x_i, y_i)$ to the line is $y_i - (\alpha + \beta x_i)$.
+Letting
+\[
+    \psi(\alpha, \beta) := \sum_{i=1}^n (y_i - \alpha - \beta x_i)^2,
+\]
+
+Maximizing the likelihood is equivalent to
+\[
+    \min_{\alpha, \beta} \sum_{i=1}^n (y_i - \alpha - \beta x_i)^2,
+\]
+
+Taking the partial derivatives of $\psi(\alpha, \beta)$ with respect to $\alpha$ and $\beta$, we have
+\[
+    \pdv{\psi(\alpha, \beta)}{\alpha} = -2 \sum_{i=1}^n (y_i - \alpha - \beta x_i) = 0,
+\]
+\[
+    \pdv{\psi(\alpha, \beta)}{\beta} = -2 \sum_{i=1}^n x_i (y_i - \alpha - \beta x_i) = 0. \label{eq:s2.0} \tag{{\color{orange!50!white} $\clubsuit $}}
+\]
+The first equation gives
+\[
+    \overline{y} - a -b\overline{x} \implies a = \overline{y} - b\overline{x}.
+\]
+Substituting $a$ into the second equation \eqref{eq:s2.0} by $\overline{y} - b\overline{x}$ results in
+\[
+    \sum_{i=1}^n x_i (y_i - \overline{y}) + b \sum_{i=1}^n x_i (\overline{x} - x_i) = 0.
+\]
+This equation is the same as $S_{xy} = b S_{xx}$, that is
+\[
+    S_{xy} = \sum_{i=1}^n (x_i - \overline{x})(y_i - \overline{y}), \quad S_{xx} = \sum_{i=1}^n (x_i - \overline{x})^2.
+\]
+Therefore, replacing $y_i$ by the random variable $Y_i$ for all $i = 1, 2, \ldots, n$ (and we 
+still use $S_{xy}$ when $y_i$ is replaced by $Y_i$), we obtain the MLE or LSE as 
+\begin{equation}
+    \widehat{\beta} = \frac{S_{xy}}{S_{xx}}, \quad \widehat{\alpha} = \overline{Y} - \widehat{\beta} \overline{x} = \overline{Y} - \frac{S_{xy}}{S_{xx}} \overline{x}.
+\end{equation}
+We can always assume that $S_{xx} > 0$, since $S_{xx} = 0$ is the trivial case of identical $x_i$'s.
+
+We now proceed to show that $\widehat{\alpha}$ and $\widehat{\beta}$ are UMVUE of $\alpha$ and $\beta$, respectively. First of all, 
+we had already shown that they are unbiased estimators of $\alpha$ and $\beta$, respectively.
+\[
+    \mathbb{E}[S_{xy}] = \sum^n_{i=1} (x_i - \overline{x}) \mathbb{E}_y(y_i - \overline{y}) = \sum^n_{i=1} (x_i - \overline{x}) \beta (x_i - \overline{x}) =  \beta S_{xx}.
+\]
+Since $\widehat{\beta}$ is unbiased for $\beta$ and 
+\[
+    \mathbb{E}[\widehat{\alpha}] = \mathbb{E}[\overline{Y}] - \overline{x} \mathbb{E}[\widehat{\beta}] = \alpha + \beta \overline{x} - \overline{x} \beta = \alpha.
+\]
+Continue with \eqref{eq:s2.1}, the likelihood function of the sample is
+\begin{align*}
+    L(\alpha, \beta, \sigma^2 | \mathbf{y}, \mathbf{x}) &= \frac{1}{(2\pi\sigma^2)^{n/2}} \exp\left(-\frac{1}{2\sigma^2} \sum_{i=1}^n (y_i - \alpha - \beta x_i)^2\right)\\
+    &= \frac{1}{(2\pi\sigma^2)^{n/2}} \exp\left(-\frac{1}{2\sigma^2} \left[ \sum_{i=1}^n (y_i - \overline{y})^2 + n(\overline{y} - \alpha - \beta \overline{x})^2 + (\beta - \widehat{\beta})^2 S_{xx} \right] \right).
+\end{align*}
+
+where 
+\[
+    S_{yy} = \sum_{i=1}^n (y_i - \overline{y})^2.
+\]
+We still using the notation $S_{xy}$ and $S_{xx}$ when $y_i$ is replaced by $Y_i$. From the properties of the exponential family, a complete and sufficient
+statistic for $\underline{\theta} = (\alpha, \beta, \sigma^2)$ is given by $(\widehat{\alpha}, \widehat{\beta}, S_{yy})$.
+
+Since $\widehat{\alpha}$ and $\widehat{\beta}$ are both unbiased estimators and functions of the sufficient and complete 
+statistic, thus they are UMVUE of $\alpha$ and $\beta$, respectively.
+
+\end{example}
+\begin{example}[Simple linear regression (cont.)]
+    \textbf{Question: What if we remove the normality assumption? } 
+    $\widehat{\alpha}$ and $\widehat{\beta}$ are still least squares estimators, but they are no longer MLEs.
+    A statistical property that holds for LSE is that it is the best linear unbiased estimator (BLUE) 
+    in the sense that $\widehat{\alpha}$ or $\widehat{\beta}$ has the smallest variance among all linear unbiased estimators of the form 
+    \begin{equation}
+        \sum^n_{i=1} d_i Y_i
+    \end{equation}
+
+If the estimator of this form is unbiased for $\beta$, then 
+\begin{align*}
+    \beta = \mathbb{E}_y\left( \sum^n_{i=1} d_iY_i \right) &= \sum^n_{i = 1} d_i \mathbb{E}_y[Y_i]\\
+    &= \sum^n_{i = 1} d_i (\alpha + \beta x_i) & \text{from the regression line, } \widehat{Y} = \alpha + \beta x\\
+    &= \alpha \sum^n_{i = 1} d_i + \beta \sum^n_{i = 1} d_i x_i & \text{linearity of summation}.
+\end{align*}
+
+holds for all $\alpha$ and $\beta$, which imples that 
+\[
+    \sum^n_{i = 1} d_i = 0, \quad \sum^n_{i = 1} d_i x_i = 1.
+\]
+A geometric description  of the BLUE of $\beta$ is given in the filgure below.
+
+% TODO: Computation of 3d graph requires longer time, this should left 
+% for last part
+\begin{comment}
+    \begin{figure}[ht]
+        \centering
+        \begin{tikzpicture}[scale=3.25]
+    \begin{axis}
+    [   axis equal,
+        hide axis,
+        view={20}{30},
+        z buffer=sort,
+    ]
+        \addplot3
+        [   domain=-2:2,
+            y domain=-2:2,
+            surf,
+            mesh/interior colormap=
+           {blueblack}{color=(black) color=(orange)},
+            mesh/interior colormap thresh=1,
+            shader=interp,
+            opacity=0.5,
+        ] (-1,y,x);
+        \addplot3
+        [   domain=0:360,
+            y domain=0:180,
+            surf,
+            mesh/interior colormap=
+           {blueblack}{color=(black) color=(red)},
+            mesh/interior colormap thresh=1,
+            shader=interp,
+            opacity=0.3
+        ] ({sin(y)*cos(x)},{sin(y)*sin(x)},{cos(y)});
+        \addplot3
+        [   domain=-2:2,
+            y domain=-2:2,
+            surf,
+            shader=flat,
+            gray,
+            opacity=0.1,
+        ] (x,y,0);
+        \addplot3
+        [   domain=0:360,
+            y domain=0:90,
+            surf,
+            mesh/interior colormap=
+           {blueblack}{color=(black) color=(red)},
+            mesh/interior colormap thresh=1,
+            shader=interp,
+            opacity=0.3,
+        ] ({sin(y)*cos(x)},{sin(y)*sin(x)},{cos(y)});
+    \end{axis}
+\end{tikzpicture}
+    \end{figure}
+\end{comment}
+
+We want to show the LSE $\widehat{\beta}$ is BLUE. Since 
+\[
+    Var \left( \sum^n_{i=1} d_i Y_i \right) = \sigma^2 \sum^n_{i=1} d^2_i,
+\]
+the BLUE of $\beta$ is the solution of the optimization problem
+\begin{subequations}
+\begin{alignat}{2}
+&\!\min_{d_i}        &\qquad& \sum_{i=1}^{n} d^2_i\\
+&\text{subject to} &      & \sum^n_{i = 1} d_i = 0,\\
+&                  &      & \sum^n_{i = 1} d_i x_i = 1.
+\end{alignat}
+\end{subequations}
+
+Consider the Lagrange multiplier method by minimizing 
+\begin{equation}
+    g(d_1, \ldots, d_n, \lambda_1, \lambda_2) = \sum_{i=1}^{n} d^2_i + \lambda_1 \left( \sum^n_{i = 1} d_i \right) + \lambda_2 \left( \sum^n_{i = 1} d_i x_i - 1 \right).
+\end{equation}
+
+Taking derivatives with respect to $d_i$ and setting them to zero, we have
+\[
+    \pdv{g}{d_i} = 2d_i + \lambda_1 + \lambda_2 x_i = 0.
+\]
+Then
+\begin{align*}
+    0 = \sum_{i=1}^{n} (2d_i + \lambda_1 + \lambda_2 x_i) &= 2 \sum_{i=1}^{n} d_i + n\lambda_1 + \lambda_2 \sum_{i=1}^{n} x_i & \text{linearity of summation}\\
+    &= \lambda_1 n + \lambda_2 \sum^n_{i=1} x_i & \text{since } \sum d_i = 0
+\end{align*}
+which yields $\lambda_1 = - \lambda_2 \overline{x}$ and, hence
+\[
+    0 = 2d_i + \lambda_2 (x_i - \overline{x}).
+\]
+Then 
+\[
+    0 = \sum^n_{i=1} (x_i - \overline{x}) [2d_i + \lambda_2 (x - \overline{x})] = 2 + \lambda_2 S_{xx}
+\]
+which gives us $\lambda_2 = -2 / S_{xx}$. Then 
+\[
+    d_i = \frac{-(\lambda_1 + \lambda_2 x_i)}{2} = \frac{-\lambda_2(x_i - \overline{x})}{2}
+    = \frac{(x_i - \overline{x})}{S_{xx}}
+\]
+and the BLUE of $\beta$ is 
+\[
+    \sum^n_{i=1} d_i Y_i = \sum_{i=1}^{n} \frac{(x_i - \overline{x})}{S_{xx}} Y_i = \frac{S_{xy}}{S_{xx}} = \widehat{\beta}.
+\]
+And because
+\[
+    \widehat{\beta} = \sum_{i=1}^{n} \frac{(x_i - \overline{x})(\beta x_i + \varepsilon_i)}{S_{xx}}
+    = \beta + \sum^n_{i=1} d_i \varepsilon_i
+\]
+where $d_i = (x_i - \overline{x})/S_{xx}$, and the random error $\varepsilon \sim N(0,1)$. We obtain that 
+\[
+    Var(\widehat{\beta}) = \sum_{i=1}^{n} d^2_i Var(\varepsilon_i) = \frac{\sigma^2}{S_{xx}}.
+\]
+And we are done.
+\end{example}
+
 
 \begin{corollary}[Cramér-Rao lower bound - 2nd theorem]
     If $L(\theta)$ is twice differentiable with respect to $\theta$, then the inequality 
@@ -665,5 +1117,13 @@ $g$ are replaced with the gradient of g (a vector of all partial derivatives).
             \end{bmatrix}.
         \]
         Determine the approximate variance of $\widehat{\theta}_1$.
+    \end{Exercise}
+
+    \begin{Exercise}
+        Let $X$ be a random variable, and $X_n = X + Y_n$, where 
+        \[
+            \mathbb{E}[Y_n] = \frac{1}{n} \quad \text{ and } \quad Var(Y_n) = \frac{\sigma^2}{n}.
+        \]
+        where $\sigma > 0$ is constant. Show that $X_n \xrightarrow{p} X$ as $n \to \infty$. Hint: $\displaystyle |Y_n| \leq |Y_n - \mathbb{E}[Y_n]| + \frac{1}{n}$.
     \end{Exercise}
 \end{mdframed}

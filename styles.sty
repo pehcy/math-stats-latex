@@ -22,12 +22,16 @@
 \usepackage[most]{tcolorbox}
 \usepackage{cmupint}
 \usepackage{pifont}
+\usepackage[colorlinks,linkcolor=blue]{hyperref}
+\usepackage[nameinlink]{cleveref}
 \DeclareMathOperator*{\argmax}{arg\,max}
 \DeclareMathOperator*{\argmin}{arg\,min}
 \DeclareMathOperator*{\cov}{Cov}
 \DeclareMathOperator*{\bias}{Bias}
 \DeclareRobustCommand{\bxseries}{\fontseries{bx}\selectfont}
 \DeclareTextFontCommand{\textbx}{\fontseries{bx}}
+\newcommand{\CS}[1]{\textit{SS}_{#1}}
+\newcommand{\MS}[1]{\textit{MS}_{#1}}
 \newcommand{\Lim}[1]{\raisebox{0.5ex}{\scalebox{0.8}{$\displaystyle \lim_{#1}\;$}}}
 \renewcommand{\labelitemi}{{\color{red!70!white}\ding{118}}}
 

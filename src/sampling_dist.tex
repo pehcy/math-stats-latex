@@ -1,0 +1,72 @@
+\chapter{Sampling Distributions}
+
+\section{Snedecor's $F$-distribution}
+
+TheF-distribution was named in honor of Sir Ronald Fisher by George
+Snedecor. F-distribution arises as the distribution of a ratio of variances.
+Like, the other two distributions this distribution also tends to normal 
+distribution as $\nu_1$ and $\nu_2$ become very large. The
+following figure illustrates the
+ shape of the graph of this distribution for various degrees of freedom.
+
+\begin{theorem}
+If the random variable $X$ is $F$-distributed with degrees 
+of freedom $\nu_1$ and $\nu_2$, then its mean is 
+\begin{equation}
+    \mathbb{E}[X] = \begin{cases}
+        \displaystyle \frac{\nu_2}{\nu_2 - 2} & \text{if } \nu_2 \geq 3\\
+        DNE & \text{if } \nu_2 = 1,2
+    \end{cases}
+\end{equation}
+and the variance is 
+\begin{equation}
+    Var[X] = \begin{cases}
+        \displaystyle \frac{2\nu^2_2 (\nu_1 + \nu_2 - 2)}{\nu_1 (\nu_2 - 2)^2 (\nu_2 - 4)} & \text{if } \nu_2 \geq 5\\
+        DNE & \text{if } \nu_2 = 1,2,3,4.
+    \end{cases}
+\end{equation}
+\end{theorem}
+
+\begin{theorem}
+    If a random variable $X \sim F(\nu_1, \nu_2)$, then its reciprocal $\mfrac{1}{X} \sim F(\nu_1, \nu_2)$.
+\end{theorem}
+
+\begin{theorem}
+    If the random variables $U \sim \chi^2(\nu_1)$ and $V \sim \chi^2(\nu_2)$, and 
+    $U$ and $V$ are independent, then 
+    \begin{equation}
+        \frac{U/\nu_1}{V/\nu_2} \sim F(\nu_1, \nu_2).
+    \end{equation}
+\end{theorem}
+
+\begin{example}
+    Let $X_1, X_2, \ldots, X_4$ and $Y_1, Y_2, \ldots, Y_5$ be two random samples 
+    of size $4$ and $5$, respectively, from a standard normal population. What is 
+    the variance of the statistic 
+    \[
+        T = \left( \frac{5}{4} \right) \frac{X^2_1 + X^2_2 + X^2_3 + X^2_4}{Y^2_1 + Y^2_2 + Y^2_3 + Y^2_4 + Y^2_5}.
+    \]
+\end{example}
+\begin{solution}
+    Since the population is standard normal, we have 
+    \[
+        X^2_1 + X^2_2 + X^2_3 + X^2_4 \sim \chi^2(4).
+    \]
+    Similarly, 
+    \[
+        Y^2_1 + Y^2_2 + Y^2_3 + Y^2_4 + Y^2_5 \sim \chi^2(5).
+    \]
+    Therefore, 
+    \begin{align*}
+        T &= \left( \frac{5}{4} \right) \frac{X^2_1 + X^2_2 + X^2_3 + X^2_4}{Y^2_1 + Y^2_2 + Y^2_3 + Y^2_4 + Y^2_5}\\
+        &= \frac{\displaystyle \frac{X^2_1 + X^2_2 + X^2_3 + X^2_4}{4} }{ \displaystyle \frac{Y^2_1 + Y^2_2 + Y^2_3 + Y^2_4 + Y^2_5}{5}}\\
+        &\sim F(4,5).
+    \end{align*}
+
+    Applying theorem, the variance of this statistic is 
+    \begin{align*}
+        Var[T] &= Var[F(4,5)]\\
+        &= \frac{2 (5)^2 (4 + 5 - 2)}{4 (5 - 2)^2 (5 - 4)}\\
+        &= \frac{350}{36}.
+    \end{align*}
+\end{solution}
