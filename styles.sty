@@ -15,6 +15,9 @@
 \usepackage{tabularx}
 \usepackage[dvipsnames]{xcolor,colortbl}
 \usepackage{booktabs}
+\setlength{\heavyrulewidth}{1.5pt}
+\setlength{\abovetopsep}{4pt}
+\usepackage{mleftright}
 \usepackage{titlesec}
 \usepackage{algorithm}
 \usepackage{algorithmic}
@@ -27,6 +30,7 @@
 \DeclareMathOperator*{\argmax}{arg\,max}
 \DeclareMathOperator*{\argmin}{arg\,min}
 \DeclareMathOperator*{\cov}{Cov}
+\DeclareMathOperator*{\corr}{Corr}
 \DeclareMathOperator*{\bias}{Bias}
 \DeclareRobustCommand{\bxseries}{\fontseries{bx}\selectfont}
 \DeclareTextFontCommand{\textbx}{\fontseries{bx}}
@@ -46,6 +50,38 @@
   \tctestifnum{\count@stringtoks{#1}>1} %checks if number of chars in arg > 1 (including '\')
   {\ols{#1}} %if arg is longer than just one char, e.g. \mathbb{Q}, \mathbb{F},...
   {\olsi{#1}} %if arg is just one char, e.g. K, L,...
+}
+
+% better hashtag symbol
+\newcommand*{\hash}{%
+  \begin{tikzpicture}
+    % Width: 80% of equal sign
+    \pgfmathsetlengthmacro\myWidth{.8*width("=")}%
+    % Height: height of uppercase letter
+    \pgfmathsetlengthmacro\myHeight{height("H")}%
+    % Space between horizontal lines
+    \pgfmathsetlengthmacro\mySepY{.3333*\myWidth}%
+    % Side bearing
+    \pgfmathsetlengthmacro\mySideBearing{.1*\myWidth}%
+    % Angle for slanted vertical lines
+    \def\myAngle{70}%
+    % Calculate separation of vertical lines in horizontal direction
+    \pgfmathsetlengthmacro\mySepX{\mySepY/sin(\myAngle)}%
+    % Calculate the width of a slanted line
+    \pgfmathsetlengthmacro\mySlantX{\myHeight/tan(\myAngle)}%
+    \draw[line cap=round]
+      (0, {(\myHeight - \mySepY)/2}) -- ++(\myWidth, 0)
+      (0, {(\myHeight + \mySepY)/2}) -- ++(\myWidth, 0)
+      ({(\myWidth - \mySepX - \mySlantX)/2}, 0)
+      -- ({(\myWidth - \mySepX + \mySlantX)/2}, \myHeight)
+      ({(\myWidth + \mySepX - \mySlantX)/2}, 0)
+      -- ({(\myWidth + \mySepX + \mySlantX)/2}, \myHeight)
+    ;%
+    \useasboundingbox
+      (-\mySideBearing, 0)
+      (\myWidth + \mySideBearing, \myHeight)
+    ;% 
+  \end{tikzpicture}%
 }
 
 %\usepackage{mathrsfs}

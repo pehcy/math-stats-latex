@@ -150,6 +150,42 @@ is a $t$-statistic with degrees of freedom given by $n_1 + n_2 - 2$.
     \end{tabularx}
 \end{definition}
 
+\subsection{Large-Sample Test}
+
+Assume that we have a single pooled sample of size $n_1 + n_2$ rather than having two separate samples of size $n_1$ and $n_2$.
+For example, we have two different populations $X \sim BIN(n_1, p_1)$ and $Y \sim BIN(n_2, p_2)$ with $p_1 = p_2$. By combining them together 
+we will have a single sample of size $n_1 + n_2$ from one population with proportion $p$, that is,
+\[
+    X + Y \sim BIN(n_1 + n_2, p_1 = p_2 = p)
+\]
+
+\begin{definition}[Large samples test -- difference in proportion]
+    Assume that $X_1$ and $X_2$ are two populations. The large-sample test statistic is
+    \begin{equation}
+        z = \frac{\widehat{p}_1 - \widehat{p}_2}{\displaystyle \widehat{p}\, \widehat{q} \left(\frac{1}{n_1} + \frac{1}{n_2} \right)}.
+    \end{equation}
+
+    The null hypothesis is
+    \[
+        H_0 : p_1 - p_2 = 0
+    \]
+    with all possible alternative hypotheses:
+
+    \renewcommand{\arraystretch}{1.2}
+    \begin{tabularx}{\textwidth}{|l|X|}
+    \hline
+    Alternative Hypothesis & Rejection Region at level $\alpha$\\
+    \hline
+    $H_1 :  p_1 - p_2 > 0$ & $z \geq z_\alpha$ (Upper-tailed)\\
+    \hline
+    $H_1 :  p_1 - p_2 < 0$ & $z \leq -z_\alpha$ (Lower-tailed)\\
+    \hline
+    $H_1 :  p_1 - p_2 \neq 0$ & either $z \geq z_{\alpha/2}$ or $z \leq -z_{\alpha/2}$ (Two-tailed)\\
+    \hline
+    \end{tabularx}
+\end{definition}
+
+
 \section{Power of test}
 
 \begin{definition}[Power of test]
