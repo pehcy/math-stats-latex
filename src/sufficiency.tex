@@ -148,6 +148,54 @@ to measure the relative efficiency of these two unbiased estimators.
     the population variance.
 \end{solution}
 
+\begin{example}
+    Let $X_1, X_2, \ldots, X_n$ be a random sample from a normal population $X$ with mean $\mu$ and variance $\sigma^2 > 0$. Is the likelihood estimator
+    \[
+        \widehat{\sigma}^2 = \frac{1}{n} \sum_{i=1}^n (X_i - \overline{X})^2.
+    \]
+    of $\sigma^2$ a consistent estimator of $\sigma^2$?
+\end{example}
+\begin{solution}
+    Since $\widehat{\sigma}^2$ depends on the sample size $n$, we denote $\widehat{\sigma}^2$ as $\widehat{\sigma}^2_n$. Hence
+    \[
+        \widehat{\sigma}^2_n = \frac{1}{n} \sum_{i=1}^n (X_i - \overline{X})^2.
+    \]
+
+    The variance of $\widehat{\sigma}^2_n$ is given by
+    \begin{align*}
+        Var\left(\widehat{\sigma}^2_n\right) = Var\left(\frac{1}{n} \sum_{i=1}^n (X_i - \overline{X})^2\right)
+        &= \frac{1}{n^2} Var\left(\sigma^2 \frac{(n-1)S^2}{\sigma^2}\right)\\
+        &= \frac{\sigma^4}{n^2} Var\left(\frac{(n-1)S^2}{\sigma^2}\right)\\
+        &= \frac{\sigma^4}{n^2} Var\left(\chi^2(n-1)\right)\\
+        &= \frac{2(n-1)\sigma^4}{n^2}\\
+        &= \left[\frac{1}{n} - \frac{1}{n^2}\right] 2\sigma^4.
+    \end{align*}
+    Hence
+    \[
+        \lim_{n \to \infty} Var\left(\widehat{\theta}_n\right) = \lim_{n \to \infty} \left[\frac{1}{n} - \frac{1}{n^2}\right] 2\sigma^4 = 0.
+    \]
+
+    The biased $B\left(\widehat{\theta}_n, \theta\right)$ is given by
+    \begin{align*}
+        B\left(\widehat{\theta}_n, \theta\right) = E\left(\widehat{\theta}_n\right) - \sigma^2
+        &= E\left(\frac{1}{n} \sum_{i=1}^n (X_i - \overline{X})^2\right) - \sigma^2\\
+        &= \frac{1}{n} E\left(\sigma^2 \frac{(n-1)S^2}{\sigma^2}\right) - \sigma^2\\
+        &= \frac{\sigma^2}{n} E\left(\chi^2(n-1)\right) - \sigma^2\\
+        &= \frac{(n-1)\sigma^2}{n} - \sigma^2\\
+        &= -\frac{\sigma^2}{n}.
+    \end{align*}
+    Thus
+    \[
+        \lim_{n \to \infty} B\left(\widehat{\theta}_n, \theta\right) = -\lim_{n \to \infty} \frac{\sigma^2}{n} = 0.
+    \]
+
+    Hence $\frac{1}{n}\sum_{i=1}^n (X_i - \overline{X})^2$ is a consistent estimator of $\sigma^2$.
+
+    In the last example we saw that the likelihood estimator of variance is a consistent estimator. In general, if the density function $f(x | \theta)$ of a population satisfies some mild conditions, then the maximum likelihood estimator of $\theta$ is consistent. Similarly, if the density function $f(x; \theta)$ of a population satisfies some mild conditions, then the estimator obtained by moment method is also consistent.
+
+    Since consistency is a large sample property of an estimator, some statisticians suggest that consistency should not be used alone for judging the goodness of an estimator; rather it should be used along with other criteria.
+\end{solution}
+
 \section{Sufficiency}
 
 \begin{definition}[Sufficiency]
@@ -339,8 +387,20 @@ therefore the maximum likelihood estimator can also be a random variable.
     \]
 \end{definition}
 
-One way to find a minimum variance unbiased estimator for a parameter is to use the Cramér-Rao lower bound or the Fisher 
-information inequality. 
+One way to find a minimum variance unbiased estimator for a parameter is to use the Cramér-Rao lower bound or the Fisher
+information inequality.
+
+\begin{remark}[Multivariate Information Inequality]
+A multivariate version of the Information Inequality exists as well. If $\Theta \subset \mathbb{R}^k$ for some $k \in \mathbb{N}$, and if $T : \mathcal{X} \to \mathbb{R}^n$ is an $n$-dimensional statistic for some $n \in \mathbb{N}$ for data $X \sim f(x \mid \theta)$ taking values in a space $\mathcal{X}$ of arbitrary dimension, define the mean function $m : \mathbb{R}^k \to \mathbb{R}^n$ by $m(\theta) := \mathbb{E}_\theta T(X)$ and its $n \times k$ Jacobian matrix by
+\[
+    J_{ij} := \frac{\partial m_i(\theta)}{\partial \theta_j}.
+\]
+Then the multivariate Information Inequality asserts that
+\[
+    \text{Cov}_\theta[T(X)] \geq J \, I(\theta)^{-1} J^\top
+\]
+where $I(\theta) := \text{Cov}_\theta[\nabla_\theta \log f(X \mid \theta)]$ is the Fisher information matrix, where the notation ``$A \geq B$'' for $n \times n$ matrices $A, B$ means that $[A - B]$ is positive semi-definite, and where $C^\top$ denotes the $k \times n$ transpose of an $n \times k$ matrix $C$. This gives lower bounds on the variance of $z^\top T(X)$ for all vectors $z \in \mathbb{R}^n$ and, in particular, lower bounds for the variance of components $T_i(X)$.
+\end{remark}
 
 \begin{theorem}[Cramér-Rao lower bound]
     Let $X_1, X_2, \ldots, X_n$ be a random sample from a distribution with density function $f(x|\theta)$ where $\theta \in \Theta \subseteq \mathbb{R}$. Suppose the following regularity conditions hold:

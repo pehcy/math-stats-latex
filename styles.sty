@@ -5,6 +5,7 @@
 \usepackage{derivative}
 \usepackage{bbm}
 \usepackage{graphicx}
+\usepackage{subcaption}
 \usepackage[export]{adjustbox}
 \newcommand\sbullet[1][.5]{\mathbin{\vcenter{\hbox{\scalebox{#1}{$\bullet$}}}}}
 \usepackage{amsthm}
@@ -51,6 +52,13 @@
   {\ols{#1}} %if arg is longer than just one char, e.g. \mathbb{Q}, \mathbb{F},...
   {\olsi{#1}} %if arg is just one char, e.g. K, L,...
 }
+
+% figure caption
+\DeclareCaptionFormat{custom}
+{%
+    \textbf{#1#2}{\small #3}
+}
+\captionsetup{format=custom}
 
 % better hashtag symbol
 \newcommand*{\hash}{%

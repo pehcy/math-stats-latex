@@ -11,8 +11,38 @@ The certainty of this guarantee is qualified by the following definitions.
     \textbf{interval estimator} is a pair of statistics $[L(\mathbf{X}), U(\mathbf{X})]$ such that $L(\mathbf{X}) < U(\mathbf{X})$ for all possible samples $\mathbf{X}$.
 \end{definition}
 
+Recall that a sample is a portion of the population usually chosen by some method of random sampling and 
+as such is a set of random variables $X_1, X_2, \ldots, X_n$ with the same probability density function 
+$f(x | \theta)$ as the population. Once the sampling is done, we will get the sample data 
+\[
+    X_1 = x_1, X_2 = x_2, \ldots, X_n = x_n.
+\]
+
 Another well known method for constructing confidence 
 sets is that using the pivotal quantities.
+
+\begin{definition}[Confidence Coefficient]
+    Consider $X_1, X_2, \ldots, X_n$ be a random sample of size $n$ from a population with density $f(x|\theta)$, where 
+    $\theta$ is unknown parameter. An interval estimator $[L(\mathbf{X}), U(\mathbf{X})]$ of $\theta$ is called a 
+    $100(1-\alpha) \%$ \textbf{confidence interval} for $\theta$ if
+    \begin{equation}
+        \uprob[\theta]{ L \leq \theta \leq U } = 1 - \alpha, \quad \forall \theta \in \Theta,
+    \end{equation}
+    The random variable $L$ is called the \textbf{lower confidence limit} and the random variable $U$ is called the
+    \textbf{upper confidence limit}. The value $1 - \alpha$ is called the \textbf{confidence coefficient} or \textbf{coverage probability} of the interval estimator.
+\end{definition}
+
+One can find inifitely many pairs of $L, U$, such that 
+\[
+    1 - \alpha = \uprob[\theta]{ L \leq \theta \leq U }
+\]
+for a given confidence coefficient $1 - \alpha$. Thus, 
+there are infinitely many confidence intervals for a given confidence coefficient.
+
+However, we only need the confidence interval that is the shortest in length among all possible confidence intervals. 
+If a confidence interval is constructed by omitting equal tail areas then we 
+obtain what we known as the central confidence interval. 
+In a symmetric distribution, the central confidence interval is also the shortest confidence interval.
 
 \section{Pivotal Quantities}
 
@@ -86,6 +116,55 @@ does not belong to the location-scale family.
 \caption{The location and scale families and some common pivots. Here, $\ols{X}$ is the sample mean, $S^2$ is the sample variance, and $X_{(n)}$ is the maximum order statistic.}
 \end{table}
 
+\begin{example}[Scale uniform interval estimation]
+    Let $X_1, X_2, \ldots, X_n$ be a random sample from a uniform distribution $U(0, \theta)$, 
+    and let $Y = \max\{ X_1, X_2, \ldots, X_n \}$. We are interested 
+    in finding an interval estimator of $\theta$. 
+    
+    We consider two candidate interval estimators:
+    \begin{enumerate}
+        \item $[aY, bY], \quad 1 \leq a < b$.
+        \item $[Y+c, Y+d], \quad 0 \leq c < d$.
+    \end{enumerate}
+    where $a, b, c, d$ are specified constants. Note that the parameter $\theta$ must always larger than $y$.
+
+    \textbf{[First candidate]} For the first candidate, we have
+    \begin{align*}
+        \uprob[\theta]{ \theta \in [aY, bY] } &= \uprob[\theta]{ aY \leq \theta \leq bY } \\
+        &= \uprob[\theta]{ \frac{1}{b} \leq \frac{Y}{\theta} \leq \frac{1}{a} }\\
+    \end{align*}
+
+    From previuous example we know that 
+    \[
+        f_Y(y) = \begin{cases}
+            \displaystyle \frac{n y^{n-1}}{\theta^n} & \text{if } 0 < y < \theta \\
+            0 & \text{otherwise.}
+        \end{cases}.
+    \]
+    so the pdf of $T$ is $f_T(t) = nt^{n-1}$ for $0 < t < 1$. Thus,
+    \[
+        \uprob[\theta]{ \frac{1}{b} \leq \frac{Y}{\theta} \leq \frac{1}{a} }
+        = \int_{1/b}^{1/a} nt^{n-1} \> \mathrm{d}t = \frac{1}{a^n} - \frac{1}{b^n}.
+    \]
+    The covergae probability of the first interval estimator is independent of the parameter $\theta$, and thus 
+    $\frac{1}{a^n} - \frac{1}{b^n}$ is the confidence coefficient of the interval estimator $[aY, bY]$.
+
+    \textbf{[Second candidate]} On the other hand, for the second candidate, for $\theta \geq d$ and a similar calculation we obtained
+    \begin{align*}
+        \uprob[\theta]{ \theta \in [Y+c, Y+d] } &= \uprob[\theta]{ Y + c \leq \theta \leq Y + d } \\
+        &= \uprob[\theta]{ 1 - \frac{d}{\theta} \leq T \leq 1 - \frac{c}{\theta} } \\
+        &= \int_{1 - d/\theta}^{1 - c/\theta} n t^{n-1} \> \mathrm{d}t \\
+        &= (1 - c/\theta)^n - (1 - d/\theta)^n
+    \end{align*}
+
+    In this case, the covergae probability of the second interval estimator depends on the unknown parameter $\theta$.
+    As $\theta \to \infty$, for any fixed $c$ and $d$, the coverage probability is 
+    \[
+        \lim_{\theta \to \infty} (1 - c/\theta)^n - (1 - d/\theta)^n = 0.
+    \]
+    Showing that the second interval estimator has zero confidence coefficient.
+\end{example}
+
 \section{Confidence Interval for Population Mean}
 
 At the outset, we use the pivotal quantity method to construct a confidence interval for the mean of a normal population. 
@@ -136,6 +215,43 @@ generate a confidence intervals using the same method. Then approximately $(1-\a
     48 out of 50, of the intervals contain the true mean. Thus, the coverage probability is approximately 96\%.}
 \end{figure}
 
+\subsection{Confidence interval for small sample mean}
+
+Suppose $X_1, X_2, \ldots, X_n$ is random sample from a normal population $X$
+with mean $\mu$ and variance $\sigma^2 > 0$. Let the sample mean and sample variances
+be $\ols{X}$ and $S^2$ respectively. Then
+\[
+\frac{(n-1)S^2}{\sigma^2} \sim \chi^2(n-1)
+\]
+
+and
+\[
+\frac{\ols{X} - \mu}{\sqrt{\mfrac{\sigma^2}{n}}} \sim N(0,1).
+\]
+
+Therefore, the random variable defined by the ratio of $\mfrac{(n-1)S^2}{\sigma^2}$ to $\mfrac{\ols{X}-\mu}{\sqrt{\mfrac{\sigma^2}{n}}}$ has
+a $t$-distribution with $(n-1)$ degrees of freedom, that is
+\[
+Q(X_1, X_2, \ldots, X_n, \mu) = \frac{\mfrac{\ols{X}-\mu}{\sqrt{\mfrac{\sigma^2}{n}}}}{\sqrt{\mfrac{(n-1)S^2}{(n-1)\sigma^2}}} = \frac{\ols{X}-\mu}{\sqrt{\mfrac{S^2}{n}}} \sim t(n-1),
+\]
+
+where $Q$ is the pivotal quantity to be used for the construction of the confidence interval for $\mu$. Using this pivotal quantity, we construct the confidence
+interval as follows:
+\begin{align*}
+1-\alpha &= P\left(-t_{\mfrac{\alpha}{2}}(n-1) \leq \frac{\ols{X}-\mu}{\mfrac{S}{\sqrt{n}}} \leq t_{\mfrac{\alpha}{2}}(n-1)\right)\\
+&= P\left(\ols{X} - \left(\frac{S}{\sqrt{n}}\right)t_{\mfrac{\alpha}{2}}(n-1) \leq \mu \leq \ols{X} + \left(\frac{S}{\sqrt{n}}\right)t_{\mfrac{\alpha}{2}}(n-1)\right)
+\end{align*}
+
+Hence, the $100(1-\alpha)\%$ confidence interval for $\mu$ when the population $X$ is
+normal with the unknown variance $\sigma^2$ is given by
+\begin{equation}
+\left[\ols{X} - \left(\frac{S}{\sqrt{n}}\right)t_{\mfrac{\alpha}{2}}(n-1),\quad \ols{X} + \left(\frac{S}{\sqrt{n}}\right)t_{\mfrac{\alpha}{2}}(n-1)\right].    
+\end{equation}
+
+\begin{remark}
+    For small sample size $n < 30$, we should use the $t$-distribution to construct the confidence interval for the population mean $\mu$ as the population variance $\sigma^2$ is unknown.
+\end{remark}
+
 \begin{example}
     Let $X_1, X_2, \ldots, X_{11}$ be a random sample from a normal population with unknown mean $\mu$ and variance $\sigma^2 = 9.9$.
     Given that $\sum_{i=1}^{11} x_i = 132$. Find a 95\% confidence interval for $\mu$.
@@ -157,6 +273,96 @@ generate a confidence intervals using the same method. Then approximately $(1-\a
     \]
 \end{solution}
 
+\begin{definition}[Minimum sample size for estimating population mean]
+    Let $X_1, X_2, \ldots, X_n$ be a random sample from a population with unknown mean $\mu$ and known variance $\sigma^2$.
+    For a specified margin of error $E > 0$ and confidence level $100(1-\alpha)\%$, the minimum sample size $n$ required to estimate the population mean $\mu$ is given by
+    \begin{equation}
+        n = \left\lceil \left(\frac{z_{\alpha / 2}\, \sigma}{E}\right)^2 \right\rceil.
+    \end{equation}
+    The value of $n$ determined from the above formula is the \textbf{minimum} sample size required to ensure that the desired level of confidence is achieved.
+    So we always round up to the next larger integer.
+\end{definition}
+
+\begin{example}
+    Suppose that we wanted to estimate the true average number of eggs a queen honeybee lays with 
+    $95\%$ confidence. The margin of error we are willing to accept is $2$ eggs. 
+    Suppose we all know that the sample variance is $s^2 = 100$. What is the minimum sample size required?
+\end{example}
+\begin{solution}
+    For a 95\% confidence interval, we have $\alpha = 0.05$ and $z_{\alpha / 2} = z_{0.025} = 1.96$. 
+    The minimum sample size required is
+    \[
+        n = \left\lceil \left(\frac{1.96 \times \sqrt{100}}{2}\right)^2 \right\rceil = \lceil 96.04 \rceil = 97.
+    \]
+    Thus, we need a sample size of at least $97$ queen honeybees.
+\end{solution}
+
+\section{Confidence interval for population proportion}
+
+Let $X_1, X_2, \ldots, X_n$ be a random sample from a population with unknown proportion $p$. The sample proportion is given by
+
+\[
+ f(x|p) = p^x \,(1 - p)^{1-x}, \quad x = 0, 1.
+\]
+
+We want to construct a $100(1 - \alpha)\%$ approximate confidence interval for the parameter $p$.
+
+To do this, we note that the likelihood function of the sample is given by 
+\[
+    L(p|X) = \prod_{i=1}^{n} f(X_i|p) = \prod_{i=1}^{n} p^{X_i} (1-p)^{1-X_i} = p^{\sum_{i=1}^{n} X_i} (1-p)^{n - \sum_{i=1}^{n} X_i}.
+\]
+
+Taking the logarithm of the likelihood function, we get
+\[
+    \ln L(p) = \sum_{i=1}^{n} [x_i \ln p + (1 - x_i) \ln(1 - p)].
+\]
+
+Differentiating, the above expression, we get
+\[
+    \frac{d \ln L(p)}{dp} = \frac{1}{p} \sum_{i=1}^{n} x_i - \frac{1}{1 - p} \sum_{i=1}^{n} (1 - x_i).
+\]
+
+Setting this equals to zero and solving for $p$, we get
+\[
+    \frac{n\overline{x}}{p} - \frac{n - n\overline{x}}{1 - p} = 0,
+\]
+
+that is
+\[
+    (1 - p)\, n\, \overline{x} = p\, (n - n\, \overline{x}),
+\]
+
+which is
+\[
+    n\, \overline{x} - p\, n\, \overline{x} = p\, n - p\, n\, \overline{x}.
+\]
+
+Hence
+\[
+    p = \overline{x}.
+\]
+
+Therefore, the maximum likelihood estimator of $p$ is given by
+\[
+    \widehat{p} = \overline{X}.
+\]
+The variance of $\overline{X}$ is
+\[
+    Var\left(\overline{X}\right) = \frac{\sigma^2}{n}.
+\]
+Since $X \sim Ber(p)$, the variance $\sigma^2 = p(1 - p)$, and
+\[
+    Var\left(\widehat{p}\right) = Var\left(\overline{X}\right) = \frac{p(1 - p)}{n}.
+\]
+Since $Var\left(\widehat{p}\right)$ is not free of the parameter $p$, we replace $p$ by $\widehat{p}$ in the expression of $Var\left(\widehat{p}\right)$ to get
+\[
+    Var\left(\widehat{p}\right) \simeq \frac{\widehat{p}(1 - \widehat{p})}{n}.
+\]
+The $100(1-\alpha)\%$ approximate confidence interval for the parameter $p$ is given by
+\[
+    \left[\widehat{p} - z_{\frac{\alpha}{2}} \sqrt{\frac{\widehat{p}(1 - \widehat{p})}{n}},\quad \widehat{p} + z_{\frac{\alpha}{2}} \sqrt{\frac{\widehat{p}(1 - \widehat{p})}{n}}\right].
+\]
+
 \section{Confidence interval for unknown variance}
 
 Consider a random sample $X_1, X_2, \ldots, X_n$ from a normal population with mean $\mu$ and variance $\sigma^2$. 
@@ -177,3 +383,398 @@ Hence, the $100(1 - \alpha)\%$ confidence interval for $\sigma^2$ when the popul
 \[
 \left[ \frac{(n-1)S^2}{\chi^2_{n-1,\> 1 - \mfrac{\alpha}{2}}} ,\quad \frac{(n-1)S^2}{\chi^2_{n-1,\> \mfrac{\alpha}{2}}} \right].
 \]
+
+\subsection{Confidence Interval for standard deviation}
+
+Let $S^2$ be the sample variance. We know that
+\[
+    \frac{(n-1)S^2}{\sigma^2} \sim \chi^2(n-1).
+\]
+
+Using this random variable as a pivot, we can construct a $100(1-\alpha)\%$ confidence interval for $\sigma$ from
+\[
+1 - \alpha = P\left(a \leq \frac{(n-1)S^2}{\sigma^2} \leq b\right)
+\]
+
+by suitably choosing the constants $a$ and $b$. Hence, the confidence interval
+for $\sigma$ is given by
+\[
+\left[\sqrt{\frac{(n-1)S^2}{b}},\quad \sqrt{\frac{(n-1)S^2}{a}}\right].
+\]
+
+The length of this confidence interval is given by
+\[
+L(a,b) = S\sqrt{n-1}\left[\frac{1}{\sqrt{a}} - \frac{1}{\sqrt{b}}\right]
+\]
+
+In order to find the shortest confidence interval, we should find a pair of
+constants $a$ and $b$ such that $L(a,b)$ is minimum. Thus, we have a constraint
+minimization problem. That is
+\[
+\begin{aligned}
+&\text{Minimize } L(a,b)\\
+&\text{Subject to the condition}\\
+&\int_a^b f(u)\mathrm{d}u = 1 - \alpha,
+\end{aligned}
+\quad \text{(MP)}
+\]
+
+where
+\[
+f(x) = \frac{1}{\Gamma\left(\mfrac{n-1}{2}\right)}\, 2^{\mfrac{1-n}{2}}\, x^{\mfrac{n-3}{2}}\, e^{-\mfrac{x}{2}}.
+\]
+
+Differentiating $L$ with respect to $a$, we get
+\[
+\frac{dL}{da} = S\sqrt{n-1}\left(-\frac{1}{2}a^{-\mfrac{3}{2}} + \frac{1}{2}b^{-\mfrac{3}{2}}\frac{db}{da}\right).
+\]
+
+From
+\[
+\int_a^b f(u)\,\mathrm{d}u = 1 - \alpha,
+\]
+
+we find the derivative of $b$ with respect to $a$ as follows:
+\[
+\frac{d}{da}\int_a^b f(u)\,\mathrm{d}u = \frac{d}{da}(1-\alpha)
+\]
+
+that is
+\[
+f(b)\frac{db}{da} - f(a) = 0.
+\]
+
+Thus, we have
+\[
+\frac{db}{da} = \frac{f(a)}{f(b)}.
+\]
+
+Letting this into the expression for the derivative of $L$, we get
+\[
+\frac{dL}{da} = S\sqrt{n-1}\left(-\frac{1}{2}a^{-\mfrac{3}{2}} + \frac{1}{2}b^{-\mfrac{3}{2}}\frac{f(a)}{f(b)}\right).
+\]
+
+Setting this derivative to zero, we get
+\[
+S\sqrt{n-1}\left(-\frac{1}{2}a^{-\mfrac{3}{2}} + \frac{1}{2}b^{-\mfrac{3}{2}}\frac{f(a)}{f(b)}\right) = 0
+\]
+
+which yields
+\[
+a^{\mfrac{3}{2}}f(a) = b^{\mfrac{3}{2}}f(b).
+\]
+
+Using the form of $f$, we get from the above expression
+\[
+a^{\mfrac{3}{2}}a^{\mfrac{n-3}{2}}e^{-\mfrac{a}{2}} = b^{\mfrac{3}{2}}b^{\mfrac{n-3}{2}}e^{-\mfrac{b}{2}}
+\]
+
+that is
+\[
+a^{\mfrac{n}{2}}e^{-\mfrac{a}{2}} = b^{\mfrac{n}{2}}e^{-\mfrac{b}{2}}.
+\]
+
+From this we get
+\[
+\ln\left(\frac{a}{b}\right) = \left(\frac{a-b}{n}\right).
+\]
+
+Hence to obtain the pair of constants $a$ and $b$ that will produce the shortest
+confidence interval for $\sigma$, we have to solve the following system of nonlinear
+equations
+\[
+\begin{cases}
+\displaystyle\int_a^b f(u)\,\mathrm{d}u = 1 - \alpha\\[1em]
+\displaystyle\ln\left(\frac{a}{b}\right) = \frac{a-b}{n}.
+\end{cases}
+\quad (\star)
+\]
+
+If $a_o$ and $b_o$ are solutions of $(\star)$, then the shortest confidence interval for $\sigma$
+is given by
+\[
+\left[\sqrt{\frac{(n-1)S^2}{b_o}},\quad \sqrt{\frac{(n-1)S^2}{a_o}}\right].
+\]
+
+Since this system of nonlinear equations is hard to solve analytically, numerical solutions are given in statistical literature in the form of a table for
+finding the shortest interval for the variance.
+
+\section{Approximate Confidence Interval with MLE}
+
+When the sample size $n$ is large, we can use the asymptotic normality of the maximum likelihood estimator to construct an approximate confidence interval for the parameter $\theta$. 
+\begin{equation}
+    \frac{\widehat{\theta} - \mathbb{E}[\widehat{\theta}]}{\sqrt{Var[\widehat{\theta}]}} \sim N(0,1) \quad \text{as } n \to \infty.
+\end{equation}
+
+Since that for large $n$, the maximum likelihood estimator $\widehat{\theta}$ is unbiased, so $\mathbb{E}[\widehat{\theta}] = \theta$. Thus 
+\begin{equation}
+    \frac{\widehat{\theta} - \theta}{\sqrt{Var[\widehat{\theta}]}} \sim N(0,1) \quad \text{as } n \to \infty.
+\end{equation}
+
+Now using 
+\[
+Q = \frac{\widehat{\theta} - \theta}{\sqrt{Var[\widehat{\theta}]}}
+\]
+as the pivotal quantity, we construct an \textit{approximate} 
+$100(1 - \alpha)\%$ confidence interval for $\theta$ as follows:
+\begin{align*}
+    1 - \alpha &= \uprob[\theta]{ -z_{\alpha / 2} \leq Q \leq z_{\alpha / 2} } \\
+    &= \uprob[\theta]{ -z_{\alpha / 2} \leq \frac{\widehat{\theta} - \theta}{\sqrt{Var[\widehat{\theta}]}} \leq z_{\alpha / 2} } \\
+    &= \uprob[\theta]{ \widehat{\theta} - z_{\alpha / 2} \sqrt{Var[\widehat{\theta}]} \leq \theta \leq \widehat{\theta} + z_{\alpha / 2} \sqrt{Var[\widehat{\theta}]} }.
+\end{align*}
+
+\begin{example}
+    If $X_1, X_2, \ldots, X_n$ is a random sample from an exponential distribution with pdf
+    \[
+    f(x | \theta) = \begin{cases}
+        \theta x^{\theta - 1} & \text{if } 0 < x < 1 \\
+        0 & \text{otherwise,}
+    \end{cases}
+    \]
+    where $\theta > 0$ is an unknown parameter. Find an approximate $100(1 - \alpha)\%$ confidence interval for $\theta$ when the sample size $n$ is large.
+\end{example}
+\begin{solution}
+    The log-likelihood function from the previous example is
+    \[
+    \ell(\theta) = n \ln \theta + (\theta - 1) \sum_{i=1}^n \ln x_i.
+    \]
+
+    The likelihood function $L(\theta)$ of the sample is
+    \[
+        L(\theta) = \prod_{i=1}^n \theta x_i^{\theta - 1}.
+    \]
+
+    Hence
+    \[
+        \ln L(\theta) = n \ln \theta + (\theta - 1) \sum_{i=1}^n \ln x_i.
+    \]
+
+    The first derivative of the logarithm of the likelihood function is
+    \[
+        \frac{d}{d\theta} \ln L(\theta) = \frac{n}{\theta} + \sum_{i=1}^n \ln x_i.
+    \]
+
+    Setting this derivative to zero and solving for $\theta$, we obtain
+    \[
+        \theta = -\frac{n}{\sum_{i=1}^n \ln x_i}.
+    \]
+
+    Hence, the maximum likelihood estimator of $\theta$ is given by
+    \[
+        \widehat{\theta} = -\frac{n}{\sum_{i=1}^n \ln X_i}.
+    \]
+
+    Finding the variance of this estimator is difficult. We compute its variance by computing the Cramér-Rao bound for this estimator. The second derivative of the logarithm of the likelihood function is given by
+    \[
+        \frac{d^2}{d\theta^2} \ln L(\theta) = \frac{d}{d\theta} \left( \frac{n}{\theta} + \sum_{i=1}^n \ln x_i \right) = -\frac{n}{\theta^2}.
+    \]
+
+    Hence
+    \[
+        E\left( \frac{d^2}{d\theta^2} \ln L(\theta) \right) = -\frac{n}{\theta^2}.
+    \]
+
+    Therefore
+    \[
+        Var\left(\widehat{\theta}\right) \geq \frac{\theta}{n}.
+    \]
+
+    Thus we take
+    \[
+        Var\left(\widehat{\theta}\right) \simeq \frac{\theta}{n}.
+    \]
+
+    Since $Var\left(\widehat{\theta}\right)$ has $\theta$ in its expression, we replace the unknown $\theta$ by its estimate $\widehat{\theta}$ so that
+    \[
+        Var\left(\widehat{\theta}\right) \simeq \frac{\widehat{\theta}^2}{n}.
+    \]
+
+    The $100(1 - \alpha)\%$ approximate confidence interval for $\theta$ is given by
+    \[
+        \left[\widehat{\theta} - z_{\frac{\alpha}{2}} \frac{\widehat{\theta}}{\sqrt{n}}, \widehat{\theta} + z_{\frac{\alpha}{2}} \frac{\widehat{\theta}}{\sqrt{n}}\right],
+    \]
+    which is
+    \[
+        \left[-\frac{n}{\sum_{i=1}^n \ln X_i} + z_{\frac{\alpha}{2}} \left(\frac{\sqrt{n}}{\sum_{i=1}^n \ln X_i}\right), -\frac{n}{\sum_{i=1}^n \ln X_i} - z_{\frac{\alpha}{2}} \left(\frac{\sqrt{n}}{\sum_{i=1}^n \ln X_i}\right)\right].
+    \]
+
+    \begin{remark}[Remark 17.7]
+        In the next section 17.2, we derived the exact confidence interval for $\theta$ when the population distribution in exponential. The exact $100(1 - \alpha)\%$ confidence interval for $\theta$ was given by
+        \[
+            \left[-\frac{\chi^2_{\frac{\alpha}{2}}(2n)}{2\sum_{i=1}^n \ln X_i}, -\frac{\chi^2_{1-\frac{\alpha}{2}}(2n)}{2\sum_{i=1}^n \ln X_i}\right].
+        \]
+        Note that this exact confidence interval is not the shortest confidence interval for the parameter $\theta$.
+    \end{remark}
+\end{solution}
+
+\begin{example}
+    If $X_1, X_2, \ldots, X_{49}$ is a random sample from a population with density
+    \[
+        f(x; \theta) = \begin{cases}
+            \theta x^{\theta - 1} & \text{if } 0 < x < 1\\
+            0 & \text{otherwise,}
+        \end{cases}
+    \]
+    where $\theta > 0$ is an unknown parameter, what are $90\%$ approximate and exact confidence intervals for $\theta$ if $\sum_{i=1}^{49} \ln X_i = -0.7567$?
+\end{example}
+\begin{solution}
+    We are given the followings:
+    \[
+        n = 49
+    \]
+    \[
+        \sum_{i=1}^{49} \ln X_i = -0.7576
+    \]
+    \[
+        1 - \alpha = 0.90.
+    \]
+
+    Hence, we get
+    \[
+        z_{0.05} = 1.64,
+    \]
+    \[
+        \frac{n}{\sum_{i=1}^n \ln X_i} = \frac{49}{-0.7567} = -64.75
+    \]
+    and
+    \[
+        \frac{\sqrt{n}}{\sum_{i=1}^n \ln X_i} = \frac{7}{-0.7567} = -9.25.
+    \]
+
+    Hence, the approximate confidence interval is given by
+    \[
+        [64.75 - (1.64)(9.25), 64.75 + (1.64)(9.25)]
+    \]
+    that is $[49.58, 79.92]$.
+
+    Next, we compute the exact $90\%$ confidence interval for $\theta$ using the formula
+    \[
+        \left[-\frac{\chi^2_{\frac{\alpha}{2}}(2n)}{2\sum_{i=1}^n \ln X_i}, -\frac{\chi^2_{1-\frac{\alpha}{2}}(2n)}{2\sum_{i=1}^n \ln X_i}\right].
+    \]
+
+    From chi-square table, we get
+    \[
+        \chi^2_{0.05}(98) = 77.93 \quad \text{and} \quad \chi^2_{0.95}(98) = 124.34.
+    \]
+
+    Hence, the exact $90\%$ confidence interval is
+    \[
+        \left[\frac{77.93}{(2)(0.7567)}, \frac{124.34}{(2)(0.7567)}\right]
+    \]
+    that is $[51.49, 82.16]$.
+\end{solution}
+
+\begin{example}
+    If $X_1, X_2, \ldots, X_n$ is a random sample from a population with density
+    \[
+        f(x; \theta) = \begin{cases}
+            (1 - \theta)\theta^x & \text{if } x = 0, 1, 2, \ldots, \infty\\
+            0 & \text{otherwise,}
+        \end{cases}
+    \]
+    where $0 < \theta < 1$ is an unknown parameter, what is a $100(1-\alpha)\%$ approximate confidence interval for $\theta$ if the sample size is large?
+\end{example}
+\begin{solution}
+    The logarithm of the likelihood function of the sample is
+    \[
+        \ln L(\theta) = \ln \theta \sum_{i=1}^n x_i + n \ln(1 - \theta).
+    \]
+
+    Differentiating we see obtain
+    \[
+        \odv{}{\theta} \ln L(\theta) = \frac{\sum_{i=1}^n x_i}{\theta} - \frac{n}{1 - \theta}.
+    \]
+
+    Equating this derivative to zero and solving for $\theta$, we get $\theta = \frac{\overline{x}}{1 + \overline{x}}$. Thus, the maximum likelihood estimator of $\theta$ is given by
+    \[
+        \widehat{\theta} = \frac{\overline{X}}{1 + \overline{X}}.
+    \]
+
+    Next, we find the variance of this estimator using the Cramér-Rao lower bound. For this, we need the second derivative of $\ln L(\theta)$. Hence
+    \[
+        \frac{d^2}{d\theta^2} \ln L(\theta) = -\frac{n\overline{x}}{\theta^2} - \frac{n}{(1 - \theta)^2}.
+    \]
+
+    Therefore
+    \begin{align*}
+        \mathbb{E} \left( \frac{d^2}{d\theta^2} \ln L(\theta) \right)
+        &= \mathbb{E} \left( -\frac{n\overline{X}}{\theta^2} - \frac{n}{(1 - \theta)^2} \right)\\
+        &= -\frac{n}{\theta^2} \mathbb{E}\left(\overline{X}\right) - \frac{n}{(1 - \theta)^2}\\
+        &= -\frac{n}{\theta^2} \cdot \frac{1}{(1 - \theta)} - \frac{n}{(1 - \theta)^2} \quad \text{(since each } X_i \sim \text{GEO}(1 - \theta)\text{)}\\
+        &= -\frac{n}{\theta(1 - \theta)}\left[\frac{1}{\theta} + \frac{\theta}{1 - \theta}\right]\\
+        &= -\frac{n(1 - \theta + \theta^2)}{\theta^2(1 - \theta)^2}.
+    \end{align*}
+
+    Therefore
+    \[
+        Var\left(\widehat{\theta}\right) \simeq \frac{\widehat{\theta}^2\left(1 - \widehat{\theta}\right)^2}{n\left(1 - \widehat{\theta} + \widehat{\theta}^2\right)}.
+    \]
+
+    The $100(1-\alpha)\%$ approximate confidence interval for $\theta$ is given by
+    \[
+        \left[\widehat{\theta} - z_{\frac{\alpha}{2}} \frac{\widehat{\theta}\left(1 - \widehat{\theta}\right)}{\sqrt{n\left(1 - \widehat{\theta} + \widehat{\theta}^2\right)}}, \widehat{\theta} + z_{\frac{\alpha}{2}} \frac{\widehat{\theta}\left(1 - \widehat{\theta}\right)}{\sqrt{n\left(1 - \widehat{\theta} + \widehat{\theta}^2\right)}}\right],
+    \]
+    where 
+    \[
+        \widehat{\theta} = \frac{\overline{X}}{1 + \overline{X}}.
+    \]
+\end{solution}
+
+\section*{Tutorials}
+
+\begin{mdframed}
+    \vspace{-0.25cm}
+    \hspace{-0.25cm}
+    \begin{Exercise}
+        Let $X_1, X_2, \ldots, X_n$ be a random sample of 
+        with gamma density function
+        \[
+                f_{X_i}(x|\theta, \beta) = \frac{1}{\Gamma(\beta)\, \theta^\beta} \, x^{\beta - 1} e^{-x/\theta}, \quad x > 0.
+        \]
+        Where $\theta$ is an unknown parameter and $\beta$ is a known constant. Show that
+        \[
+            \left[ \frac{2 \sum^n_{i=1} X_i}{\chi^2_{1 - \mfrac{\alpha}{2} (2n\beta)}},\> \frac{2 \sum^n_{i=1} X_i}{\chi^2_{\mfrac{\alpha}{2} (2n\beta)}} \right]
+        \]
+        is a $100(1-\alpha)\%$ confidence interval for $\theta$.
+    \end{Exercise}
+
+    \begin{Exercise}
+        A machine produces steel rods with lengths that are normally distributed with unknown mean $\mu$ and standard deviation $\sigma^2$.
+
+        A quality control inspector uses a gauge to measure the length, $x$ centimeters, of each rod in a 
+        random sample of 100 rods from the machine's production. The summarised data are as follows:
+        \[
+            \sum_{i=1}^{100} x_i = 1040.0, \quad \sum_{i=1}^{100} x_i^2 = 11102.11.
+        \]
+        Construct a 95\% confidence interval for the mean length of rods produced by the machine.
+    \end{Exercise}
+    \begin{Answer}
+    The sample mean is 
+    \[
+        \ols{X} = \frac{1}{100} \sum_{i=1}^{100} x_i = \frac{1040.0}{100} = 10.4.
+    \]
+    and the sample variance is
+    \begin{align*}
+        s^2 &= \frac{1}{100-1} \left( \sum_{i=1}^{100} x_i^2 - 100 \ols{X}^2 \right)\\
+        &= \frac{1}{99} \left( 11102.11 - 100 (10.4)^2 \right)\\
+        &= 2.895.
+    \end{align*}
+        
+    Since the population variance $\sigma^2$ is unknown, we use the sample variance $s^2$ to estimate $\sigma^2$. The unbiased 
+    estimate of $\sigma^2$ is
+    \[
+        \widehat{\sigma}^2 = \frac{n}{n-1}s^2 = \frac{100(8.8209)}{99} = 2.895.
+    \]
+    \end{Answer}
+    
+    \begin{Exercise}
+        In laboratory work, it is desirable to run careful checks on the variability of readings produced
+ on standard samples. In a study of the amount of calcium in drinking water undertaken as part
+ of a water quality assessment, the same standard sample was run through the laboratory six
+ times, yielding the following results (in mg/L):
+ \[
+     40.1,\> 39.8,\> 40.0,\> 40.2,\> 39.9,\> 40.1
+ \]
+ Construct a 95\% confidence interval for the mean calcium content in the water.
+    \end{Exercise}
+\end{mdframed}

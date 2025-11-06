@@ -1,0 +1,18 @@
+\chapter{Design of Experiments}
+
+% Table fits to paper width using tabularx
+\begin{table}[h!]
+\renewcommand{\arraystretch}{1.2}
+\begin{tabularx}{\textwidth}{cc c p{2.5cm} p{2.5cm}}
+    \toprule
+    Source of Variation & Sums of squares & Degree of freedom & Mean squares & $\mathcal{F}$-statistic \\[0.6em]
+    \midrule
+    Blocks & $\CS{Block}$ & $m - 1$ & $\MS{B} = \mfrac{\CS{B}}{m-1}$ & $\displaystyle \mathcal{F} = \frac{\MS{B} }{\MS{W} }$ \\[0.6em]
+    Treatment & $\CS{Treatment}$ & $N - m$ & $\MS{W} = \mfrac{\CS{W}}{N-m}$ & \\
+    Error & $\CS{E}$ & $N - m$ & $\MS{E} = \mfrac{\CS{E}}{N-m}$ & \\
+    \hline
+    Total & $\CS{T}$ & $N - 1$ & & \\
+    \bottomrule
+\end{tabularx}
+\caption{One-way ANOVA table with unequal sample size}
+\end{table}
