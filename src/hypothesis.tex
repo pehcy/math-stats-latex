@@ -479,14 +479,17 @@ the supremum is taken over $\Theta$, not $\Theta^c_0$.
 \begin{solution}
     We illustrate the following sets:
     \[
-        \Omega = \{ (\mu, \sigma^2) \in \mathbb{R}^2 \> | \> -\infty < \mu < \infty, \sigma^2 > 0 \},
+        {\color{gray!45!white} \lgblksquare} \quad \Omega = \{ (\mu, \sigma^2) \in \mathbb{R}^2 \> | \> -\infty < \mu < \infty, \sigma^2 > 0 \},
     \]
     \[
-        \Omega_0 = \{ (\mu, \sigma^2) \in \mathbb{R}^2 \> | \> \mu = \mu_0, \sigma^2 > 0 \},
+        {\color{red} \bracevert} \quad \Omega_0 = \{ (\mu, \sigma^2) \in \mathbb{R}^2 \> | \> \mu = \mu_0, \sigma^2 > 0 \},
     \]
-    \[
-        \Omega_1 = \{ (\mu, \sigma^2) \in \mathbb{R}^2 \> | \> \mu \neq \mu_0, \sigma^2 > 0 \}.
-    \]
+    and the alternative parameter space is
+    \begin{align*}
+        \Omega_1 &= \{ (\mu, \sigma^2) \in \mathbb{R}^2 \> | \> \mu \neq \mu_0, \sigma^2 > 0 \}\\
+        &= {\color{gray!45!white} \lgblksquare} \setminus {\color{red} \bracevert}
+    \end{align*}
+    so that $\Omega_0 \cup \Omega_1 = \Omega$.
 
     \begin{figure}[ht]
         \pgfplotsset{compat=1.12}
@@ -549,15 +552,17 @@ What is the likelihood ratio test of significance of size $\alpha$ for testing t
 \]
 We illustrate the following example. 
 \[
-    \Theta = \{ (\mu, \sigma^2) \in \mathbb{R}^2 \> | \> -\infty < \mu < \infty, \sigma^2 > 0 \}
+    {\color{orange!45!white} \lgblksquare} \quad \Theta = \{ (\mu, \sigma^2) \in \mathbb{R}^2 \> | \> -\infty < \mu < \infty, \sigma^2 > 0 \}
 \]
 \[
-    \Theta_0 = \{ (\mu, \sigma^2) \in \mathbb{R}^2 \> | \> -\infty < \mu < \infty, \sigma^2 = \sigma^2_0 \}
+    {\color{red} \strns} \quad \Theta_0 = \{ (\mu, \sigma^2) \in \mathbb{R}^2 \> | \> -\infty < \mu < \infty, \sigma^2 = \sigma^2_0 \}
 \]
-\[
-    \Theta_1 = \{ (\mu, \sigma^2) \in \mathbb{R}^2 \> | \> -\infty < \mu < \infty, \sigma^2 \neq \sigma^2_0 \}.
-\]
-which $\Theta_0 \sqcup \Theta_1 = \Theta$. 
+and the alternative parameter space is
+\begin{align*}
+    \Theta_1 &= \{ (\mu, \sigma^2) \in \mathbb{R}^2 \> | \> -\infty < \mu < \infty, \sigma^2 \neq \sigma^2_0 \}\\
+    &= {\color{orange!45!white} \lgblksquare} \setminus {\color{red} \strns}
+\end{align*}
+and that $\Theta_0 \cup \Theta_1 = \Theta$.
 
 \begin{figure}[ht]
         \pgfplotsset{compat=1.12}
