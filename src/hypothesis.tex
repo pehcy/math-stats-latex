@@ -479,15 +479,15 @@ the supremum is taken over $\Theta$, not $\Theta^c_0$.
 \begin{solution}
     We illustrate the following sets:
     \[
-        {\color{gray!45!white} \lgblksquare} \quad \Omega = \{ (\mu, \sigma^2) \in \mathbb{R}^2 \> | \> -\infty < \mu < \infty, \sigma^2 > 0 \},
+        \recticon{gray} \quad \Omega = \{ (\mu, \sigma^2) \in \mathbb{R}^2 \> | \> -\infty < \mu < \infty, \sigma^2 > 0 \},
     \]
     \[
-        {\color{red} \bracevert} \quad \Omega_0 = \{ (\mu, \sigma^2) \in \mathbb{R}^2 \> | \> \mu = \mu_0, \sigma^2 > 0 \},
+        \vertl \quad \Omega_0 = \{ (\mu, \sigma^2) \in \mathbb{R}^2 \> | \> \mu = \mu_0, \sigma^2 > 0 \},
     \]
     and the alternative parameter space is
     \begin{align*}
         \Omega_1 &= \{ (\mu, \sigma^2) \in \mathbb{R}^2 \> | \> \mu \neq \mu_0, \sigma^2 > 0 \}\\
-        &= {\color{gray!45!white} \lgblksquare} \setminus {\color{red} \bracevert}
+        &= \recticon{gray} \setminus \> \vertl
     \end{align*}
     so that $\Omega_0 \cup \Omega_1 = \Omega$.
 
@@ -509,7 +509,7 @@ the supremum is taken over $\Theta$, not $\Theta^c_0$.
                     clip=false
                 ]
                 \node [right] at (current axis.right of origin) {$\mu$};
-                \node [above] at (current axis.above origin) {$\sigma$};
+                \node [above] at (current axis.above origin) {$\sigma^2$};
                 \addlegendimage{area legend, fill=gray, fill opacity = 0.15, draw=none}
                 \addlegendimage{no markers, red, ultra thick}
                 \addplot[fill=gray, fill opacity=0.15, draw=none] (-2, 0)-- (-2, 0.925) -- (2, 0.925) -- (2, 0) -- cycle;
@@ -552,15 +552,15 @@ What is the likelihood ratio test of significance of size $\alpha$ for testing t
 \]
 We illustrate the following example. 
 \[
-    {\color{orange!45!white} \lgblksquare} \quad \Theta = \{ (\mu, \sigma^2) \in \mathbb{R}^2 \> | \> -\infty < \mu < \infty, \sigma^2 > 0 \}
+    \recticon{orange} \quad \Theta = \{ (\mu, \sigma^2) \in \mathbb{R}^2 \> | \> -\infty < \mu < \infty, \sigma^2 > 0 \}
 \]
 \[
-    {\color{red} \strns} \quad \Theta_0 = \{ (\mu, \sigma^2) \in \mathbb{R}^2 \> | \> -\infty < \mu < \infty, \sigma^2 = \sigma^2_0 \}
+    \horl \quad \Theta_0 = \{ (\mu, \sigma^2) \in \mathbb{R}^2 \> | \> -\infty < \mu < \infty, \sigma^2 = \sigma^2_0 \}
 \]
 and the alternative parameter space is
 \begin{align*}
     \Theta_1 &= \{ (\mu, \sigma^2) \in \mathbb{R}^2 \> | \> -\infty < \mu < \infty, \sigma^2 \neq \sigma^2_0 \}\\
-    &= {\color{orange!45!white} \lgblksquare} \setminus {\color{red} \strns}
+    &= \recticon{orange} \setminus {\color{red} \horl}
 \end{align*}
 and that $\Theta_0 \cup \Theta_1 = \Theta$.
 
@@ -628,7 +628,7 @@ Setting \eqref{eq:tst1.0} to zero and solving for $\mu$, we have
 Hence, we continue to maximize $L(\ols{x}, \sigma^2_0 | x)$ with respect to $\sigma^2$. Let $\sigma^2 = \varsigma$, we have
 \begin{align*}
     \odv{\ln L(\ols{x}, \varsigma | x)}{\varsigma} &= \odv[]{}{\varsigma} \left[ - \frac{n}{2} \ln (\varsigma) - \frac{n}{2} \ln(2\pi) - \frac{1}{2\sigma^2_0} \sum^n_{i=1} (x_i - \ols{x})^2 \right]\\
-    &= -\frac{n}{2\varsigma} + \frac{1}{2(\varsigma)^2} \sum_{i=1}^{n} (x_i - \ols{x})^2 \label{eq:tst1.1} \tag{{\color{red} $\inversebullet$}}
+    &= -\frac{n}{2\varsigma} + \frac{1}{2(\varsigma)^2} \sum_{i=1}^{n} (x_i - \ols{x})^2 \label{eq:tst1.1} \tag{{\color{cyan} $\clubsuit$}}
 \end{align*}
 Setting the above equation \eqref{eq:tst1.1} to zero and solving for $\varsigma$, we have
 \begin{align*}

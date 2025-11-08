@@ -92,6 +92,12 @@
   \end{tikzpicture}%
 }
 
+% draw icon for hypothesis testing chpt
+\newcommand{\vertl}{{\color{red} \begin{tikzpicture}[baseline=0.73ex]\draw[red, ultra thick] (0,0) -- (0,0.5);\end{tikzpicture}}}
+\newcommand{\horl}{{\color{red} \begin{tikzpicture}[baseline=-0.625ex]\draw[red, ultra thick] (0,0) -- (0.5,0);\end{tikzpicture}}}
+\newcommand{\recticon}[1]{
+  \begin{tikzpicture}[baseline=0ex] \fill[#1, opacity = 0.35] (0, 0)-- (0, 0.3) -- (0.5, 0.3) -- (0.5, 0); \end{tikzpicture}
+}
 %\usepackage{mathrsfs}
 %\usepackage{titletoc}
 
@@ -217,11 +223,8 @@ numbered=no
 %  {\normalfont\LARGE\bfseries}{\thechapter}{1em}{}
 %\titlespacing*{\chapter}{0pt}{3.5ex plus 1ex minus .2ex}{2.3ex plus .2ex}
 
-% \usepackage{txfonts}
-%\usepackage{stix}
-%\usepackage{tgpagella}
-\usepackage[T1]{fontenc}
-\usepackage{stix2}
+\usepackage{tgpagella}
+
 %\usepackage[scale=.94]{tgheros} % Sans font is TG-Heros
 %\usepackage{inconsolata} % mono-spaced font
 
