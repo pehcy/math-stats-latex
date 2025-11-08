@@ -726,19 +726,6 @@ $100(1 - \alpha)\%$ confidence interval for $\theta$ as follows:
     \vspace{-0.25cm}
     \hspace{-0.25cm}
     \begin{Exercise}
-        Let $X_1, X_2, \ldots, X_n$ be a random sample of 
-        with gamma density function
-        \[
-                f_{X_i}(x|\theta, \beta) = \frac{1}{\Gamma(\beta)\, \theta^\beta} \, x^{\beta - 1} e^{-x/\theta}, \quad x > 0.
-        \]
-        Where $\theta$ is an unknown parameter and $\beta$ is a known constant. Show that
-        \[
-            \left[ \frac{2 \sum^n_{i=1} X_i}{\chi^2_{1 - \mfrac{\alpha}{2} (2n\beta)}},\> \frac{2 \sum^n_{i=1} X_i}{\chi^2_{\mfrac{\alpha}{2} (2n\beta)}} \right]
-        \]
-        is a $100(1-\alpha)\%$ confidence interval for $\theta$.
-    \end{Exercise}
-
-    \begin{Exercise}
         A machine produces steel rods with lengths that are normally distributed with unknown mean $\mu$ and standard deviation $\sigma^2$.
 
         A quality control inspector uses a gauge to measure the length, $x$ centimeters, of each rod in a 
@@ -776,5 +763,59 @@ $100(1 - \alpha)\%$ confidence interval for $\theta$ as follows:
      40.1,\> 39.8,\> 40.0,\> 40.2,\> 39.9,\> 40.1
  \]
  Construct a 95\% confidence interval for the mean calcium content in the water.
+    \end{Exercise}
+
+    \begin{Exercise}
+         The executives at Aperture Inc. having recently solved their widget crises, have another 
+major problem with one of their products. Many cities are sending complaints that their manhole 
+covers are defective and people are falling into the sewers. Aperture Inc. is pretty sure that 
+only 4\% of their manhole covers are defective, but they would like to do a study to confirm this 
+number. They are hoping to construct a 95\% confidence interval to get within 0.01 of the true 
+proportion of defective manhole covers.  How many manhole covers need to be tested?
+    \end{Exercise}
+
+    \begin{Exercise}
+        Let $X_1, X_2, \ldots, X_n$ be a random sample of 
+        with gamma density function
+        \[
+                f_{X_i}(x|\theta, \beta) = \frac{1}{\Gamma(\beta)\, \theta^\beta} \, x^{\beta - 1} e^{-x/\theta}, \quad x > 0.
+        \]
+        Where $\theta$ is an unknown parameter and $\beta$ is a known constant. Show that
+        \[
+            \left[ \frac{2 \sum^n_{i=1} X_i}{\chi^2_{1 - \mfrac{\alpha}{2} (2n\beta)}},\> \frac{2 \sum^n_{i=1} X_i}{\chi^2_{\mfrac{\alpha}{2} (2n\beta)}} \right]
+        \]
+        is a $100(1-\alpha)\%$ confidence interval for $\theta$.
+    \end{Exercise}
+
+    \begin{Exercise}
+        Let $X_1, X_2, \ldots, X_n$ be a random sample from population 
+        with Pareto density function
+        \[
+                f_{X_i}(x|\theta, \beta) = \begin{cases}
+                    \theta \, \beta^\theta \, x^{-(\theta + 1)} & x \geq \beta\\
+                    0 & \text{otherwise,}
+                \end{cases}
+        \]
+        Where $\theta$ is an unknown parameter and $\beta$ is a known constant. Show that
+        \[
+            \left[ \frac{2 \sum^n_{i=1} \ln \left(\frac{X_i}{\beta}\right)}{\chi^2_{1 - \mfrac{\alpha}{2} (2n\beta)}},\> \frac{2 \sum^n_{i=1} \ln \left(\frac{X_i}{\beta}\right)}{\chi^2_{\mfrac{\alpha}{2} (2n\beta)}} \right]
+        \]
+        is a $100(1-\alpha)\%$ confidence interval for $\mfrac{1}{\theta}$.
+    \end{Exercise}
+
+    \begin{Exercise}
+        Let $X_1, X_2, \ldots, X_4$ be a random sample of sample size $n=4$ from population 
+        with density function
+        \[
+                f_{X_i}(x|\theta) = \begin{cases}
+                    (1+\theta)x^\theta & 0 < x < 1\\
+                    0 & \text{otherwise,}
+                \end{cases}
+        \]
+        Where $\theta > 0$ is an unknown parameter. 
+        Construct a $90\%$ confidence interval for $\theta$ if the observed sample data is
+        \[
+            x_1 = 0.92,\> x_2 = 0.75,\> x_3 = 0.85,\> x_4 = 0.80.
+        \]
     \end{Exercise}
 \end{mdframed}

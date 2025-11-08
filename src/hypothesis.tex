@@ -469,8 +469,80 @@ parameter points in $\Theta^c_0$ for which $x$ is much more likely than for any
 parameter in $\Theta_0$. Note that in the denominator of the likelihood ratio, 
 the supremum is taken over $\Theta$, not $\Theta^c_0$.
 
+\begin{example}
+    Suppose that $X_1, X_2, \ldots, X_n$ is a random sample from a $N(\mu, \sigma^2)$ population, 
+    where both $\mu$ and $\sigma^2$ are unknown. What is the likelihood ratio test of significance of size $\alpha$ for testing the null hypothesis 
+    \[
+        H_0 : \mu = \mu_0 \quad \text{ versus } \quad H_1 : \mu \neq \mu_0 \, ?
+    \]
+\end{example}
+\begin{solution}
+    We illustrate the following sets:
+    \[
+        \Omega = \{ (\mu, \sigma^2) \in \mathbb{R}^2 \> | \> -\infty < \mu < \infty, \sigma^2 > 0 \},
+    \]
+    \[
+        \Omega_0 = \{ (\mu, \sigma^2) \in \mathbb{R}^2 \> | \> \mu = \mu_0, \sigma^2 > 0 \},
+    \]
+    \[
+        \Omega_1 = \{ (\mu, \sigma^2) \in \mathbb{R}^2 \> | \> \mu \neq \mu_0, \sigma^2 > 0 \}.
+    \]
+
+    \begin{figure}[ht]
+        \pgfplotsset{compat=1.12}
+        \begin{center}
+            \begin{tikzpicture}
+                \begin{axis}[
+                    scale = 0.75,
+                    height=6.75cm,
+                    width=12cm, 
+                    xmin=-2.1, xmax=2.1, 
+                    ymin=-0.1, ymax=1, 
+                    axis x line=middle, 
+                    axis y line=middle, 
+                    legend pos=outer north east, 
+                    xtick = {0}, 
+                    ytick = \empty, 
+                    clip=false
+                ]
+                \node [right] at (current axis.right of origin) {$\mu$};
+                \node [above] at (current axis.above origin) {$\sigma$};
+                \addlegendimage{area legend, fill=gray, fill opacity = 0.15, draw=none}
+                \addlegendimage{no markers, red, ultra thick}
+                \addplot[fill=gray, fill opacity=0.15, draw=none] (-2, 0)-- (-2, 0.925) -- (2, 0.925) -- (2, 0) -- cycle;
+                %\fill[gray, opacity = 0.15] (-2, 0)-- (-2, 0.925) -- (2, 0.925) -- (2, 0) -- cycle;
+                \addlegendentry{$\Omega$}
+                \addlegendentry{$\Omega_0$}
+                \addplot[color = red, ultra thick] coordinates {(1, 0) (1, 1)};
+                \node [above] at (1, 1) {{\color{red} $\Omega_0$}};
+                \node [below] at (1, 0) {$\mu_0$};
+                    %\addplot[domain=-2:2, color=red, samples=200, line width=0.75pt]{2*x^5-10*x+5};
+                %\node[left,red] at (1.65,15) {$2x^5-10x+5$}; 
+                %\legend{\(2x^5 - 10x +5\)};
+                %\addplot[color=red, mark=*] coordinates {(-1.601,0)};
+                %\addplot[color=red, mark=*] coordinates {(1.329,0)};
+                %\addplot[color=red, mark=*] coordinates {(0.507,0)};
+                \end{axis}
+            \end{tikzpicture}
+        \end{center}
+        \caption{The illustrated graphs of the parameter spaces $\Omega$ and $\Omega_0$.}
+    \end{figure}
+
+    The likelihood function is given by
+    \[
+    L(\mu, \sigma^2 | x) = \prod_{i=1}^{n} \frac{1}{\sqrt{2\pi \sigma^2}} \exp\left(-\frac{(x_i - \mu)^2}{2\sigma^2}\right)
+    = \bigg(\frac{1}{\sqrt{2\pi \sigma^2}}\bigg)^n \exp\left\{-\frac{1}{2\sigma^2} \sum_{i=1}^{n} (x_i - \mu)^2\right\}
+    \]
+    Next we find the maximum of $L(\mu, \sigma^2)$ on the set $\Omega_0$. Since the set $\Omega_0$ is equal to 
+    $\{ (\mu_0, \sigma^2) \in \mathbb{R}^2 \> | \> \sigma^2 > 0 \}$, we have 
+    \[
+        \max_{(\mu, \sigma^2) \in \Omega_0} L(\mu, \sigma^2 | x) = \max_{\sigma^2 > 0} L(\mu_0, \sigma^2 | x).
+    \]
+\end{solution}
+
 \section{Hypothesis testing for variance}
 
+Let $X_1, X_2, \ldots, X_n$ be 
 What is the likelihood ratio test of significance of size $\alpha$ for testing the null hypothesis 
 \[
     H_0 : \sigma^2 = \sigma^2_0 \quad \text{ versus } \quad H_1 : \sigma^2 \neq \sigma^2_0 \, ?
@@ -486,6 +558,46 @@ We illustrate the following example.
     \Theta_1 = \{ (\mu, \sigma^2) \in \mathbb{R}^2 \> | \> -\infty < \mu < \infty, \sigma^2 \neq \sigma^2_0 \}.
 \]
 which $\Theta_0 \sqcup \Theta_1 = \Theta$. 
+
+\begin{figure}[ht]
+        \pgfplotsset{compat=1.12}
+        \begin{center}
+            \begin{tikzpicture}
+                \begin{axis}[
+                    scale = 0.75,
+                    height=6.75cm,
+                    width=12cm, 
+                    xmin=-2.1, xmax=2.1, 
+                    ymin=-0.1, ymax=1, 
+                    axis x line=middle, 
+                    axis y line=middle, 
+                    legend pos=outer north east, 
+                    xtick = {0}, 
+                    ytick = \empty, 
+                    clip=false
+                ]
+                \node [right] at (current axis.right of origin) {$\mu$};
+                \node [above] at (current axis.above origin) {$\sigma^2$};
+                \addlegendimage{area legend, fill=orange, fill opacity = 0.15, draw=none}
+                \addlegendimage{no markers, red, ultra thick}
+                \addplot[fill=orange, fill opacity=0.15, draw=none] (-2, 0)-- (-2, 0.925) -- (2, 0.925) -- (2, 0) -- cycle;
+                %\fill[gray, opacity = 0.15] (-2, 0)-- (-2, 0.925) -- (2, 0.925) -- (2, 0) -- cycle;
+                \addlegendentry{$\Theta$}
+                \addlegendentry{$\Theta_0$}
+                \addplot[color = red, ultra thick] coordinates {(-2.1, 0.5) (2.1, 0.5)};
+                \node [right] at (2.1, 0.5) {{\color{red} $\Theta_0$}};
+                \node [below left] at (0, 0.5) {$\sigma^2_0$};
+                    %\addplot[domain=-2:2, color=red, samples=200, line width=0.75pt]{2*x^5-10*x+5};
+                %\node[left,red] at (1.65,15) {$2x^5-10x+5$}; 
+                %\legend{\(2x^5 - 10x +5\)};
+                %\addplot[color=red, mark=*] coordinates {(-1.601,0)};
+                %\addplot[color=red, mark=*] coordinates {(1.329,0)};
+                %\addplot[color=red, mark=*] coordinates {(0.507,0)};
+                \end{axis}
+            \end{tikzpicture}
+        \end{center}
+        \caption{The illustrated graphs of the parameter spaces $\Theta$ and $\Theta_0$.}
+    \end{figure}
 
 The likelihood function is given by 
 \[
@@ -691,6 +803,20 @@ $\frac{\alpha}{2}$ points of the chi-square distribution with $n-1$ degrees of f
             H_0 : \theta = 4 \quad \text{ versus } \quad H_1 : \theta = 5.
         \]
         Hence, find the power of the test.
+    \end{Exercise}
+
+    \begin{Exercise}
+        Let $X$ be a random variable whose pdf under $H_0$ and $H_1$ are given by
+        \begin{center}
+            \begin{tabular}{c|ccccccc}
+                $x$ & 1 & 2 & 3 & 4 & 5 & 6 & 7\\
+                \hline
+                $f(x|H_0)$ & .01 & .01 & .01 & .01 & .01 & .01 & .94\\
+                $f(x|H_1)$ & .06 & .05 & .04 & .03 & .02 & .01 & .79\\
+            \end{tabular}
+        \end{center}
+        Use the Neyman-Pearson lemma to find the most powerful test for testing $H_0$ against $H_1$ at level of significance
+        $\alpha = 0.04$. Hence, compute the probability of type II error for this test.
     \end{Exercise}
 
     \begin{Exercise}
