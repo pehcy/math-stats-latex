@@ -204,7 +204,7 @@ numbered=no
 \renewcommand{\AnswerHeader}{\AtBeginExerciseHeader \textbf{\AnswerName~\ExerciseHeaderNB}\smallskip\newline}
 
 \titleformat{\chapter}[display]
-  {\sffamily\bfseries\filright}
+  {\fontfamily{qhv}\selectfont\bfseries\large\filright}
   {\hrule height 0pt \Huge\color{fireEngRed}\thechapter\hrule}
   {-\baselineskip}
   {\Huge\strut}
@@ -220,8 +220,8 @@ numbered=no
 % \usepackage{txfonts}
 %\usepackage{stix}
 %\usepackage{tgpagella}
-
-\usepackage[lcgreekalpha]{stix} % main and math font of the document (STIX)
+\usepackage[T1]{fontenc}
+\usepackage{stix2}
 %\usepackage[scale=.94]{tgheros} % Sans font is TG-Heros
 %\usepackage{inconsolata} % mono-spaced font
 
