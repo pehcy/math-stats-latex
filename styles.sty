@@ -2,6 +2,7 @@
 \usepackage{amsmath, nccmath}
 \usepackage{amssymb}
 \usepackage{amsbsy}
+\usepackage{accents}
 \usepackage{derivative}
 \usepackage{bbm}
 \usepackage{graphicx}
@@ -31,6 +32,7 @@
 \DeclareMathOperator*{\argmax}{arg\,max}
 \DeclareMathOperator*{\argmin}{arg\,min}
 \DeclareMathOperator*{\cov}{Cov}
+\DeclareMathOperator*{\iid}{\overset{\text{iid}}{\sim}}
 \DeclareMathOperator*{\corr}{Corr}
 \DeclareMathOperator*{\bias}{Bias}
 \DeclareRobustCommand{\bxseries}{\fontseries{bx}\selectfont}
@@ -42,6 +44,8 @@
 
 \newcommand\uprob[2][]{\underset{#1}{\mathbb{P}}\mleft[\,#2\,\mright]}
 \newcommand\cprob[3][]{\mathbb{P}_{#1}\mleft[\,#2\;\middle\vert\;#3\,\mright]}
+
+\newcommand\uexp[2][]{\underset{#1}{\mathbb{E}}\mleft[\,#2\,\mright]}
 
 %command for alg-closure that automatically adapts its 'bar' to the arg based on the args length (including '\')
 \newcommand{\ols}[1]{\mskip.5\thinmuskip\overline{\mskip-.5\thinmuskip {#1} \mskip-.5\thinmuskip}\mskip.5\thinmuskip} % overline short
@@ -98,6 +102,42 @@
 \newcommand{\recticon}[1]{
   \begin{tikzpicture}[baseline=0ex] \fill[#1, opacity = 0.35] (0, 0)-- (0, 0.3) -- (0.5, 0.3) -- (0.5, 0); \end{tikzpicture}
 }
+
+% Draw geometric symbols
+\def\sqPDF#1#2{0 0 m #1 0 l #1 #1 l 0 #1 l h}
+\def\trianPDF#1#2{0 0 m #1 0 l #2 4.5 l h}
+\def\uptrianPDF#1#2{#2 0 m #1 4.5 l 0 4.5 l h}
+\def\circPDF#1#2{#1 0 0 #1 #2 #2 cm .1 w .5 0 m
+   .5 .276 .276 .5 0 .5 c -.276 .5 -.5 .276 -.5 0 c
+   -.5 -.276 -.276 -.5 0 -.5 c .276 -.5 .5 -.276 .5 0 c h}
+\def\diaPDF#1#2{#2 0 m #1 #2 l #2 #1 l 0 #2 l h}
+
+\def\credCOLOR   {.54 .14 0}
+\def\cblueCOLOR  {.06 .3 .54}
+\def\cgreenCOLOR {0 .54 0}
+
+\def\genbox#1#2#3#4#5#6{% #1=0/1, #2=color, #3=shape, #4=raise, #5=width, #6=width/2
+    \leavevmode\raise#4bp\hbox to#5bp{\vrule height#5bp depth0bp width0bp
+    \pdfliteral{q .5 w \csname #2COLOR\endcsname\space RG
+                       \csname #3PDF\endcsname{#5}{#6} S Q
+             \ifx1#1 q \csname #2COLOR\endcsname\space rg 
+                       \csname #3PDF\endcsname{#5}{#6} f Q\fi}\hss}}
+
+                                    % shape     raise width  width/2
+\def\sqbox      #1#2{\genbox{#1}{#2}  {sq}       {0}   {4.5}  {2.25}}
+\def\trianbox   #1#2{\genbox{#1}{#2}  {trian}    {0}   {5}    {2.5}}
+\def\uptrianbox #1#2{\genbox{#1}{#2}  {uptrian}  {0}   {5}    {2.5}}
+\def\circbox    #1#2{\genbox{#1}{#2}  {circ}     {0}   {5}    {2.5}}
+\def\diabox     #1#2{\genbox{#1}{#2}  {dia}      {-.5} {10}    {5}}
+
+%% usage:
+
+% squares: \sqbox0{cgreen}, \sqbox1{cred}, \sqbox0{cblue}.
+% triangles: \trianbox0{cgreen}, \trianbox1{cred}, \trianbox0{cblue}.
+% triangles: \uptrianbox0{cgreen}, \uptrianbox1{cred}, \uptrianbox0{cblue}.
+% circles: \circbox0{cgreen}, \circbox1{cred}, \circbox0{cblue}.
+% diamonds: \diabox0{cgreen}, \diabox1{cred}, \diabox0{cblue}.
+
 %\usepackage{mathrsfs}
 %\usepackage{titletoc}
 

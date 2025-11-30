@@ -150,6 +150,57 @@ is a $t$-statistic with degrees of freedom given by $n_1 + n_2 - 2$.
     \end{tabularx}
 \end{definition}
 
+
+\subsection{Paired samples t-test}
+
+Assume that we have two dependent samples $X_{\color{red} \blacksquare }$ and $X_{\color{orange} \clubsuit }$, each of size $n$. The paired samples are normally distributed with means $\mu_1$ and $\mu_2$, respectively.
+From earlier work we define the differences between the paired observations as 
+\begin{equation}
+    D_i = X_{{\color{red} \blacksquare }\, i} - X_{{\color{orange} \clubsuit }\, i} \quad \text{ for } i = 1, 2, \ldots, n.
+\end{equation}
+In fact, a test of $H_0 : \mu_0 = \mu_1$ is equivalent to a test of $H_0 : \mu_D = 0$.
+Even though the original samples $X_{{\color{red} \blacksquare }}$ and $X_{{\color{orange} \clubsuit }}$ are may well be normally distributed.
+The key assumption is that the differences $D_i$ are approximately normally distributed with mean $\mu_D$ and variance $\sigma^2_D$.
+
+Let $\overline{D}$ and $\widehat{\sigma}^2_D$ be the sample mean and sample standard deviation of the differences $D_i$, respectively. Where
+\[
+    \mu_D = \overline{D} = \frac{\sum^n_{i=1} D_i}{n} 
+\]
+and 
+\[
+    \widehat{\sigma}^2_D = \frac{\sum^n_{i=1} (D_i - \overline{D})^2}{n-1}.
+\]
+Then by Central Limit Theorem, the sampling distribution of $\overline{D}$ is approximately normal with mean $\mu_D$ and variance $\sigma^2_D / n$. That is,
+\[
+    \overline{D} \sim N \left( \mu_D, \frac{\sigma^2_D}{n} \right).
+\]
+
+The test statistic is given by
+\[
+    t = \frac{\overline{D} - \mu_D}{S_D / \sqrt{n}}
+\]
+which is a $t$-statistic with $\nu = n-1$ degrees of freedom.
+
+
+The null hypothesis is
+\[
+    H_0 : \mu_1 - \mu_2 = 0
+\]
+with all possible alternative hypotheses:
+
+\renewcommand{\arraystretch}{1.2}
+\begin{tabularx}{\textwidth}{|l|X|}
+\hline
+Alternative Hypothesis & Rejection Region at level $\alpha$\\
+\hline
+$H_1 : \mu_1 - \mu_2 > 0$ & $t \geq t_\alpha$ (Upper-tailed)\\
+\hline
+$H_1 : \mu_1 - \mu_2 < 0$ & $t \leq -t_\alpha$ (Lower-tailed)\\
+\hline
+$H_1 : \mu_1 - \mu_2 \neq 0$ & either $t \geq t_{\alpha/2}$ or $t \leq -t_{\alpha/2}$ (Two-tailed)\\
+\hline
+\end{tabularx}
+
 \subsection{Large-Sample Test}
 
 Assume that we have a single pooled sample of size $n_1 + n_2$ rather than having two separate samples of size $n_1$ and $n_2$.
@@ -184,7 +235,6 @@ we will have a single sample of size $n_1 + n_2$ from one population with propor
     \hline
     \end{tabularx}
 \end{definition}
-
 
 \section{Power of test}
 
@@ -470,7 +520,7 @@ parameter in $\Theta_0$. Note that in the denominator of the likelihood ratio,
 the supremum is taken over $\Theta$, not $\Theta^c_0$.
 
 \begin{example}
-    Suppose that $X_1, X_2, \ldots, X_n$ is a random sample from a $N(\mu, \sigma^2)$ population, 
+    Suppose that $X_1, X_2, \ldots, X_n$ be a random sample from a $N(\mu, \sigma^2)$ population, 
     where both $\mu$ and $\sigma^2$ are unknown. What is the likelihood ratio test of significance of size $\alpha$ for testing the null hypothesis 
     \[
         H_0 : \mu = \mu_0 \quad \text{ versus } \quad H_1 : \mu \neq \mu_0 \, ?
@@ -484,7 +534,7 @@ the supremum is taken over $\Theta$, not $\Theta^c_0$.
     \[
         \vertl \quad \Omega_0 = \{ (\mu, \sigma^2) \in \mathbb{R}^2 \> | \> \mu = \mu_0, \sigma^2 > 0 \},
     \]
-    and the alternative parameter space is
+    where $\mu_0 \in \mathbb{R}$ is a constant. The alternative parameter space is
     \begin{align*}
         \Omega_1 &= \{ (\mu, \sigma^2) \in \mathbb{R}^2 \> | \> \mu \neq \mu_0, \sigma^2 > 0 \}\\
         &= \recticon{gray} \setminus \> \vertl
@@ -536,16 +586,165 @@ the supremum is taken over $\Theta$, not $\Theta^c_0$.
     L(\mu, \sigma^2 | x) = \prod_{i=1}^{n} \frac{1}{\sqrt{2\pi \sigma^2}} \exp\left(-\frac{(x_i - \mu)^2}{2\sigma^2}\right)
     = \bigg(\frac{1}{\sqrt{2\pi \sigma^2}}\bigg)^n \exp\left\{-\frac{1}{2\sigma^2} \sum_{i=1}^{n} (x_i - \mu)^2\right\}
     \]
-    Next we find the maximum of $L(\mu, \sigma^2)$ on the set $\Omega_0$. Since the set $\Omega_0$ is equal to 
+    Next we find the maximum of $L(\mu, \sigma^2)$ on the set $\Omega_0$. Since the set $\Omega_0$ is equal to the set
     $\{ (\mu_0, \sigma^2) \in \mathbb{R}^2 \> | \> \sigma^2 > 0 \}$, we have 
     \[
         \max_{(\mu, \sigma^2) \in \Omega_0} L(\mu, \sigma^2 | x) = \max_{\sigma^2 > 0} L(\mu_0, \sigma^2 | x).
     \]
+    Since both $L(\mu_0, \sigma^2 | x)$ and $\ln L(\mu, \sigma^2 | x)$ are maximized at the same point $\sigma$, we 
+    determine the value of $\sigma$ where $\ln L(\mu_0, \sigma^2 | x)$ is maximized. Taking the natural logarithm of the likelihood function, we have
+    \[
+        \ln L(\mu_0, \sigma^2 | x) = -\frac{n}{2} \ln(\sigma^2) -\frac{n}{2} \ln(2 \pi) - \frac{1}{2\sigma^2} \sum_{i=1}^{n} (x_i - \mu_0)^2. \label{eq:tst2.0} \tag{{\color{orange!50!white} $\clubsuit $}}
+    \]
+    differentiating with respect to $\sigma^2$ and setting the result equal to zero, we have
+    \[
+        \odv{}{\sigma^2} \ln L(\mu_0, \sigma^2 | x) = -\frac{n}{2\sigma^2} + \frac{1}{2(\sigma^2)^2} \sum_{i=1}^{n} (x_i - \mu_0)^2 = 0.
+    \]
+    Solving for $\sigma$, we obtain
+    \[
+        \widehat{\sigma}^2 = \sqrt{\frac{1}{n} \sum_{i=1}^{n} (x_i - \mu_0)^2}. \label{eq:tst2.1} \tag{{\color{black} $\spadesuit $}}
+    \]
+    Thus $\ln L(\mu, \sigma^2)$ attains maximum at \eqref{eq:tst2.1}. Since this value of $\sigma$ is also yield maximum value of $L(\mu, \sigma^2)$, we have
+    \[
+        \max_{\substack{(\mu, \sigma^2) \in \Omega_0,\\ \sigma > 0}} L(\mu, \sigma^2 | x) = \left(\frac{2\pi}{n} \sum^n_{i=1} (x_i - \mu_0)^2 \right)^{-n/2} e^{-\frac{n}{2}}.
+        \label{eq:tst2.2} \tag{{\color{red} $\heartsuit$}}
+    \]
+
+    Next, we need to determine the maximum of $L(\mu, \sigma^2 | x)$ on the set $\Omega$. As before, 
+    we consider the natural logarithm of the likelihood function is already achieves its maximum at the same point as the likelihood function itself. 
+    Taking the partial derivatives of \eqref{eq:tst2.0} with respect to $\mu$ and $\sigma^2$ respectively, we have
+    \[
+        \pdv{}{\mu} \ln L(\mu, \sigma^2 | x) = \frac{1}{\sigma^2} \sum_{i=1}^{n} (x_i - \mu) = 0,
+    \]
+    and
+    \[
+        \pdv{}{\sigma^2} \ln L(\mu, \sigma^2 | x) = -\frac{n}{2\sigma^2} + \frac{1}{2(\sigma^2)^2} \sum_{i=1}^{n} (x_i - \mu)^2 = 0.
+    \]
+    Solving for $\mu$ and $\sigma^2$, we obtain
+    \[
+        \mu = \ols{x} = \frac{1}{n} \sum_{i=1}^{n} x_i, \quad \text{ and } \quad 
+        \sigma^2 = \widehat{\sigma}^2 = \frac{n-1}{n} s^2.
+    \]
+    where $s^2 := \frac{1}{n-1} \sum_{i=1}^{n} (x_i - \ols{x})^2$ is the sample variance.
+
+    Plugging these optimal values of $\mu$ and $\sigma$ into the likelihood function $L(\mu, \sigma)$, we have
+    \[
+        \max_{\substack{(\mu, \sigma^2) \in \Omega,\\ \sigma > 0}} L(\mu, \sigma^2 | x) 
+        = \left(\frac{2\pi}{n} \sum^n_{i=1} (x_i - \ols{x})^2 \right)^{-n/2} e^{-\frac{n}{2}}. \label{eq:tst2.4} \tag{\diabox1{cgreen}}
+    \]
+    The likelihood ratio test statistic is given by
+    \begin{equation}
+        \Lambda = \frac{\eqref{eq:tst2.2}}{\eqref{eq:tst2.4}} = \frac{\displaystyle \max_{\substack{(\mu, \sigma^2) \in \Omega_0,\\ \sigma > 0}}  L(\mu, \sigma^2 | x)}{\displaystyle \max_{\substack{(\mu, \sigma^2) \in \Omega,\\ \sigma > 0}} L(\mu, \sigma^2 | x)}\\
+        = \frac{\displaystyle \left(\frac{2\pi}{n} \sum^n_{i=1} (x_i - \mu_0)^2 \right)^{-n/2} e^{-\frac{n}{2}}}{\displaystyle \left(\frac{2\pi}{n} \sum^n_{i=1} (x_i - \ols{x})^2 \right)^{-n/2} e^{-\frac{n}{2}}}
+        = \left[ \frac{\displaystyle \sum_{i=1}^{n} (x_i - \mu_0)^2}{\displaystyle \sum_{i=1}^{n} (x_i - \ols{x})^2}\right]^{-n/2}
+    \end{equation}
+    Since
+    \[
+        \sum^n_{i=1} (x_i - \ols{x})^2 = (n-1)s^2
+    \]
+    and 
+    \[
+        \sum^n_{i=1} (x_i - \mu)^2 = \sum^n_{i=1} (x_i - \ols{x})^2 + n(\ols{x} - \mu_0)^2.
+    \]
+    We have 
+    \[
+        \Lambda(x_1, x_2, \ldots, x_n) = \left[ \frac{\displaystyle \sum_{i=1}^{n} (x_i - \mu_0)^2}{\displaystyle \sum_{i=1}^{n} (x_i - \ols{x})^2}\right]^{-n/2}
+        = \left(1 + \frac{n}{n-1} \frac{(\ols{x} - \mu_0)^2}{s^2}\right)^{-n/2}.
+    \]
+    Now the inequality $\Lambda(x_1, x_2, \ldots, x_n) \leq k$ becomes
+    \begin{equation}
+        \left(1 + \frac{n}{n-1} \frac{(\ols{x} - \mu_0)^2}{s^2}\right)^{-n/2} \leq k
+    \end{equation}
+    and which can be rewritten in the form of 
+    \[
+        \left( \frac{\ols{x} - \mu_0}{s}\right)^2 \geq \frac{n-1}{n}\left( k^{-\frac{2}{n}} - 1 \right)
+    \]
+    or 
+    \[
+        \left\vert \frac{\ols{x} - \mu_0}{s/\sqrt{n}} \right\vert \geq K
+    \]
+    where $K := \sqrt{(n-1)\left( k^{-\frac{2}{n}} - 1 \right)}$. In view of the above inequality, 
+    the critical region can be described as 
+    \[
+        RR = \left\{ (x_1, x_2, \ldots, x_n) : \left\vert \frac{\ols{x} - \mu_0}{s/\sqrt{n}} \right\vert \geq K \right\}.
+    \]
+    That is, the best likelihood ratio test is described as: ``
+    Reject $H_0$ if $\displaystyle \left\vert \frac{\ols{x} - \mu_0}{s/\sqrt{n}} \right\vert \geq K$``. Since we are given $\alpha$, the size 
+    of the critical region. We can determine the constant $K$.
+
+    In order to find $K$, we need the density function of the statistic $\displaystyle \frac{\ols{x} - \mu_0}{s/\sqrt{n}}$
+    when the population $X$ is normally distributed and the null hypothesis 
+    $H_0 : \mu = \mu_0$ is true.
+
+    Since the population is normal with mean $\mu$ and variance $\sigma^2$, so the statistic
+    \[
+        \frac{\ols{X} - \mu_0}{S / \sqrt{n}} \sim t_{\nu = n-1}
+    \]
+    where $S$ is the sample standard deviation that equals to $\sqrt{\mfrac{1}{n-1} \sum^n_{i=1} (X_i - \ols{X})^2}$. Hence 
+    \[
+        K = t_{\frac{\alpha}{2};\> n-1} \, \frac{s}{\sqrt{n}},
+    \]
+    where $t_{\frac{\alpha}{2};\> n-1}$ is a real number such that the integral of the $t$-distribution 
+    with $n-1$ degrees of freedom from $t_{\frac{\alpha}{2};\> n-1}$ to $+\infty$ with 
+    area under curve equals $\alpha / 2$.
+
+    Therefore, the likelihood ratio test is given by ``Reject $H_0$ if 
+    \[
+        |\ols{X} - \mu_0| \geq t_{\frac{\alpha}{2};\> n-1} \, \frac{s}{\sqrt{n}}. ``
+    \]
+    if we denote 
+    \[
+        T = \frac{\ols{x} - \mu_0}{s / \sqrt{n}}
+    \]
+    then the above inequality becomes 
+    \[
+        |T| \geq t_{\frac{\alpha}{2};\> n-1}.
+    \]
+    Thus the critical region is now simplified to 
+    \begin{equation}
+        RR = \{ (x_1, x_2, \ldots, x_n) \> | \> |t| \geq t_{\frac{\alpha}{2};\> n-1} \}.
+    \end{equation}
+    This tells us that the null hypothesis must be rejected when the absolute value of $t$ 
+    takes on a value greater than or equal to $t_{\frac{\alpha}{2};\> n-1}$.
 \end{solution}
+\begin{remark}
+    In the example above, if we had right-sided alternative
+    \[
+        H_0 : \mu \neq \mu_0 \quad \text{ versus } \quad  H_1 : \mu > \mu_0. 
+    \]
+    Then the critical region becomes
+    \[
+        RR = \{ (x_1, x_2, \ldots, x_n) \> | \> t \geq t_{\alpha;\> n-1} \}.
+    \]
+    Similarly, if the alternative would have been left-sided, that is,
+    \[
+        H_0 : \mu \neq \mu_0 \quad \text{ versus } \quad  H_1 : \mu < \mu_0. 
+    \]
+    then the critical region would have been 
+    \[
+        RR = \{ (x_1, x_2, \ldots, x_n) \> | \> t \leq -t_{\alpha;\> n-1} \}.
+    \]
+    We summarize the three cases of hypotheses test of the mean of the normal population 
+    (with unknown variance) in the following table.
+
+    \begin{center}
+        \begin{tabular}{|c|c|c|}
+            \hline
+            $H_0$ & $H_1$ & Critical region\\
+            \hline
+            $\mu = \mu_0$ & $\mu > \mu_0$ & $t \geq t_{\alpha;\> n-1}$\\
+            \hline
+            $\mu = \mu_0$ & $\mu < \mu_0$ & $t \leq -t_{\alpha;\> n-1}$\\
+            \hline
+            $\mu = \mu_0$ & $\mu \neq \mu_0$ & $|t| \geq t_{\frac{\alpha}{2};\> n-1}$\\
+            \hline
+        \end{tabular}
+    \end{center}
+\end{remark}
 
 \section{Hypothesis testing for variance}
 
-Let $X_1, X_2, \ldots, X_n$ be 
+Let $X_1, X_2, \ldots, X_n$ be a random sample from a normal population with mean $\mu$ and variance $\sigma^2$.
 What is the likelihood ratio test of significance of size $\alpha$ for testing the null hypothesis 
 \[
     H_0 : \sigma^2 = \sigma^2_0 \quad \text{ versus } \quad H_1 : \sigma^2 \neq \sigma^2_0 \, ?
@@ -557,7 +756,7 @@ We illustrate the following example.
 \[
     \horl \quad \Theta_0 = \{ (\mu, \sigma^2) \in \mathbb{R}^2 \> | \> -\infty < \mu < \infty, \sigma^2 = \sigma^2_0 \}
 \]
-and the alternative parameter space is
+where $\sigma^2_0 > 0$ is a constant. The alternative parameter space is
 \begin{align*}
     \Theta_1 &= \{ (\mu, \sigma^2) \in \mathbb{R}^2 \> | \> -\infty < \mu < \infty, \sigma^2 \neq \sigma^2_0 \}\\
     &= \recticon{orange} \setminus {\color{red} \horl}
