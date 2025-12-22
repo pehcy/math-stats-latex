@@ -57,12 +57,32 @@
   {\olsi{#1}} %if arg is just one char, e.g. K, L,...
 }
 
+\usepackage{scrlayer}
+\DeclareNewLayer[
+    foreground,
+    %textarea,% use only the textarea
+    contents={%
+      \parbox[b][\layerheight][c]{\layerwidth}
+        {\centering This page 
+          intentionally left blank.}%
+    }
+  ]{blankpage.fg}
+\DeclarePageStyleByLayers{blank}{blankpage.fg}
+
 % figure caption
 \DeclareCaptionFormat{custom}
 {%
     \textsf{\textbf{#1#2}}{\small #3}
 }
 \captionsetup{format=custom}
+
+\definecolor{myred}{RGB}{240,150,150}
+\definecolor{mygreen}{RGB}{150,240,150}
+\definecolor{myblue}{RGB}{150,150,255}
+\definecolor{mypurple}{RGB}{210,150,255}
+\definecolor{myyellow}{RGB}{255,195,0}
+\definecolor{mygrey}{RGB}{230,230,230}
+\definecolor{lightgrey}{rgb}{.85, .85, .85}
 
 % better hashtag symbol
 \newcommand*{\hash}{%
@@ -145,6 +165,7 @@
 \usetikzlibrary{decorations.pathreplacing,arrows.meta,calc}
 \tikzstyle{every picture}+=[remember picture]
 \usepackage{pgfplots}
+\usepgflibrary{shadings}
 \pgfplotsset{compat=1.16}
 \usetikzlibrary{arrows,chains,matrix,positioning,scopes}
 \makeatletter

@@ -10,6 +10,7 @@ A \textbf{simple regression model} can be expressed as
     \text{Error}\\
     \mathbf{y} &= \beta_0 + \beta \mathbf{x} + \varepsilon.
 \end{align*}
+where $\epsilon \sim N(0, \sigma^2)$ is the error term. The sufficient statistics for the parameters $\beta_0$, $\beta_1$, and $\sigma^2$ can be derived from the likelihood function.
 
 Now consider that we observe five pairs of $x$ and $y$ observations as follow: $(-2, 0)$, $(-1, 0)$, $(0, 1)$, $(1,1)$ and $(2, 3)$.
 
@@ -60,19 +61,6 @@ Now consider that we observe five pairs of $x$ and $y$ observations as follow: $
     \caption{The illustrated graphs of the parameter spaces $\Theta$ and $\Theta_0$.}
 \end{figure}
 
-\begin{definition}[R-square]
-    The statistic
-    \begin{equation}
-        R^2 = \frac{\CS{B}}{\CS{T}} = 1 - \frac{\CS{R}}{\CS{T}} 
-        = \frac{S_{xy}}{\CS{T}}
-        = \frac{\widehat{\beta}^2 S_{xx}}{S_{yy}}.
-    \end{equation}
-    is called the $R$-square statistic or coefficient of determination, which 
-    measures the proportion of the total variation in $Y_i$'s that is explained 
-    by the fitted line and, hence, it measures how well the simple linear regression 
-    fitted the sample points.
-\end{definition}
-
 \section{Least squares Method}
 
 Let $\mathcal{X} \times \mathcal{Y} = \{ (x_i, y_i) \> | \> i = 1,2 , \ldots, n \}$ be a set of data with sample size $n$. Consider 
@@ -95,6 +83,360 @@ which minimize the sum of squares error. That is,
 \begin{equation}
     \underline{\beta} = (\widehat{\beta}_0, \widehat{\beta}_1) = \argmin_{(\beta_0, \beta_1) \in \mathbb{R}^2} \mathcal{E} (\beta_0, \beta_1).
 \end{equation}
+
+\begin{example}
+The article ``Relating the Cetane Number of Biodiesel
+ Fuels to Their Fatty Acid Composition: A Critical Study``
+ (J. of Automobile Engr., 2009: 565-583) included the 
+following data on x = iodine value (g) and y = cetane
+ number for a sample of 14 biofuels (see next slide).
+The iodine value (x) is the amount of iodine necessary to 
+saturate a sample of 100 g of oil.
+
+\begin{table}[h!]
+    \centering
+    \small
+    \begin{tabular}{l|cccccccccccccccc}
+    \hline
+    $x$ & 132.0 & 129.0 & 120.0 & 113.2 & 105.0 & 92.0 & 84.0 & 83.2 & 88.4 & 59.0 & 80.0 & 81.5 & 71.0 & 69.2\\
+    \hline
+    $y$ & 46.0 & 48.0 & 51.0 & 52.1 & 54.0 & 52.0 & 59.0 & 58.7 & 61.6 & 64.0 & 61.4 & 54.6 & 58.8 & 58.0\\
+    \hline
+    \end{tabular}
+\end{table}
+
+\begin{figure}[ht]
+    \centering
+    \begin{tikzpicture}
+\begin{axis}[%
+    title={Scatter plot of iodine value and cetane number},
+    xlabel={Iodine Value (g)},
+    ylabel={Cetane Number},
+    scatter/classes={%
+    a={mark=o,draw=red}}]
+    \addplot[scatter,only marks,%
+    scatter src=explicit symbolic]%
+table[meta=label] {
+x y label
+132.0 46.0 a
+129.0 48.0 a
+120.0 51.0 a
+113.2 52.1 a
+105.0 54.0 a
+92.0 52.0 a
+84.0 59.0 a
+83.2 58.7 a
+88.4 61.6 a
+59.0 64.0 a
+80.0 61.4 a
+81.5 54.6 a
+71.0 58.8 a
+69.2 58.0 a
+};
+\end{axis}
+\end{tikzpicture}
+    \caption{The scatter plot of iodine value (x) and cetane number (y).}
+\end{figure}
+
+Under the additional assumption that $\varepsilon_i$'s are iid $N(0, \sigma^2)$, the likelihood function of the sample is
+\begin{align*}
+    L(\alpha, \beta, \sigma^2 | \mathbf{y}, \mathbf{x}) = \prod_{i=1}^n f_Y(y_i | x_i, \alpha, \beta, \sigma^2) &= \prod_{i=1}^n \frac{1}{\sqrt{2\pi\sigma^2}} \exp\left(-\frac{(y_i - \alpha - \beta x_i)^2}{2\sigma^2}\right)\\
+    &= \frac{1}{(2\pi\sigma^2)^{n/2}} \exp\left(-\frac{1}{2\sigma^2} \sum_{i=1}^n (y_i - \alpha - \beta x_i)^2\right). \label{eq:s2.1} \tag{{\color{gray} $\spadesuit $}} 
+\end{align*}
+
+Considering $(y_1, x_1), \ldots, (y_n, x_n)$ as $n$ pairs of data points plotted 
+in the $xy$-plane as the scatterplot in the previous figure.
+
+Think of drawing through this cloud of points a straight line that comes
+``as close as possible`` to all the points, measured by the vertical
+ distances from the points to the straight line. For any line 
+$y = \alpha + \beta x$, the vertical distance from the point $(x_i, y_i)$ to the line is $y_i - (\alpha + \beta x_i)$.
+Letting
+\[
+    \psi(\alpha, \beta) := \sum_{i=1}^n (y_i - \alpha - \beta x_i)^2,
+\]
+
+Maximizing the likelihood is equivalent to
+\[
+    \min_{\alpha, \beta} \sum_{i=1}^n (y_i - \alpha - \beta x_i)^2,
+\]
+
+Taking the partial derivatives of $\psi(\alpha, \beta)$ with respect to $\alpha$ and $\beta$, we have
+\[
+    \pdv{\psi(\alpha, \beta)}{\alpha} = -2 \sum_{i=1}^n (y_i - \alpha - \beta x_i) = 0,
+\]
+\[
+    \pdv{\psi(\alpha, \beta)}{\beta} = -2 \sum_{i=1}^n x_i (y_i - \alpha - \beta x_i) = 0. \label{eq:s2.0} \tag{{\color{orange!50!white} $\clubsuit $}}
+\]
+The first equation gives
+\[
+    \overline{y} - a -b\overline{x} \implies a = \overline{y} - b\overline{x}.
+\]
+Substituting $a$ into the second equation \eqref{eq:s2.0} by $\overline{y} - b\overline{x}$ results in
+\[
+    \sum_{i=1}^n x_i (y_i - \overline{y}) + b \sum_{i=1}^n x_i (\overline{x} - x_i) = 0.
+\]
+This equation is the same as $S_{xy} = b S_{xx}$, that is
+\[
+    S_{xy} = \sum_{i=1}^n (x_i - \overline{x})(y_i - \overline{y}), \quad S_{xx} = \sum_{i=1}^n (x_i - \overline{x})^2.
+\]
+Therefore, replacing $y_i$ by the random variable $Y_i$ for all $i = 1, 2, \ldots, n$ (and we 
+still use $S_{xy}$ when $y_i$ is replaced by $Y_i$), we obtain the MLE or LSE as 
+\begin{equation}
+    \widehat{\beta} = \frac{S_{xy}}{S_{xx}}, \quad \widehat{\alpha} = \overline{Y} - \widehat{\beta} \overline{x} = \overline{Y} - \frac{S_{xy}}{S_{xx}} \overline{x}.
+\end{equation}
+We can always assume that $S_{xx} > 0$, since $S_{xx} = 0$ is the trivial case of identical $x_i$'s.
+
+We now proceed to show that $\widehat{\alpha}$ and $\widehat{\beta}$ are UMVUE of $\alpha$ and $\beta$, respectively. First of all, 
+we had already shown that they are unbiased estimators of $\alpha$ and $\beta$, respectively.
+\[
+    \mathbb{E}[S_{xy}] = \sum^n_{i=1} (x_i - \overline{x}) \mathbb{E}_y(y_i - \overline{y}) = \sum^n_{i=1} (x_i - \overline{x}) \beta (x_i - \overline{x}) =  \beta S_{xx}.
+\]
+Since $\widehat{\beta}$ is unbiased for $\beta$ and 
+\[
+    \mathbb{E}[\widehat{\alpha}] = \mathbb{E}[\overline{Y}] - \overline{x} \mathbb{E}[\widehat{\beta}] = \alpha + \beta \overline{x} - \overline{x} \beta = \alpha.
+\]
+Continue with \eqref{eq:s2.1}, the likelihood function of the sample is
+\begin{align*}
+    L(\alpha, \beta, \sigma^2 | \mathbf{y}, \mathbf{x}) &= \frac{1}{(2\pi\sigma^2)^{n/2}} \exp\left(-\frac{1}{2\sigma^2} \sum_{i=1}^n (y_i - \alpha - \beta x_i)^2\right)\\
+    &= \frac{1}{(2\pi\sigma^2)^{n/2}} \exp\left(-\frac{1}{2\sigma^2} \left[ \sum_{i=1}^n (y_i - \overline{y})^2 + n(\overline{y} - \alpha - \beta \overline{x})^2 + (\beta - \widehat{\beta})^2 S_{xx} \right] \right).
+\end{align*}
+
+where 
+\[
+    S_{yy} = \sum_{i=1}^n (y_i - \overline{y})^2.
+\]
+We still using the notation $S_{xy}$ and $S_{xx}$ when $y_i$ is replaced by $Y_i$. From the properties of the exponential family, a complete and sufficient
+statistic for $\underline{\theta} = (\alpha, \beta, \sigma^2)$ is given by $(\widehat{\alpha}, \widehat{\beta}, S_{yy})$.
+
+Since $\widehat{\alpha}$ and $\widehat{\beta}$ are both unbiased estimators and functions of the sufficient and complete 
+statistic, thus they are UMVUE of $\alpha$ and $\beta$, respectively.
+
+\end{example}
+\begin{example}[(cont.)]
+    \textbf{Question: What if we remove the normality assumption? } 
+    $\widehat{\alpha}$ and $\widehat{\beta}$ are still least squares estimators, but they are no longer MLEs.
+    A statistical property that holds for LSE is that it is the best linear unbiased estimator (BLUE) 
+    in the sense that $\widehat{\alpha}$ or $\widehat{\beta}$ has the smallest variance among all linear unbiased estimators of the form 
+    \begin{equation}
+        \sum^n_{i=1} d_i Y_i
+    \end{equation}
+
+If the estimator of this form is unbiased for $\beta$, then 
+\begin{align*}
+    \beta = \mathbb{E}_y\left( \sum^n_{i=1} d_iY_i \right) &= \sum^n_{i = 1} d_i \mathbb{E}_y[Y_i]\\
+    &= \sum^n_{i = 1} d_i (\alpha + \beta x_i) & \text{from the regression line, } \widehat{Y} = \alpha + \beta x\\
+    &= \alpha \sum^n_{i = 1} d_i + \beta \sum^n_{i = 1} d_i x_i & \text{linearity of summation}.
+\end{align*}
+
+holds for all $\alpha$ and $\beta$, which imples that 
+\[
+    \sum^n_{i = 1} d_i = 0, \quad \sum^n_{i = 1} d_i x_i = 1.
+\]
+A geometric description  of the BLUE of $\beta$ is given in the filgure below.
+
+% TODO: Computation of 3d graph requires longer time, this should left 
+% for last part
+\begin{comment}
+    \begin{figure}[ht]
+        \centering
+        \begin{tikzpicture}[scale=3.25]
+    \begin{axis}
+    [   axis equal,
+        hide axis,
+        view={20}{30},
+        z buffer=sort,
+    ]
+        \addplot3
+        [   domain=-2:2,
+            y domain=-2:2,
+            surf,
+            mesh/interior colormap=
+           {blueblack}{color=(black) color=(orange)},
+            mesh/interior colormap thresh=1,
+            shader=interp,
+            opacity=0.5,
+        ] (-1,y,x);
+        \addplot3
+        [   domain=0:360,
+            y domain=0:180,
+            surf,
+            mesh/interior colormap=
+           {blueblack}{color=(black) color=(red)},
+            mesh/interior colormap thresh=1,
+            shader=interp,
+            opacity=0.3
+        ] ({sin(y)*cos(x)},{sin(y)*sin(x)},{cos(y)});
+        \addplot3
+        [   domain=-2:2,
+            y domain=-2:2,
+            surf,
+            shader=flat,
+            gray,
+            opacity=0.1,
+        ] (x,y,0);
+        \addplot3
+        [   domain=0:360,
+            y domain=0:90,
+            surf,
+            mesh/interior colormap=
+           {blueblack}{color=(black) color=(red)},
+            mesh/interior colormap thresh=1,
+            shader=interp,
+            opacity=0.3,
+        ] ({sin(y)*cos(x)},{sin(y)*sin(x)},{cos(y)});
+    \end{axis}
+\end{tikzpicture}
+    \end{figure}
+\end{comment}
+
+We want to show the LSE $\widehat{\beta}$ is BLUE. Since 
+\[
+    Var \left( \sum^n_{i=1} d_i Y_i \right) = \sigma^2 \sum^n_{i=1} d^2_i,
+\]
+the BLUE of $\beta$ is the solution of the optimization problem
+\begin{subequations}
+\begin{alignat}{2}
+&\!\min_{d_i}        &\qquad& \sum_{i=1}^{n} d^2_i\\
+&\text{subject to} &      & \sum^n_{i = 1} d_i = 0,\\
+&                  &      & \sum^n_{i = 1} d_i x_i = 1.
+\end{alignat}
+\end{subequations}
+
+Consider the Lagrange multiplier method by minimizing 
+\begin{equation}
+    g(d_1, \ldots, d_n, \lambda_1, \lambda_2) = \sum_{i=1}^{n} d^2_i + \lambda_1 \left( \sum^n_{i = 1} d_i \right) + \lambda_2 \left( \sum^n_{i = 1} d_i x_i - 1 \right).
+\end{equation}
+
+Taking derivatives with respect to $d_i$ and setting them to zero, we have
+\[
+    \pdv{g}{d_i} = 2d_i + \lambda_1 + \lambda_2 x_i = 0.
+\]
+Then
+\begin{align*}
+    0 = \sum_{i=1}^{n} (2d_i + \lambda_1 + \lambda_2 x_i) &= 2 \sum_{i=1}^{n} d_i + n\lambda_1 + \lambda_2 \sum_{i=1}^{n} x_i & \text{linearity of summation}\\
+    &= \lambda_1 n + \lambda_2 \sum^n_{i=1} x_i & \text{since } \sum d_i = 0
+\end{align*}
+which yields $\lambda_1 = - \lambda_2 \overline{x}$ and, hence
+\[
+    0 = 2d_i + \lambda_2 (x_i - \overline{x}).
+\]
+Then 
+\[
+    0 = \sum^n_{i=1} (x_i - \overline{x}) [2d_i + \lambda_2 (x - \overline{x})] = 2 + \lambda_2 S_{xx}
+\]
+which gives us $\lambda_2 = -2 / S_{xx}$. Then 
+\[
+    d_i = \frac{-(\lambda_1 + \lambda_2 x_i)}{2} = \frac{-\lambda_2(x_i - \overline{x})}{2}
+    = \frac{(x_i - \overline{x})}{S_{xx}}
+\]
+and the BLUE of $\beta$ is 
+\[
+    \sum^n_{i=1} d_i Y_i = \sum_{i=1}^{n} \frac{(x_i - \overline{x})}{S_{xx}} Y_i = \frac{S_{xy}}{S_{xx}} = \widehat{\beta}.
+\]
+And because
+\[
+    \widehat{\beta} = \sum_{i=1}^{n} \frac{(x_i - \overline{x})(\beta x_i + \varepsilon_i)}{S_{xx}}
+    = \beta + \sum^n_{i=1} d_i \varepsilon_i
+\]
+where $d_i = (x_i - \overline{x})/S_{xx}$, and the random error $\varepsilon \sim N(0,1)$. We obtain that 
+\[
+    Var(\widehat{\beta}) = \sum_{i=1}^{n} d^2_i Var(\varepsilon_i) = \frac{\sigma^2}{S_{xx}}.
+\]
+And we are done.
+\end{example}
+
+\begin{example}
+    Assume monthly data of sales and advertising costs for a company below and independence between monthly sales. 
+    What is the relationship between sales and advertising costs for a company?
+    \begin{center}
+        \begin{tabular}{c|c|c|c|c|c}
+        Advertising costs (in $\$ 100,000$) & 1 & 2 & 3 & 4 & 5\\
+        \hline
+        Sales (in $10,000$ unit) & $1$ & $1$ & $2$ & $2$ & $4$\\
+        \end{tabular}
+    \end{center}
+    \begin{enumerate}
+        \item Find the estimated parameters $\widehat{\beta}_0$ and $\widehat{\beta}_1$. What do these estimated parameters mean?
+        \item What are the estimated sales when the advertising cost is $\$ 100,000$ and $\$ 250,000$, respectively?
+    \end{enumerate}
+\end{example}
+\begin{solution}
+    \begin{enumerate}
+        \item Using LSE to find unbiased estimators of the parameters:
+
+    \begin{center}
+        \begin{tabular}{c|c|c|c|c|c}
+        & $x$ & $y$ & $x^2$ & $y^2$ & $xy$\\
+        \hline
+        & $1$ & $1$ & $1$ & $1$ & $1$\\
+        & $2$ & $1$ & $4$ & $1$ & $2$\\
+        & $3$ & $2$ & $9$ & $4$ & $6$\\
+        & $4$ & $2$ & $16$ & $4$ & $8$\\
+        & $5$ & $4$ & $25$ & $16$ & $20$\\
+        \hline
+        $\sum=$ & $15$ & $10$ & $55$ & $26$ & $37$\\
+        \hline
+        \end{tabular}
+    \end{center}
+    Now we can applying the formulas,
+    \[
+        \widehat{\beta}_1 = \frac{n\sum xy - (\sum x)(\sum y)}{n\sum x^2 - (\sum x)^2}
+        = \frac{5(37) - 15(10)}{5(55)-15^2} = 0.70.
+    \]
+    and 
+    \[
+        \widehat{\beta}_0 = \ols{Y} - \widehat{\beta}_1 \ols{X} = 
+        \frac{\sum y}{n} - \widehat{\beta}_0 \left(\frac{\sum x}{n} \right)
+        = \frac{10}{5} - 0.70 \times \frac{15}{5} 
+        = -0.10.
+    \]
+    The fitted regression line is $\widehat{y} = -0.1 + 0.7x$. We take a look on each estimated parameters:
+    \begin{itemize}
+        \item[$\bullet$] $\widehat{\beta}_0 = -0.1$, since there is no advertising cost, the sales is $-1000$ units, which is meaningless.
+        \item[$\bullet$] $\widehat{\beta}_1 = 0.7$, as the advertising cost increased by $\$100,000$, the sales is increased by $7000$ units.
+    \end{itemize}
+
+    \begin{figure}[ht]
+    \centering
+    \begin{tikzpicture}
+    \begin{axis}[%
+        title={Scatter plot of advertising and sales},
+        xmin=0, xmax=6,
+        xmin=0, ymax=5,
+        domain=0:6,
+        xlabel={Advertising costs (in $\$ 100,000$)},
+        ylabel={Sales (per $10,000$ units)},
+        scatter/classes={%
+        a={mark=square*,draw=red,fill=red}}]
+        \addplot[scatter,only marks,%
+        scatter src=explicit symbolic]%
+    table[meta=label] {
+    x y label
+    1 1 a
+    2 1 a
+    3 2 a
+    4 2 a
+    5 4 a
+    };
+    \addplot[thick, red]{-0.1 + 0.7*x};
+    \end{axis}
+    \end{tikzpicture}
+        \caption{The scatter plot of advertising costs ($x$) and sales ($y$). The scatterplot shows a positive linear relationship.}
+    \end{figure}
+
+    \item If advertising cost is $\$100,000$, that means $x=1$. The estimated sales will be $\widehat{y}_{1} = -0.1 + 0.7(1) = 0.6$. Which is 6,000 units.
+
+    If advertising cost is $\$250,000$, that means $x=2.5$. The estimated sales will be $\widehat{y}_{2.5} = -0.1 + 0.7(2.5) = 1.65$. Which is 16,500 units.
+    \end{enumerate}
+\end{solution}
+
+\begin{definition}[Extrapolation]
+    \textbf{Extrapolation} is using the regression line to predict the value of a response corresponding to a $x$ values 
+    that is \textbf{outside the range} of the data used to determine the regression line.
+
+    Extrapolation may lead to \textbf{unreliable predictions}.
+\end{definition}
 
 \section{Making Inference}
 
@@ -235,7 +577,8 @@ degree of freedom in our previous $t$-tests assumption. Indeed, $S^2$ is an unbi
     \]
 \end{theorem}
 
-The $p$-value based on $n-2$ df can be computed as was done previously for $t$-tests.
+The term $\displaystyle Se(\widehat{\beta}_1) = \sqrt{\frac{\MS{E}}{S_{xx}}}$ is the 
+estimated standard error of $\widehat{\beta}_1$. The $p$-value based on $n-2$ df can be computed as was done previously for $t$-tests.
 
 \begin{example}
     The frequency of chirping of a cricket is thought to be related to temperature. This study 
@@ -366,10 +709,19 @@ the width of the PI does not (because even with perfect
 knowledge of $\beta_0$ and $\beta_1$, there will still be randomness in
 prediction).
 
-\section{Correlation}
+\section{Correlation: How strong is the linear relationship?}
+
+In regression analysis, the linear correlation coefficient (which also called \textbf{Pearson correlation coefficient}), $\rho$, 
+is the measure of the degree of association between the response $x$ and explanatory data $y$.
 
 Recall that if $X$ and $Y$ are bivariate random variables with means
-$\mu_X$ and $\mu_Y$ and standard deviations $\sigma_X$ and $\sigma_Y$, respectively,
+$\mu_X$ and $\mu_Y$ and standard deviations $\sigma_X$ and $\sigma_Y$, respectively.
+
+\[
+    f(x,y) = \frac{1}{2\pi \sigma_1 \sigma_2 \sqrt{1 - \rho^2}} \exp \left\{ -\frac{1}{2(1 - \rho^2)} 
+    \left[ \left(\frac{y - \mu_1}{\sigma_1}\right)^2 + \left(\frac{x - \mu_2}{\sigma_2}\right)^2 -2\rho \left(\frac{y - \mu_1}{\sigma_1}\right)\left(\frac{x - \mu_2}{\sigma_2}\right) \right]\right\}
+\]
+
 then the correlation coefficient between $X$ and $Y$ is defined as
 \begin{equation}
     \rho_{X,Y} = \frac{\text{Cov}(X,Y)}{\sigma_X \, \sigma_Y} = \frac{\mathbb{E}[(X - \mu_X)(Y - \mu_Y)]}{\sqrt{\mathbb{E}[(X - \mu_X)^2] \, \mathbb{E}[(Y - \mu_Y)^2]}}.
@@ -394,6 +746,62 @@ to be a subset of $\mathbb{R}^n$, where $\undertilde{\mathbf{e}} = ( 1, 1, \ldot
 entries equal to 1.
 
 Consider the quotient space $V = \mathbb{R}^n / \mathfrak{G}$, which is the set of all cosets of the form $\overrightarrow{x} + \mathfrak{G}$.
+
+\section{Analysis of Variance approach on testing parameters}
+
+\subsection{Coefficient of determination}
+
+The coefficient of determination, denoted by $R^2$, represents the proportion of $\CS{T}$ that is explained by use of the 
+linear regression model.
+\begin{definition}[R-square]
+    The statistic
+    \begin{equation}
+        R^2 = \frac{\CS{B}}{\CS{T}} = 1 - \frac{\CS{R}}{\CS{T}} 
+        = \frac{S_{xy}}{\CS{T}}
+        = \frac{\widehat{\beta}^2 S_{xx}}{S_{yy}}.
+    \end{equation}
+    is called the $R$-square statistic or coefficient of determination, which 
+    measures the proportion of the total variation in $Y_i$'s that is explained 
+    by the fitted line and, hence, it measures how well the simple linear regression 
+    fitted the sample points.
+\end{definition}
+
+The \textit{proportion} (or \textit{percentage}) of the variation in $Y$ that is explained by the linear relationship with predictor $X$ 
+is measured by $R^2$, the coefficient of determination. It is a measure of the variability in $Y$ without considering the 
+effect of the regressor variable $X$. Here are some facts need to take notes:
+\begin{enumerate}
+    \item $R^2 \times 100\%$ of variation in $Y$ can be ``explained`` by using $X$ to predict $Y$, or the error in predicting 
+        $Y$ can be reduced by $R^2 \times 100\%$ when the regressor is used instead of just $\overline{y}$.
+    \item $0 \leq R^2 \leq 1$ is a measure of ``fit`` for the regression line. The nearest the $R^2$ to 1, the better the 
+    regression line ``fit``.
+
+    \begin{figure}[ht]
+        \pgfplotsset{compat=1.12}
+        \begin{center}
+            \begin{tikzpicture}
+                \draw[left color=myred, right color=mygreen, middle color=myred!50!mygreen] (0,0) rectangle (10,1);% middle must be last
+                 \node [left] at (0, 1.25) {$0$};
+                 \node [below] at (0, -0.25) {Bad Fit};
+                 \node  at (2.5, 1.25) {$0.25$};
+                 \node  at (5, 1.25) {$0.5$};
+                 \node  at (7.5, 1.25) {$0.75$};
+                 \node [right] at (10, 1.25) {$1$};
+                 \node [below] at (10, -0.25) {Good Fit};
+            \end{tikzpicture}
+        \end{center}
+        \caption{The diagram illustrated the spectrum of the quality of regression line based on $R^2$.}
+    \end{figure}
+
+    \item We can determine the \textit{coefficient of correlation} with $r = \sqrt{R^2}$. In fact, The square of $r$ is the 
+    coefficient of determination in simple linear regression.
+\end{enumerate}
+
+\begin{theorem}
+    The $F$-statistic can be expressed as 
+    \begin{equation}
+        \mathcal{F} = \frac{(n-2)R^2}{1-R^2}.
+    \end{equation}
+\end{theorem}
 
 The analysis of variance consists of calculations that provide information about levels of variability within a regression 
 model and form a basis for testing the 
