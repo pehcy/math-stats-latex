@@ -1,0 +1,739 @@
+\chapter{Transformation of Random Variables}
+
+We begin with a random variable $X$ with a given distribution. We wish to find the distribution of $Y=g(X)$ 
+where $g : \mathbb{R} \to \mathbb{R}$ is some function.
+
+The \textbf{inverse image} of a set $\mathcal{A}$ is defined as
+\begin{equation}
+    g^{-1}(\mathcal{A}) = \{ x \in \mathbb{R} \> | \> g(x) \in \mathcal{A} \}
+\end{equation}
+In other words, $x$ is in set $g^{-1}(\mathcal{A})$ if and only if $g(x) \in \mathcal{A}$.
+
+\begin{example}
+    If $g(x) = x^3$, then $g^{-1}([1,8]) = [1,2]$.
+\end{example}
+
+\section{Transform of Discrete Random Variable}
+
+\begin{theorem}
+    For $X$ a discrete random variable with probability mass function $f_X(x)$, the probability mass function of
+    $Y = g(X)$ is 
+    \begin{equation}
+        f_Y(y) = \sum_{x \in g^{-1}(y)} f_X(x).
+    \end{equation}
+\end{theorem}
+
+\begin{example}
+    Let $X$ be a discrete random variable with probability mass function
+    \begin{center}
+        \begin{tabular}{c|ccccc}
+            $x$ & $-2$ & $-1$ & $0$ & $1$ & $2$\\
+            \hline
+            $f_X(x)$ & $\displaystyle \frac{1}{5}$ & $\displaystyle \frac{1}{6}$ & $\displaystyle \frac{1}{5}$ & $\displaystyle \frac{1}{15}$ & $\displaystyle \frac{11}{30}$
+        \end{tabular}
+    \end{center}
+    Find the pdf of $Y = X^2$.
+\end{example}
+\begin{solution}
+    The set of mass points of $X$ is $\mathcal{A} = \{ -2, -1, 0, 1, 2 \}$. The transformation $Y = g(X) = X^2$ maps the set points to 
+    $\mathcal{B} = \{0,1,4\}$. Hence, the probability mass function of $Y$ is
+    \[
+        f_Y(y) = \mathbb{P}[Y = y] = \begin{cases}
+            \mathbb{P}[Y = 0] = \mathbb{P}[X = 0] = \displaystyle \frac{1}{5}, & \text{if } y = 0,\\[1em]
+            \mathbb{P}[Y = 1] = \mathbb{P}[X = \pm 1] = f_X(1) + f_X(-1) = \displaystyle \frac{7}{30}, & \text{if } y = 1,\\[1em]
+            \mathbb{P}[Y = 4] = \mathbb{P}[X = \pm 2] = f_X(2) + f_X(-2) = \displaystyle \frac{17}{30}, & \text{if } y = 4,\\[0.8em]
+            0, & \text{otherwise}.
+        \end{cases}
+    \]
+\end{solution}
+
+\begin{theorem}
+    If $X$ is a random variable defined on $(\Omega, \mathscr{F}, P)$, and if $g$ is a Borel-measurable function, then
+    $g(X)$ is also a random variable defined on $(\Omega, \mathscr{F}, P)$.
+\end{theorem}
+
+\begin{theorem}
+    Given a random variable $X$ with known distribution mass function, then the distribution mass function of $Y = g(X)$, where 
+    $g$ is a Borel-measurable function, can be determined.
+\end{theorem}
+
+\begin{example}
+    Suppose $X$ is a random variable with known distribution function $F_X(x)$, show that the following functions are also random variables.
+    \begin{enumerate}
+        \item $|X|$.
+        \item $aX + b$, where $a$ and $b$ are constants.
+        \item $X^k$, where $k$ is a positive integer.
+        \item $X_+ = \max\{X, 0\}$.
+        \item $X_- = \min\{X, 0\}$.
+    \end{enumerate}
+\end{example}
+\begin{solution}
+    \textbf{[Intuition]} We can try to express each transformation in terms of $F_X(x)$, the distribution function of $X$.
+
+    \begin{enumerate}
+        \item Let $g(x) = |x|$, the cumulative function of $Y = g(X)$ is
+        \begin{align*}
+            G_Y(y) &= \mathbb{P}(|X| \leq y)\\
+            &= \mathbb{P}(-y \leq X \leq y)\\
+            &= F_X(y) - F_X(-y).
+        \end{align*}
+        Since $F_X(x)$ is a distribution function, $G(y)$ is also a distribution function. Thus $|X|$ is a random variable.
+    
+        \item Let $Y = aX + b$, the cumulative function of $Y$ is
+        \begin{align*}
+            H_Y(y) = \mathbb{P}(aX + b \leq y)
+            &= \begin{cases}
+                \displaystyle
+                \mathbb{P} \left( X \leq \frac{y-b}{a} \right) &\text{if } a > 0,\\
+                \displaystyle
+                \mathbb{P} \left( X \geq \frac{y-b}{a} \right) &\text{if } a < 0.\\
+                0 &\text{if } a = 0.
+            \end{cases}\\
+            &= \begin{cases}
+                \displaystyle
+                F_X\left( \frac{y-b}{a} \right) &\text{if } a > 0,\\
+                \displaystyle
+                1 - F_X\left( \frac{y-b}{a} \right) &\text{if } a < 0.\\
+                0 &\text{if } a = 0.
+            \end{cases}\\
+        \end{align*}
+
+        \item For $Y = X^k$, where $k$ is a positive integer, the cumulative function of $Y$ is
+        \begin{align*}
+            \breve{H}_Y(y) &= \mathbb{P}(X^k \leq y)\\ 
+            &= \begin{cases}
+                \mathbb{P}(X \leq y^{1/k}) &\text{if } k \text{ is odd},\\
+                \mathbb{P}(-y^{1/k} \leq X \leq y^{1/k}) &\text{if } k \text{ is even and } y \geq 0,\\
+            \end{cases}\\
+            &= \begin{cases}
+                F_X(y^{1/k}) &\text{if } k \text{ is odd},\\
+                F_X(y^{1/k}) - F_X(-y^{1/k}) &\text{if } k \text{ is even and } y \geq 0\\
+            \end{cases}.
+        \end{align*}
+    \end{enumerate}
+\end{solution}
+
+\section{Continuous random variable}
+
+\begin{theorem}
+Let $X$ be a random variable of continuous type with probability density function $f_X(x)$, and 
+let $Y = g(X)$ be differentiable for all $x$ and either 
+\begin{equation}
+    f_Y(y) = f_X(g^{-1}(y)) \left| \odv{}{y} g^{-1}(y) \right|, \quad -\infty < y < \infty.
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+    In this case, $g(x)$ is a increasing function. We compute the cumulative distribution of $Y = g(X)$
+    in terms of $F(x)$, the cumulative distribution function of $X$. Note that 
+    \[
+        F_Y(y) = \mathbb{P}[Y \leq y] = \mathbb{P}[g(X) \leq y] = \mathbb{P}[X \leq g^{-1}(y)] = F_X(g^{-1}(y)). \label{eq:t1.0} \tag{{\color{red} $\heartsuit$}}
+    \]
+    Now use the chain rule of differentiation to differentiate \eqref{eq:t1.0} with respect to $y$.
+    \[
+        f_Y(y) = F'_Y(y) = \odv{}{y} F_X(g^{-1}(y)) = f_X(g^{-1}(y)) \odv{}{y} g^{-1}(y). \label{eq:t1.2} \tag{{\color{myyellow} $\bigstar$}}
+    \]
+    In the case where $g(x)$ is a decreasing function, we have
+    \[
+        F_Y(y) = \mathbb{P}[Y \leq y] = \mathbb{P}[g(X) \leq y] = \mathbb{P}[X \geq g^{-1}(y)] = 1 - F_X(g^{-1}(y)). 
+    \]
+    and the density function is 
+    \[
+        f_Y(y) = F'_Y(y) = \odv{}{y} \left[ 1 - F_X(g^{-1}(y)) \right] = - f_X(g^{-1}(y)) \odv{}{y} g^{-1}(y). \label{eq:t1.3} \tag{{\color{gray} $\spadesuit $}}
+    \]
+    Now combining \eqref{eq:t1.2} and \eqref{eq:t1.3}, we obtained
+    \[
+        f_Y(y) = f_X(g^{-1}(y)) \left| \odv{}{y} g^{-1}(y) \right|
+    \]
+    which is valid for both increasing and decreasing functions $g(x)$.
+\end{proof}
+
+\begin{example}
+    If $X \sim UNIF(0,1)$ and $Y = X^2$, find the probability density function of $Y$ if 
+    \begin{enumerate}
+        \item $Y = e^X$,
+        \item $Y = -2\ln X$.
+    \end{enumerate}
+\end{example}
+\begin{solution}
+    The probability density function of $X$ is
+    \[
+        f_X(x) = \begin{cases}
+            1 & \text{for } 0 < x < 1,\\
+            0 & \text{otherwise}.
+        \end{cases}
+    \]
+    \begin{enumerate}
+        \item To find the density function of $Y = e^X$, Let $g(x) = e^x$ and apparently $g'(x) = e^x$. 
+        The function $g$ is monotonically increasing. The inverse function is
+        \[
+            x = g^{-1}(y) = \ln y,\quad y > 0.
+        \]
+        and its derivative is
+        \[
+            \odv{}{y} g^{-1}(y) = \odv{}{y} \ln y = \frac{1}{y}.
+        \]
+        Using the transformation formula, we have
+        \begin{align*}
+            f_Y(y) &= f_X(g^{-1}(y)) \left| \odv{}{y} g^{-1}(y) \right|\\
+            &= f_X(\ln y) \left| \frac{1}{y} \right|\\
+            &= \begin{cases}
+                \frac{1}{y} & \text{for } 0 < \ln y < 1 \implies 0 < y < e,\\
+                0 & \text{otherwise}.
+            \end{cases}
+        \end{align*}
+        Thus the density function of $Y$ is
+        \[
+            f_Y(y) = \begin{cases}
+                \frac{1}{y} & \text{for } 1 < y < e,\\
+                0 & \text{otherwise}.
+            \end{cases}
+        \]
+
+        \item In another case, let $g(x) = -2\ln x$. The function $g$ is monotonically decreasing. The inverse function is
+        \[
+            x = g^{-1}(y) = e^{-y/2}, \quad y > 0.
+        \]
+        Using the transformation formula, we have
+        \begin{align*}
+            f_Y(y) &= f_X(g^{-1}(y)) \left| \odv{}{y} g^{-1}(y) \right|\\
+            &= f_X(e^{-y/2}) \left| -\frac{1}{2} e^{-y/2} \right|\\
+            \implies f_Y(y) &= \begin{cases}
+                \displaystyle \frac{1}{2} e^{-y/2} & \text{for } 0 < e^{-y/2} < 1 \implies 0 < y < \infty,\\[0.5em]
+                0 & \text{otherwise}.
+            \end{cases}
+        \end{align*}
+    \end{enumerate}
+\end{solution}
+
+\begin{theorem}
+    If the transformation $Y = g(X)$ is not one-to-one transformation from $\mathfrak{X}$ 
+    onto $\mathcal{D}$. For instance, for a point in $\mathfrak{D}$, there exists more than one 
+    point in $\mathfrak{X}$. Then $\mathfrak{X}$ can be partitioned into $n$ mutually exclusive
+    subsets $\mathfrak{X}_1, \mathfrak{X}_2, \ldots, \mathfrak{X}_n$, say, such that $y=g(x)$ 
+    is one-to-one from each $\mathfrak{X}_i$ onto $\mathfrak{D}$. Let $g_i^{-1}(y)$ denote the
+    inverse function of $y=g(x)$ on $\mathfrak{X}_i$. Then the density function of $Y$ is given by
+    \begin{equation}
+        f_Y(y) = \sum_{i=1}^{n} f_X(g_i^{-1}(y)) \left| \odv{}{y} g_i^{-1}(y) \right|, \quad \text{if } y \in \mathfrak{D}.
+    \end{equation}
+\end{theorem}
+
+\begin{example}
+    Let $X$ be a normal random variable with mean 0 and variance 1. Find the density function of $Y = X^2$.
+\end{example}
+\begin{solution}
+    Here, let $X \sim N(0,1)$ and the density function of $X$ is
+    \[
+        f_X(x) = \frac{1}{\sqrt{2\pi}} e^{-x^2/2}, \quad x \in \mathfrak{X} = \mathbb{R}.
+    \]
+    Let $y = g(x) = x^2$.
+    The transformation $y = x^2$ is not one-to-one from $\mathfrak{X} =\mathbb{R}$ onto $\mathfrak{D} = \{ y \> | \> y \geq 0 \}$.
+    Note that 
+    \[
+        y = x^2 \implies x = \pm \sqrt{y}.
+    \]
+    From here we can decompose $\mathfrak{X}$ into two disjoint subsets: $\mathfrak{X}_1 = \{ x \in \mathbb{R} \> | \> x < 0 \}$ and $\mathfrak{X}_2 = \{ x \in \mathbb{R} \> | \> x > 0 \}$.
+    And now $y=x^2$ can be one-to-one from each $\mathfrak{X}_i$ onto $\mathfrak{D}$ for $i=1,2$. The inverse functions for each 
+    $\mathfrak{X}_i$ are 
+    \[
+        x = \begin{cases}
+            g_1^{-1}(y) = -\sqrt{y}, & \text{for } x \in \mathfrak{X}_1,\\
+            g_2^{-1}(y) = \sqrt{y}, & \text{for } x \in \mathfrak{X}_2.
+        \end{cases}
+    \]
+    The pdf for $Y=X^2$ is 
+    \begin{align*}
+        f_Y(y) &= f_X(g_1^{-1}(y)) \left| \odv{}{y} g_1^{-1}(y) \right| + f_X(g_2^{-1}(y)) \left| \odv{}{y} g_2^{-1}(y) \right|,
+        \quad \text{if } y \in \mathfrak{D}\\
+        &= \frac{1}{\sqrt{2\pi}} e^{-x^2/2} \left| -\frac{1}{2\sqrt{y}} \right| + \frac{1}{\sqrt{2\pi}} e^{-x^2/2} \left| \frac{1}{2\sqrt{y}} \right|\\
+        &= \frac{2}{\sqrt{2\pi}} \, \frac{e^{-y/2}}{\sqrt{y}}\\
+        &= \frac{e^{-y/2} \> y^{-1/2}}{\sqrt{\pi} 2^{1/2}}, \quad \text{if } y > 0\\
+    \end{align*}
+    Recall that $\sqrt{\pi} = \Gamma\left(\frac{1}{2}\right)$, we can rewrite the density function of $Y$ as
+    \[
+        f_Y(y) = \frac{y^{\frac{1}{2} - 1} e^{-y/2}}{\Gamma\left(\frac{1}{2}\right)\> 2^{1/2}}, \quad \text{if } y > 0.
+    \]
+    This is actually the pdf of a Gamma distribution with parameters $\alpha = \frac{1}{2}$ and $\beta = \frac{1}{2}$.
+    So $Y = X^2 \sim Gamma\left(\frac{1}{2}, \frac{1}{2}\right)$.
+\end{solution}
+
+\begin{example}
+    Let $X$ be a random variable with probability density function 
+    \[
+        f_X(x) = \begin{cases}
+            \displaystyle \frac{2x}{\pi^2} & \text{for } 0 < x < \pi,\\
+            0 & \text{otherwise}.
+        \end{cases}
+    \]
+    Find the pdf of $Y = \sin X$.
+\end{example}
+\begin{solution}
+    Here we have $\mathfrak{X} = \{ x \> | \> 0 < x < \pi \}$ and 
+    $\mathfrak{D} = \{ y \> | \> 0 < y < 1 \}$. However, 
+    $y = \sin x$ is not one-to-one from $\mathfrak{X}$ onto $\mathfrak{D}$. We can decompose $\mathfrak{X}$ into 
+    two disjoint subsets:
+    \[
+        \mathfrak{X}_1 = \left\{ x\> \big \vert \> 0 < x < \frac{\pi}{2} \right\}
+    \]
+    and 
+    \[
+        \mathfrak{X}_2 = \left\{ x \> \big \vert \> \frac{\pi}{2} \leq x < \pi \right\}.
+    \]
+    Then the inverse functions for each $\mathfrak{X}_i$ are 
+    \[
+        x = \begin{cases}
+            g_1^{-1}(y) = \arcsin y, & \text{for } x \in \mathfrak{X}_1,\\
+            g_2^{-1}(y) = \pi - \arcsin y, & \text{for } x \in \mathfrak{X}_2.
+        \end{cases}
+    \]
+    The derivative of each inverse function is
+    \[
+        \odv{x}{y} = 
+        \begin{cases}
+            \odv{}{y} g_1^{-1}(y) = \frac{1}{\sqrt{1 - y^2}}, & \text{for } x \in \mathfrak{X}_1,\\
+            \odv{}{y} g_2^{-1}(y) = -\frac{1}{\sqrt{1 - y^2}}, & \text{for } x \in \mathfrak{X}_2.
+        \end{cases}
+    \]
+    In case you want to find the derivative of $x = \arcsin y$ from scratch, we rewrite $y = \sin x$ and use implicit differentiation.
+    \[
+        \odv{y}{x} = \cos x \implies \odv{x}{y} = \frac{1}{\cos x}
+    \]
+    Here we can draw a triangle to illustrate the relationship.
+    \begin{center}
+        \begin{tikzpicture}[
+        my angle/.style={
+            every pic quotes/.append style={text=red},
+            draw=red,
+            angle radius=1cm,
+        }]
+        \coordinate [] (C) at (-1.5,-1);
+        \coordinate [] (A) at (1.5,-1);
+        \coordinate [] (B) at (1.5,1);
+        \draw (C) -- node[above] {$1$} (B) -- node[right] {$y=\sin x$} (A) -- node[below] {$\cos x = \sqrt{1 - y^2}$} (C);
+        \draw (A) +(-.25,0) |- +(0,.25);
+        \pic [my angle, "$x$"] {angle=A--C--B};
+        \end{tikzpicture}
+    \end{center}
+    From the triangle, we have $\cos x = \sqrt{1 - y^2}$. Thus, we get $\displaystyle \odv{x}{y} = \frac{1}{\cos x} = \frac{1}{\sqrt{1 - y^2}}$.
+
+    Continue to work on finding the pdf of $Y=\sin x$. Now using the transformation formula, we have
+    \begin{align*}
+        f_Y(y) &= f_X(g_1^{-1}(y)) \left| \odv{}{y} g_1^{-1}(y) \right| + f_X(g_2^{-1}(y)) \left| \odv{}{y} g_2^{-1}(y) \right|, \quad \text{if } y \in \mathfrak{D}\\
+        &= f_X(\arcsin y) \left| \frac{1}{\sqrt{1 - y^2}} \right| + f_X(\pi - \arcsin y) \left| -\frac{1}{\sqrt{1 - y^2}} \right|\\ 
+        &= \frac{2\arcsin y}{\pi^2} \cdot \frac{1}{\sqrt{1 - y^2}} + \frac{2(\pi - \arcsin y)}{\pi^2} \cdot \frac{1}{\sqrt{1 - y^2}}\\
+        &= \frac{2}{\pi\sqrt{1 - y^2}}, \quad 0 < y < 1.
+    \end{align*}
+    and now we are done.
+\end{solution}
+
+\section{Transformation of Joint distribution}
+
+\begin{theorem}
+    Let $X_1, X_2$ be two random variables with joint density function $f_{X_1, X_2}(x_1, x_2)$. Let the sample space of $(X_1, X_2)$ be
+    \[
+        \mathfrak{X} = \{ (x_1, x_2) \> | \> x_1 \in \mathbb{R}, x_2 \in \mathbb{R} \}.
+    \]
+    The following properties hold:
+    \begin{enumerate}[label=JT\arabic*]
+        \item The transformation $Y_1 = g_1(X_1, X_2)$ and $Y_2 = g_2(X_1, X_2)$ is one-to-one from $\mathfrak{X}$ onto 
+        $\mathfrak{D}$.
+        \item The 1st order partial derivatives of $x_1 = u(y_1, y_2)$ and $x_2 = v(y_1, y_2)$ with respect to 
+        $y_1$ and $y_2$ are continuous.
+        \item The jacobian
+        \begin{equation}
+            J = \begin{vmatrix}
+                \displaystyle \pdv{u(x_1, x_2)}{y_1} & \displaystyle  \pdv{u(x_1, x_2)}{y_2} \\[1em]
+                \displaystyle  \pdv{v(x_1, x_2)}{y_1} & \displaystyle \pdv{v(x_1, x_2)}{y_2}
+            \end{vmatrix}
+        \end{equation}
+        is non-zero for all $(y_1, y_2) \in \mathfrak{D}$.
+    \end{enumerate}
+    Then the joint density function of $Y_1$ and $Y_2$ is 
+    \begin{equation}
+        f_{Y_1, Y_2}(y_1, y_2) = f_{X_1, X_2}(h(y_1, y_2), g(y_1, y_2)) \left| J \right|, \quad (y_1, y_2) \in \mathfrak{D}.
+    \end{equation}
+\end{theorem}
+\begin{remark}
+    The Jacobian $J$ is also known as the local magnification factor.
+\end{remark}
+
+\begin{example}
+    Let $X$ and $Y$ be two independent random variables with common probability density function,
+    \[
+        f(x) = \begin{cases}
+            e^{-x} & x > 0,\\
+            0 & \text{otherwise}.
+        \end{cases}
+    \]
+    Find the distribution of $U = X - Y$ and $V = X + Y$.
+\end{example}
+\begin{solution}
+    The joint density function of $X$ and $Y$ is
+    \[
+        f_{X,Y}(x,y) = f_X(x) f_Y(y) = \begin{cases}
+            e^{-(x+y)} & x > 0, y > 0,\\
+            0 & \text{otherwise}.
+        \end{cases}
+    \]
+    Notice that $X$ and $Y$ are independent variables, the joint density function is the product of the marginal density functions of $X$ and $Y$.
+    Let $u = x - y$ and $v = x + y$. The inverse transformation is
+    \begin{equation}
+        x = \frac{u + v}{2}, \quad \text{ and } \quad y = \frac{v - u}{2}.
+    \end{equation}
+    such that, 
+    \begin{align*}
+        &0 < x < \infty, &\text{and } 0 < y < \infty\\
+        &\implies 0 < u + v < \infty, &0 < v - u < \infty\\
+        &\implies -u < v < \infty, &u < v < \infty.\\
+        &\implies 0 < |u| < v < \infty.
+    \end{align*}
+    The Jacobian is 
+    \[
+        J = \begin{vmatrix}
+            \displaystyle \pdv{x}{u} & \displaystyle  \pdv{x}{v} \\[1em]
+            \displaystyle  \pdv{y}{u} & \displaystyle \pdv{y}{v}
+        \end{vmatrix} = \begin{vmatrix}
+            \displaystyle \frac{1}{2} & \displaystyle  \frac{1}{2} \\[1em]
+            \displaystyle  -\frac{1}{2} & \displaystyle \frac{1}{2}
+        \end{vmatrix} = \frac{1}{2}.
+    \]
+    Applying formula, the joint density function of $U$ and $V$ is
+    \begin{equation}
+        f_{U,V}(u,v) = f_{X,Y}\left( \frac{u + v}{2}, \frac{v - u}{2} \right) \left| J \right| = \begin{cases}
+            \displaystyle \frac{1}{2} e^{-v} & 0 < |u| < v < \infty,\\[0.8em]
+            0 & \text{otherwise}.
+        \end{cases}
+    \end{equation}
+\end{solution}
+
+\begin{example}
+Let $X_1$, $X_2$ be two iid normal random variables with mean 0 and variance 1. 
+\begin{enumerate}
+    \item Find the joint density function of $\displaystyle Y_1 = \frac{X_1 + X_2}{\sqrt{2}}$ and $\displaystyle Y_2 = \frac{X_1 - X_2}{\sqrt{2}}$.
+    \item Argue that $2X_1X_2$ and $X_1^2 - X_2^2$ are independent random variables that have the same distribution.
+\end{enumerate}
+\end{example}
+\begin{solution}
+    The joint density function of $X_1$ and $X_2$ is 
+    \[
+        f_{X_1, X_2}(x_1, x_2) = \frac{1}{2\pi} e^{-(x_1^2 + x_2^2)/2}, \quad (x_1, x_2) \in \mathbb{R}^2.
+    \]
+    \begin{enumerate}
+        \item Let 
+        \[
+            y_1 = g_1(x_1, x_2) = \frac{x_1 + x_2}{\sqrt{2}}, \quad y_2 = g_2(x_1, x_2) = \frac{x_1 - x_2}{\sqrt{2}}.
+        \]
+        The inverse transformation is 
+        \[
+            x_1 = u(y_1, y_2) = \frac{y_1 + y_2}{\sqrt{2}}, \quad x_2 = v(y_1, y_2) = \frac{y_1 - y_2}{\sqrt{2}}.
+        \]
+        Clearly, $(y_1, y_2) \in \mathbb{R}^2$. The Jacobian is 
+        \[
+            J = \begin{vmatrix}
+                \displaystyle \pdv{u(y_1, y_2)}{y_1} & \displaystyle  \pdv{u(y_1, y_2)}{y_2} \\[1em]
+                \displaystyle  \pdv{v(y_1, y_2)}{y_1} & \displaystyle \pdv{v(y_1, y_2)}{y_2}
+            \end{vmatrix} = \begin{vmatrix}
+                \displaystyle \frac{1}{\sqrt{2}} & \displaystyle  \frac{1}{\sqrt{2}} \\[1em]
+                \displaystyle  \frac{1}{\sqrt{2}} & \displaystyle -\frac{1}{\sqrt{2}}
+            \end{vmatrix} = -1.
+        \]
+        Thus the joint density function of $Y_1$ and $Y_2$ is 
+        \begin{align*}
+            f_{Y_1, Y_2}(y_1, y_2) &= f_{X_1, X_2}(u(y_1, y_2), v(y_1, y_2)) \left| J \right| \\
+            &= f_{X_1, X_2}\left( \frac{y_1 + y_2}{\sqrt{2}}, \frac{y_1 - y_2}{\sqrt{2}} \right) \cdot 1 \\
+            &= \frac{1}{2\pi} e^{-\mfrac{1}{2}\left( \left( \frac{y_1 + y_2}{\sqrt{2}} \right)^2 + \left( \frac{y_1 - y_2}{\sqrt{2}} \right)^2 \right)} \\
+            &= \frac{1}{2\pi} e^{- (y_1^2 + y_2^2)/ 2}\\
+            &= \underbrace{\frac{1}{\sqrt{2\pi}} e^{-y_1^2/2}}_{f_{Y_1}(y_1)} \> \cdot \> \underbrace{\frac{1}{\sqrt{2\pi}} e^{-y_2^2/2}}_{f_{Y_2}(y_2)}.
+        \end{align*}
+    \end{enumerate}
+\end{solution}
+
+\begin{example}
+    Let $X_1, X_2 \sim UNIF(0,1)$. Find the cumulative distribution function and the joint density function of $X_1 + X_2$. 
+    How should the above result be modified if $X_1, X_2 \sim \texttt{Rect}(a,b)$?
+\end{example}
+\begin{solution}
+    Let $U = X_1 + X_2$. The cumulative distribution function of $U$ is
+    \begin{align*}
+        F_U(u) &= \mathbb{P}[U \leq u] = \mathbb{P}[X_1 + X_2 \leq u] \\
+        &= \iint_{x_1 + x_2 \leq u} f_{X_1, X_2}(x_1, x_2) \> \mathrm{d}x_1 \> \mathrm{d}x_2 \\
+    \end{align*}
+    Since $X_1, X_2 \sim UNIF(0,1)$, the range of $U = X_1 + X_2$ should takes between 0 and 2. For $0 < u \leq 1$, we have 
+    \[
+        F_U(u) = \mathbb{P}[X_1 + X_2 \leq u] = \frac{\text{Area of the shaded region }A }{\text{Area of the sample space } \Omega}.
+    \]
+    Using the concept of geometric area, as $(X_1, X_2)$ is uniformly distributed over the unit square, we have
+    \[
+        \Omega = \{ (x_1, x_2) \> | \> 0 < x_1, x_2 < 1 \}.
+    \]
+    and 
+    \[
+        \mathcal{A} = \{ (x_1, x_2) \> | \> 0 < x_1, x_2 < 1 \text{ and } x_1 + x_2 \leq u \} \subseteq \Omega.
+    \]
+    There are two possible cases to consider: $0 < u < 1$ and $1 < u < 2$.
+    First we consider if $0 < u < 1$, we have
+    \begin{equation}
+        F_U(u) = \mathbb{P}[X_1 + X_2 \leq u] = \frac{\displaystyle \int^{u}_{0} \int^{u - x_1}_{0} 1 \> \mathrm{d}x_2 \mathrm{d}x_1}{1^2}
+        = \frac{1}{2}u^2, \quad \text{for } 0 < u \leq 1.
+    \end{equation}
+
+    For $1 < u < 2$, we have
+    \begin{align*}
+        F_U(u) = \mathbb{P}[X_1 + X_2 \leq u]
+        &= \frac{\text{Area of the shaded region }A }{\text{Area of the sample space } \Omega}\\
+        &= \frac{\displaystyle \int^{1}_{u-1} \int^{1}_{u-x_1} 1 \> \mathrm{d}x_2 \mathrm{d}x_1}{1^2}\\
+        &= 1 - \frac{1}{2}(2 - u)^2, \quad \text{for } 0 < u \leq 1.
+    \end{align*}
+    Hence the cumulative distribution function of $U$ is
+    \[
+        F_U(u) = \begin{cases}
+            0 , & u \leq 0 \\
+            \displaystyle \frac{1}{2}u^2, & 0 < u \leq 1 \\
+            1 - \frac{1}{2}(2 - u)^2, & 1 < u < 2 \\
+            1, & u \geq 2
+        \end{cases}. \label{eq:trns1.0} \tag{{\color{black} $\spadesuit $}}
+    \]
+    Differentiating \eqref{eq:trns1.0} with respect to $u$, we have the density function of $U$ as
+    \[
+        f_U(u) = \begin{cases}
+            u , & 0 < u \leq 1 \\
+            2 - u, & 1 < u < 2 \\
+            0, & \text{otherwise}
+        \end{cases}.
+    \]
+    and we are done.
+\end{solution}
+
+\begin{example}
+    If $X_1, X_2, X_3 \sim N(0,1)$, find the joint density function of 
+    \[
+        Y_1 = \frac{X_1 + X_2 + X_3}{\sqrt{3}}, \quad Y_2 = \frac{X_1 - X_2}{\sqrt{2}}, \quad Y_3 = \frac{X_1 + X_2 - 2X_3}{\sqrt{6}}.
+    \]
+\end{example}
+\begin{solution}
+    The joint density function of $X_1, X_2$ and $X_3$ is given by
+    \[
+        f_{X_1,X_2, X_3}(x_1, x_2, x_3) = \left(\frac{1}{2}\right)^{3/2} \> \exp \left\{-\frac{1}{2}(x_1^2 + x_2^2 + x_3^2) \right\}.
+    \]
+    Note that 
+    \begin{equation}
+        \mathbf{y} = \begin{bmatrix}
+            y_1 \\ y_2 \\ y_3
+        \end{bmatrix} = 
+        \begin{bmatrix}
+            \displaystyle \frac{1}{\sqrt{3}} & \displaystyle \frac{1}{\sqrt{3}} & \displaystyle \frac{1}{\sqrt{3}} \\[1em]
+            \displaystyle \frac{1}{\sqrt{2}} & \displaystyle -\frac{1}{\sqrt{2}} & 0 \\[1em]
+            \displaystyle \frac{1}{\sqrt{6}} & \displaystyle \frac{1}{\sqrt{6}} & \displaystyle -\frac{2}{\sqrt{6}}
+        \end{bmatrix} \begin{bmatrix}
+            x_1 \\ x_2 \\ x_3
+        \end{bmatrix}
+        = A \mathbf{x}.
+    \end{equation}
+    where $A$ is orthogonal matrix such that $A^T A = I_{3\times 3}$. Thus $A^T = A$ and $\mathbf{x} = A^T \mathbf{y}$. Hence 
+    \[
+        \mathbf{x} = 
+        \begin{bmatrix}
+            x_1 \\ x_2 \\ x_3
+        \end{bmatrix} = 
+        \begin{bmatrix}
+            \displaystyle \frac{1}{\sqrt{3}} & \displaystyle \frac{1}{\sqrt{2}} & \displaystyle \frac{1}{\sqrt{6}} \\[1em]
+            \displaystyle \frac{1}{\sqrt{3}} & \displaystyle -\frac{1}{\sqrt{2}} & \displaystyle \frac{1}{\sqrt{6}} \\[1em]
+            \displaystyle \frac{1}{\sqrt{3}} & 0 & \displaystyle -\frac{2}{\sqrt{6}}
+        \end{bmatrix} \begin{bmatrix}
+            y_1 \\ y_2 \\ y_3
+        \end{bmatrix}.
+    \]
+    compute the matrix multiplication and we have 
+    \[
+        \begin{cases}
+            x_1 = \displaystyle \frac{y_1}{\sqrt{3}} + \frac{y_2}{\sqrt{2}} + \frac{y_3}{\sqrt{6}}\\[1em]
+            x_2 = \displaystyle \frac{y_1}{\sqrt{3}} - \frac{y_2}{\sqrt{2}} + \frac{y_3}{\sqrt{6}}\\[1em]
+            x_3 = \displaystyle \frac{y_1}{\sqrt{3}} - \frac{2y_3}{\sqrt{6}}
+        \end{cases}
+    \]
+    The Jacobian is the derivative of the old variables with respect to the new variables. That is 
+    \begin{align*}
+        J 
+        &= \left| \frac{\partial (\text{Old variable})}{\partial (\text{New variable})}\right| \quad \text{on } 
+        \left| \frac{\partial (x_1, x_2, x_3)}{\partial (y_1, y_2, y_3)}\right| \\[2em]
+        &= \begin{vmatrix}
+            \displaystyle \pdv{x_1}{y_1} & \displaystyle \pdv{x_1}{y_2} & \displaystyle \pdv{x_1}{y_3} \\[1em]
+            \displaystyle \pdv{x_2}{y_1} & \displaystyle \pdv{x_2}{y_2} & \displaystyle \pdv{x_2}{y_3} \\[1em]
+            \displaystyle \pdv{x_3}{y_1} & \displaystyle \pdv{x_3}{y_2} & \displaystyle \pdv{x_3}{y_3}
+        \end{vmatrix}
+        = \begin{vmatrix}
+            \displaystyle \frac{1}{\sqrt{3}} & \displaystyle \frac{1}{\sqrt{2}} & \displaystyle \frac{1}{\sqrt{6}} \\[1em]
+            \displaystyle \frac{1}{\sqrt{3}} & \displaystyle -\frac{1}{\sqrt{2}} & \displaystyle \frac{1}{\sqrt{6}} \\[1em]
+            \displaystyle \frac{1}{\sqrt{3}} & 0 & \displaystyle -\frac{2}{\sqrt{6}}
+        \end{vmatrix} = |A^T| = \pm 1.
+    \end{align*}
+    And since $A$ is an orthogonal matrix, so 
+    \[
+        \mathbf{y}' \mathbf{y} = \mathbf{x}' A' A \mathbf{x} = \mathbf{x}' \mathbf{x} \implies \sum^3_{i=1} y_i^2 = \sum^3_{i=1} x_i^2.
+    \]
+    Clearly, $y_i \in \mathbb{R}^3$ for $i=1,2,3$. Thus the joint density function of $Y_1, Y_2$ and $Y_3$ is
+    \begin{align*}
+        f_{Y_1,Y_2, Y_3}(y_1, y_2, y_3) &= \frac{1}{(2\pi)^{3/2}} \> \exp \left\{-\frac{1}{2} \sum^3_{i=1} y_i^2 \right\} \cdot |\pm 1|, \quad \forall y_i \in \mathbb{R} \\
+        &= \prod_{i=1}^{3} \left\{ \frac{1}{\sqrt{2\pi}} \, e^{-y_i^2/2} \right\}\\
+        &= \prod_{i=1}^{3} f_{Y_i}(y_i).
+    \end{align*}
+\end{solution}
+
+\section{Moment Generating Methods}
+
+\section{Order Statistics}
+
+We can ordering the observed random variables based on their magnitudes or ranking. These ordered variables 
+are known as \textbf{order statistics}.
+
+Consider $X_1, X_2, \ldots, X_n$ are independent countinuous random variables with cdf $F_X(y)$ and mass function 
+$f_X(y)$. We ordered them into order statistics $X_{(1)}, X_{(2)}, \ldots, X_{(n)}$ such that 
+\[
+X_{(1)} \leq X_{(2)} \leq \ldots \leq X_{(n)}.
+\]
+In this notion, the maximum random variable is 
+\[
+    X_{(n)} = \max \{ X_1, X_2, \ldots, X_n \}
+\]
+and the minimum random variable is 
+\[
+    X_{(1)} = \min \{ X_1, X_2, \ldots, X_n \}
+\]
+$X_{(n)}$ is the largest among $X_1, X_2, \ldots, X_n$, the event $X_{(n)} \leq y$ will happened only if each 
+$X_i \leq y$. Then the joint probability is
+\begin{equation*}
+    G_{(n)}(y) = \mathbb{P}[X_{(n)} \leq y] = \mathbb{P}[X_1 \leq y,\> X_2 \leq y,\> \ldots,\> X_n \leq y] = 
+    \prod_{i=1}^{n} \mathbb{P}[X_i \leq y]. \label{eq:t1.1} \tag{{\color{red} $\heartsuit$}}
+\end{equation*}
+Because $\mathbb{P}[X_i \leq y] = F_X(y)$ for all $i=1,2,\ldots,n$. It follows that 
+\begin{equation*}
+    \eqref{eq:t1.1} \> \Rightarrow \> \mathbb{P}[X_1 \leq y]\,\mathbb{P}[X_2 \leq y]\,\cdots\, \mathbb{P}[X_n \leq y]
+    = [F_X(y)]^n.
+\end{equation*}
+Now letting $g_{(n)}$ denote the density function of $Y_{(n)}$, we see that, on taking derivative on $G_{(n)}$ with respect 
+to $y$.
+
+\begin{align*}
+    g_{(n)}(y) &= \odv{}{y}[F_X(y)]^n \\
+    &= n[F(y)]^{n-1}\, \odv{}{y}F_X(y) & \text{By Chain rule of derivative}\\
+    &= n[F(y)]^{n-1}\, f_X(y)
+\end{align*}
+
+Now we get the maximum variable. For the minimum variable $X_{(1)}$ can be found using the 
+similar way. The cdf of $X_{(1)}$ is 
+\[
+    F_{(1)}(y) = \mathbb{P}[X_{(1)} \leq y ] = 1 - \mathbb{P}[X_{(1)} > y].
+\]
+Since $X_{(1)}$ is the minimum of $X_1, X_2, \ldots, X_n$, and the event $Y_i > y$ can be occurs for $i=1,2,3,\ldots,n$. 
+It other words, any $X_i$ in $X_1, X_2, \ldots, X_n$ can be the minimum variable. Hence
+\begin{align*}
+    F_{(1)}(y) &= \mathbb{P}[X_{(1)} \leq y] = 1 - 1 - \mathbb{P}[X_{(1)} > y]\\
+    &= 1 - \mathbb{P}[X_1 > y,\> X_2 > y, \> \ldots \> X_n > y]\\
+    &= 1 - \mathbb{P}[X_1 > y]\, \mathbb{P}[X_2 > y] \, \ldots \> \mathbb{P}[X_n > y]\\
+    &= 1 - [1 - F_X(y)]^n.
+\end{align*}
+
+% Diagram: Order Statistics (inserted by Copilot)
+\begin{center}
+\begin{tikzpicture}[>=Stealth,thick,scale=1.1]
+    % Axis
+    \draw[->] (0,0) -- (10,0) node[right] {$y$};
+    % Ticks and labels
+    \foreach \x/\lbl in {0.7/\small y_1, 1.5/\small y_2, 2.7/\cdots, 3.5/\small y_{k-1}, 4.5/\small y_k, 5.5/\small y_{k+1}, 6.7/\cdots, 8.2/\small y_n} {
+        \draw[thick] (\x,0.15) -- (\x,-0.15);
+        \node[below] at (\x,-0.15) {$\lbl$};
+    }
+    % Highlight line 
+    \draw [ultra thick, red] (0.7,0.01) -- (3.5,0.01);
+    \draw [ultra thick, cyan] (5.5,0.01) -- (8.2,0.01);
+    % Braces
+    \draw [draw=red,decorate,decoration={brace,amplitude=7pt,mirror}] (0.7,-0.6) -- (3.5,-0.6) node[midway,below=6pt] {};
+    \draw [draw=cyan,decorate,decoration={brace,amplitude=7pt,mirror}] (5.5,-0.6) -- (8.2,-0.6) node[midway,below=6pt] {};
+    \draw [<-] (4.5,-0.6)--++(-90:1) node[below]{$f_X(y_k)$};
+    % Red boxes
+    \node[fill=white] (A) at (2.1,-1.1) {{\color{red} $P(X\leq y_k)$}};
+
+    \node[fill=white] (C) at (6.85,-1.1) {$P(X>y_k)$};
+    
+    % Big red box for orderings
+    \node[draw=cyan,thick,rounded corners,fill=white,align=left,anchor=west] (D) at (8.5,1.5) {\begin{tabular}{l}
+        \# of possible orderings \\ 
+        $\displaystyle \frac{n!}{(k-1)!\,1!\,(n-k)!}$
+    \end{tabular}};
+    % Arrow to big box
+    \draw[cyan,->,thick] (6.85,0.1) .. controls (7.5,0.7) .. (D.west);
+\end{tikzpicture}
+\end{center}
+
+\begin{theorem}[k-th order statistics]
+    Let $X_1, X_2, \ldots, X_n$ be i.i.d continuous random variable with common cdf 
+    $F_X(y)$ and common density function $f_X(y)$. Let $X_{(k)}$ denote the $k$-th order Statistics, 
+    then the density function of $X_{(k)}$ is
+    \begin{equation}
+    g_{(n)}(y) = \frac{n!}{(k-1)!(n-k)!}[F_{X}(y)]^{k-1}[1 - F_{X}(y)]^{n-k}\,f_X(y), \quad 
+    -\infty < y < \infty.
+    \end{equation}
+\end{theorem}
+
+\begin{example}
+    Let $Y \sim \text{Uniform}(0, \theta)$ be the waiting time of bus arrival. A 
+    random samples of size $n=5$ is taken. Then,
+    \begin{enumerate}
+        \item Find the distribution of minimum variable.
+        \item Find the probability that $Y_{(3)}$ is less than $\mfrac{2}{3}\theta$.
+        \item Suppose that the waiting time for bus arrival is uniformly distributed on 0 to 15 minutes, 
+            find $\mathbb{P}[Y_{(5)} < 10]$.
+    \end{enumerate}
+\end{example}
+\begin{solution}
+    \begin{enumerate}
+        \item The density of $X_{(1)}$ is
+    \begin{align*}
+        Y_{(1)} \sim g_{(1)}(y) &= \frac{5!}{(1-1)!\, (5-1)!} [F_Y(y)]^{1-1} [1 - F_Y(y)]^{5-1}\, f_Y(y)\\
+        &= \frac{5!}{0!\> 4!}[1 - F_Y(y)]^4\, f_Y(y)\\
+        &= 5 \left(1 - \frac{y}{\theta} \right)^4 \, \left(\frac{1}{\theta} \right)\\
+        &= \frac{5(\theta - y)^4}{\theta^5}.
+    \end{align*}
+    Hence compute the mean of $X_{(1)}$, 
+    \begin{align*}
+        \mathbb{E}[Y_{(1)}] &= \int_{0}^{\theta} y\left[ \frac{5(\theta - y)^4}{\theta^5} \right] \mathrm{d}y =
+        \int_{0}^{\theta} \frac{5y(\theta - y)^4}{\theta^5} \mathrm{d}y \label{eq:l2.0} \tag{{\color{gray} $\clubsuit$}}
+    \end{align*}
+    using the substitution method and letting $u = \theta - y$, and for that 
+    \[
+        y = \theta - u \Longrightarrow -du = dy
+    \]
+    substitute back into \eqref{eq:l2.0} and we have 
+    \begin{align*}
+        \eqref{eq:l2.0} = \int^\theta_0 \frac{5(\theta - u)u^4}{\theta^5}\> (-\mathrm{d}u)
+        &= -\frac{1}{\theta^5} \int^\theta_0 (5\theta u^4 - u^5)\> \mathrm{d}u\\
+        &= -\frac{1}{\theta^5} \left[ \theta u^5 - \frac{1}{6}\theta^6 \right]^{u=\theta}_{u=0}\\
+        &= -\frac{1}{\theta^5} \left[ 0 - \frac{1}{6}\theta^6 \right]\\
+        &= \frac{\theta}{6} = \mathbb{E}[Y_{(1)}].
+    \end{align*}
+
+    \item First we need to find the probability density function of $Y_{(3)}$, that is,
+    \begin{align*}
+        Y_{(3)} \sim g_{(3)}(y) &= \frac{5!}{(3-1)!\, (5-3)!} [F_Y(y)]^{3-1} [1 - F_Y(y)]^{5-3}\, f_Y(y)\\
+        &= 30 \left( \frac{y}{\theta} \right)^2 \left(1 - \frac{y}{\theta} \right)^2\, \frac{1}{\theta}, \quad 0 < y < \theta.
+    \end{align*}
+
+    Compute the probability on which that $Y_{(3)}$ is smaller that $\mfrac{2\theta}{3}$.
+    \begin{align*}
+        \mathbb{P}[Y_{(3)} < \mfrac{2}{3}\theta] &= \int_{0}^{\mfrac{2}{3}\theta} 30 \left( \frac{y}{\theta} \right)^2 \left(1 - \frac{y}{\theta} \right)^2\, \frac{1}{\theta} \> \mathrm{d}y\\
+        &= \frac{30}{\theta^5} \int_{0}^{\mfrac{2}{3}\theta} y^2 (\theta^2 - 2\theta y + y^2) \> \mathrm{d}y\\
+        &= \frac{30}{\theta^5} \left[ \frac{1}{3}\theta^2 y^3 - \frac{1}{2}\theta y^4 + \frac{1}{5}y^5 \right]^{y=\mfrac{2}{3}\theta}_{y=0}\\
+        &= 30 \left(\frac{1}{3}\right) \left(\frac{2}{3}\right)^3 - 15 \left(\frac{2}{3}\right)^4 + 6\left(\frac{2}{3}\right)^5\\
+        &= \frac{64}{81}.
+    \end{align*}
+
+    \item The probability that $Y_{(5)}$ less than 10 minutes is equivalent to 
+        taking the bus five times. That is 
+        \begin{align*}
+            \mathbb{P}[Y_{(5)} < 10] &= \mathbb{P}[Y_{(1)} < 10,\> Y_{(2)} < 10,\> \ldots, Y_{(5)} < 10]\\
+            &= \mathbb{P}[Y_{(1)} < 10] \times \mathbb{P}[Y_{(2)} < 10] \times \cdots \mathbb{P}[Y_{(5)} < 10]\\
+            &= \left( \frac{10}{15} \right)^5
+            = \frac{32}{243}.
+        \end{align*}
+    \end{enumerate}
+\end{solution}

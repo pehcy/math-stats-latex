@@ -2,6 +2,7 @@
 \usepackage{amsmath, nccmath}
 \usepackage{amssymb}
 \usepackage{amsbsy}
+\usepackage{mathrsfs}
 \usepackage{accents}
 \usepackage{derivative}
 \usepackage{bbm}
@@ -167,7 +168,7 @@
 \usepackage{pgfplots}
 \usepgflibrary{shadings}
 \pgfplotsset{compat=1.16}
-\usetikzlibrary{arrows,chains,matrix,positioning,scopes}
+\usetikzlibrary{arrows,chains,matrix,positioning,scopes,angles,quotes}
 \makeatletter
 
 \usepackage{enumerate}
@@ -238,16 +239,16 @@
 \usepackage{thmtools}
 
 \declaretheoremstyle[
-spaceabove=6pt, spacebelow=6pt,
-headfont={\color{orange!55!black} \ding{46} \normalfont\bfseries},
+spaceabove=2em, spacebelow=6pt,
+headfont={\large \color{fireEngRed} \ding{81} \sffamily\bfseries},
 notefont=\mdseries, notebraces={(}{)},
 bodyfont=\normalfont,
 postheadspace=1em,
 numberwithin=section
 ]{exstyle}
 \declaretheoremstyle[
-spaceabove=6pt, spacebelow=6pt,
-headfont={\color{green!55!black} \ding{47} \normalfont\bfseries},
+spaceabove=6pt, spacebelow=2em,
+headfont={\large \ding{82} \sffamily\bfseries},
 notefont=\mdseries, notebraces={(}{)},
 bodyfont=\normalfont,
 postheadspace=1em,

@@ -601,6 +601,63 @@ estimated standard error of $\widehat{\beta}_1$. The $p$-value based on $n-2$ df
     at the significance level $0.1$.
 \end{example}
 
+\begin{example}
+    Table below shows the cost of installing a sample of communications nodes for a large manufacturing firm. The number 
+    of access ports at each of the sampled nodes is also shown. The data scientist wants to develop a linear model 
+    that is helpful in pricing the installation of new communications nodes on the network.
+    \begin{center}
+        \begin{tabular}{cc|cc}
+            Cost & Number of ports & Cost & Number of ports \\
+            \hline
+            52,388 & 68 & 33,969 & 28\\
+            51,761 & 52 & 31,309 & 24\\
+            50,221 & 44 & 23,444 & 24\\
+            36,095 & 32 & 24,269 & 12\\
+            27,500 & 16 & 53,479 & 52\\
+            57,088 & 56 & 33,543 & 20\\
+            \end{tabular}
+    \end{center}
+    The R codes and outputs are shown below. Using the outputs to answer the following questions:
+    \begin{enumerate}
+        \item What is the regression line that relate the number of ports to cost.
+        \item Is there sufficient evidence to conclude that a linear relationship exists between the cost and number of ports 
+            under $\alpha = 0.05$?
+        \item Test whether there is a direct (positive) relationship between cost and number of ports. Use $\alpha =0.05$.
+        \item A claim is made that each new access port adds at least $\$1,000$ to the installation cost of a communications node. 
+            Examine this claim at $\alpha = 0.05$.
+        \item The following test has no practical significance in this problem and is performed merely to illustrate the test for the intercept provided on 
+            computer output. Test whether the intercept is zero.
+    \end{enumerate}
+\end{example}
+
+\begin{solution}
+    \begin{enumerate}
+        From the outputs provided above:
+
+        \item The regression line is $\widehat{y}_i = 16596.84 + 644.64x_i$.
+        \item The test hypotheses are $H_0: \beta_1 = 0$ versus $H_1 : \beta_1 \neq 0$.
+        
+        The $T$ statistic value is $T = 8.261 \sim t_{\nu = 10}$, and $T > t_{0.025, 10} = 2.228$.
+
+        The $p$-value is $2[1 - \mathbb{P}(T_{10} > 8.261)] = 8.88 \times 10^{-6}$ and is smaller than $\alpha = 0.05$.
+
+        We reject $H_0$, we have sufficient evidence to conclude that a linear relationship exists between the cost and 
+        the number of ports.
+
+        \item We want to test $H_0 : \beta_1 \leq 0$ against $H_1 : \beta_1 > 0$.
+        \[
+            p-\text{value} = \frac{8.88 \times 10^{-6}}{2} = 4.44 \times 10^{-6} < 0.05.
+        \]
+        Reject $H_0$, we have sufficient evidence to conclude that there is a direct (positive) relationship 
+        between the cost and the number of ports.
+
+        \item The test hypotheses are $H_0: \beta_1 \geq 1000$ versus $H_1 : \beta_1 < 1000$.
+        \[
+            T = \frac{\widehat{\beta}_1 - \beta^*_1}{\sqrt{\displaystyle \frac{\MS{E}}{S_{xx}}}}
+        \]
+    \end{enumerate}
+\end{solution}
+
 \section{Prediction}
 
 \subsection{Prediction vs Estimation}
@@ -747,7 +804,92 @@ entries equal to 1.
 
 Consider the quotient space $V = \mathbb{R}^n / \mathfrak{G}$, which is the set of all cosets of the form $\overrightarrow{x} + \mathfrak{G}$.
 
-\section{Analysis of Variance approach on testing parameters}
+\section{Regression Analysis --- Analysis of Variance Approach}
+
+Beside $t$-test, we may also use an \textbf{ANOVA} to test significance of regression. The analysis of variance is based on a partitioning 
+of total variability in the response variable $y$. 
+
+\subsection{Decomposition of Sum of Squares}
+One useful aspect of SLR is that it can decomposite the variation into two parts: 
+the variation of the predicted values, and the variation of prediction errors.
+
+If all such deviations are squared, the squared deviations $(y_i - \overline{y})^2$ will provide the 
+basis for measuring the spread of the data.
+
+Squaring again both sides of the preceeding equation and sum over all $i = 1, 2, ..., n$, we can obtain the 
+following
+
+\begin{equation}
+    \sum (y_i - \overline{y})^2 = \sum(y_i - \hat{y}_i)^2 + \sum(\hat{y}_i - \overline{y})^2 + 2\sum(y_i - \hat{y}_i)(\hat{y}_i - \overline{y})
+\end{equation}
+
+After squaring the right-hand side of the equation, we need some algebraic calculation to evaluate the cross-product 
+term $(y_i - \hat{y}_i)(\hat{y}_i - \overline{y})$.
+
+\begin{align*}
+    \sum(y_i - \hat{y}_i)(\hat{y}_i - \overline{y}) &= \sum(y_i - \hat{\beta}_0 - \hat{\beta}_1 x_i)\, (\hat{\beta}_0 + \hat{\beta}_1 x_i - \overline{y})\\
+    &= \sum [y_i - \overline{y} - \hat{\beta}_1 (x_i - \overline{x})]\, [\hat{\beta}_1 (x_i - \overline{x})]\\[0.7em]
+    &= \hat{\beta}_1 \, \text{SS}_{xy} - \hat{\beta}^2_1\, \text{SS}_{x}\\
+    &= 0
+\end{align*}
+this implies that the sum of the cross-products over all response variables is zero 
+\footnote{In linear algebra, this implies the residuals are orthogonal to the regressor.}. And hence, the finalized equation will be 
+
+\begin{equation}
+    \tikz[baseline]{
+        \node[fill=gray!20,anchor=base] (t1)
+        {$ \sum (y_i - \overline{y})^2 $}
+    } = 
+    \tikz[baseline]{
+        \node[fill=green!20,anchor=base] (t2)
+        {$ \sum(y_i - \hat{y}_i)^2 $}
+    } + 
+    \tikz[baseline]{
+        \node[fill=cyan!20,anchor=base] (t3)
+        {$ \sum(\hat{y}_i - \overline{y})^2 $}
+    }
+\end{equation}
+
+\begin{center}
+    \begin{itemize*}
+        \item[] TSS
+            \tikz\node [fill=gray!20,draw, circle] (n1) {};
+        \item[\quad] RSS
+            \tikz\node [fill=green!20,draw, circle] (n2) {};
+        \item[\quad] RegSS
+            \tikz\node [fill=cyan!20,draw, circle] (n3) {};
+    \end{itemize*}
+\end{center}
+\begin{tikzpicture}[overlay]
+    \path[->] (n1) edge (t1);
+    \path[->] (n2) edge (t2);
+    \path[->] (n3) edge (t3);
+\end{tikzpicture}
+Let us interpret each SS one by one:
+\begin{itemize}
+    \item \textbf{Total Sum of Squares (TSS)} represents the variation of $Y$, that is, the sum of squares in all of the responses. It measures
+    the amount of variability inherent in the response prior to performing regression.
+    \item \textbf{Residual Sum of Squares (RSS)}, also called the squared error loss or the L2-norm, is the variation of all 
+    the response values about the fitted regression line. It describes how well the model fits the data.
+    \item \textbf{Regression Sum Of Squares (RegSS)}, the difference between TSS and RSS, or the total variation 
+    explained through knowledge of $x$. RegSS measure how effective the SLR model is in explaining the variation of $y$.
+\end{itemize}
+
+Since the TSS is fixed, and both RSS and RegSS always non-negative as they are sum of squares. The higher the RegSS of 
+a regression model, the lower its RSS. In other word, when RSS is small, the prediction will be closer to actual value, and the model 
+is a good fit. Else if RSS is large, the prediction is not accurate and this model is a poor fit.
+
+You might be wondering why it should be the squared error? Why not the absolute error or the cubed error? In fact, 
+they both can be used. But only the squared one maximized likelihood for betas.
+
+\subsection{Mean Square Error}
+An unbiased estimator of the unknown error variance $\sigma^2$, the mean square error (MSE) is derived as
+\begin{equation}
+    s^2 = \text{MSE} = \frac{\text{RSS}}{n-2} = \frac{1}{n-2} \sum^{n}_{i=1} e^2_i \> = \frac{1}{n-2} \sum^{n}_{i=1} (y_i - \hat{y}_i)^2
+\end{equation}
+Note that in defining 
+MSE we have divided $n-2$ instead of $n-1$. This is because we need at least two observations to determine the 
+fitting line.
 
 \subsection{Coefficient of determination}
 
