@@ -68,7 +68,7 @@ In other words, $x$ is in set $g^{-1}(\mathcal{A})$ if and only if $g(x) \in \ma
     \end{enumerate}
 \end{example}
 \begin{solution}
-    \textbf{[Intuition]} We can try to express each transformation in terms of $F_X(x)$, the distribution function of $X$.
+    We can try expressing each transformation in terms of $F_X(x)$, the distribution function of $X$.
 
     \begin{enumerate}
         \item Let $g(x) = |x|$, the cumulative function of $Y = g(X)$ is
@@ -110,6 +110,83 @@ In other words, $x$ is in set $g^{-1}(\mathcal{A})$ if and only if $g(x) \in \ma
                 F_X(y^{1/k}) - F_X(-y^{1/k}) &\text{if } k \text{ is even and } y \geq 0\\
             \end{cases}.
         \end{align*}
+
+        \item The cumulative distribution function of $Y = X_+ = \max\{X, 0\}$ is
+        \begin{align*}
+            \mathbb{P}(X_+ \leq y) &= \mathbb{P}(\max\{X, 0\} \leq y)\\
+            &= \begin{cases}
+                \mathbb{P}(0 \leq y) = 0 &\text{if } y < 0,\\
+                \mathbb{P}(X_+ = 0) = \mathbb{P}(X \leq 0) = F_X(0) &\text{if } y = 0,\\
+                \mathbb{P}(0 < X \leq y) = F_X(y) &\text{if } y > 0.
+            \end{cases}
+        \end{align*}
+
+        \item The cumulative distribution function of $Y = X_- = \min\{X, 0\}$ is
+        \begin{align*}
+            \mathbb{P}(X_- \leq y) &= \mathbb{P}(\min\{X, 0\} \leq y)\\
+            &= \begin{cases}
+                \mathbb{P}(X_- \leq 0) = 1 &\text{if } y > 0,\\
+                \mathbb{P}(X \leq y) = F_X(y) &\text{if } y \leq 0.
+            \end{cases}
+        \end{align*}
+    \end{enumerate}
+\end{solution}
+
+\begin{example}
+    Let $X$ be a Poisson random variable with probability mass function
+    \[
+        f_X(x) = \frac{e^{-\lambda}\lambda^x}{x!}, \quad x = 0, 1, 2, \ldots
+    \]
+    Find the distribution of $Y = \mathbb{P}(Y=y)$, if $Y = X^2 + 3$.
+\end{example}
+\begin{solution}
+    The transformation $Y = X^2 + 3$ maps the set points $\mathcal{A} = \{0, 1, 2, \ldots \}$ 
+    onto $\mathcal{B} = \{3, 4, 7, 12, \ldots \}$. The inverse mapping is 
+    $X = \sqrt{Y - 3}$. Since there is no negative values in $\mathcal{A}$, so we take only the positive square root.
+
+    Thus, the probability mass function of $Y$ is
+    \begin{align*}
+        \mathbb{P}(Y=y) &= \mathbb{P}(X = \sqrt{y - 3})\\
+        &= \frac{e^{-\lambda}\lambda^{\sqrt{y - 3}}}{(\sqrt{y - 3})!}, \quad y \in \mathcal{B}.
+    \end{align*}
+\end{solution}
+
+\begin{example}
+    Given $X \sim BIN(n,p)$ for $x = 0,1,2,\ldots,n$. Find the probability mass function of
+    \begin{enumerate}
+        \item $Y = aX + b$,
+        \item $Z = X^2$,
+        \item $W = \sqrt{X}$.
+    \end{enumerate}
+\end{example}
+\begin{solution}
+    \begin{enumerate}
+        \item Since $Y = aX + b$ maps the set points $\mathcal{A} = \{0, 1, 2, \ldots, n\}$ onto 
+        $\mathcal{B} = \{b, a+b, 2a+b, \ldots, na+b\}$, the inverse mapping is $X = \frac{Y-b}{a}$. 
+        And since there is no negative values in $\mathcal{A}$, so we take only the positive value. The 
+        pdf of $Y$ is
+        \[
+            \mathbb{P}(Y=y) = \mathbb{P}\left( X = \frac{y-b}{a} \right) = {n \choose \mfrac{y-b}{a}} p^{\mfrac{y-b}{a}} (1-p)^{n - \mfrac{y-b}{a}}, \quad y \in \mathcal{B}.
+        \]
+
+        \item The transformation $Z = X^2$ maps the set points $\mathcal{A} = \{0, 1, 2, \ldots, n\}$ onto 
+        $\mathcal{B} = \{0, 1, 4, 9, \ldots, n^2\}$. The inverse mapping is $X = \sqrt{Z}$. 
+        Also since there is no negative values in $\mathcal{A}$, so we take only the positive square root. The 
+        pdf of $Z$ is
+        \begin{align*}
+            \mathbb{P}(Z=z) &= \mathbb{P}(X^2 = z) \\
+            &= \mathbb{P}(X = \sqrt{z})\\ 
+            &= {n \choose \sqrt{z}} p^{\sqrt{z}} (1-p)^{n - \sqrt{z}}, \quad z \in \mathcal{B}.
+        \end{align*}
+
+        \item $W = \sqrt{X}$ maps the set points $\mathcal{A} = \{0, 1, 2, \ldots, n\}$ onto 
+        $\mathcal{B} = \{0, 1, \sqrt{2}, \ldots, \sqrt{n}\}$. The inverse mapping is $X = W^2$. 
+        Also since there is no negative values in $\mathcal{A}$, so we take only the positive square root. The 
+        pdf of $W$ is
+        \[
+            \mathbb{P}(W=w) = \mathbb{P}(X = w^2)
+            = {n \choose w^2} p^{w^2} (1-p)^{n - w^2}, \quad w \in \mathcal{B}.
+        \]
     \end{enumerate}
 \end{solution}
 
@@ -147,6 +224,14 @@ let $Y = g(X)$ be differentiable for all $x$ and either
     \]
     which is valid for both increasing and decreasing functions $g(x)$.
 \end{proof}
+\begin{remark}
+    \begin{enumerate}
+        \item If the conditions of this theorem are violated, then we should return to the previous method.
+        \item If the pdf $f$ vanishes outside an interval $[a,b]$ of finite length, we need only to 
+        assume that $g=f(x)$ is differentiable in $(a,b)$ and either $g'(x) > 0$ or $g'(x) < 0$ throughout 
+        the interval. Then we can take $\alpha = \min \{g(a), g(b)\}$ and $\beta = \max \{g(a), g(b)\}$.
+    \end{enumerate}
+\end{remark}
 
 \begin{example}
     If $X \sim UNIF(0,1)$ and $Y = X^2$, find the probability density function of $Y$ if 
