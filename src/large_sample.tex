@@ -1,0 +1,111 @@
+\chapter{Large Sample Theory}
+
+Sometimes it is difficult to determine the exact distribution of a statistic for a finite value 
+of $n$, and the assumptions made about the probability distribution may not be valid. 
+In such cases, if the limiting distributions of the statistics exist, then the problems of testing 
+such hypothesis and of setting confidence intervals may be easily solved for large samples.
+However, these methods will be only approximate for a finite value of $n$.
+
+On the bright side, these large-sample approximate results can make advantage since 
+we do not have to make assumptions about the parent population and that in most cases 
+the limiting distribution is normal. Thus normal theory can be applied to get 
+approximate tests and confidence intervals. Another important 
+limiting distribution used in connection with categorical data is the chi-squared distribution.
+Such large-sample methods are beneficial in practical applications.
+
+If the symptotic distribution of a statistic is normal, then for a large $n$ we can 
+perform approximate large-sample tests on mean or variance of the statistic. In this chapter, we shall consider 
+the case of categorical data and discuss certain transformations of statistics that are widely used in 
+large samples.
+
+\section{Transformation of statistics to stabilize variance}
+
+\begin{lemma}
+    \label{lem:las01}
+    If $\{T_n\}_{n \geq 1}$ is a sequence of statistics such that 
+    \begin{equation}
+        \sqrt{n}(T_n - \theta) \xrightarrow[]{\mathcal{D}} Z \sim N\left(0, \sigma^2_T(\theta) \right),
+    \end{equation}
+    then the transformation of statistics $g(T_n)$ formed another sequence that
+    \begin{equation}
+        \sqrt{n}\left[ g(T_n) - g(\theta)\right] \xrightarrow[]{\mathcal{D}} \widetilde{Z} \sim N\left(0, \left[\sigma^2_T(\theta) g'(\theta) \right]^2 \right),
+    \end{equation}
+    provided $g(\theta)$ is differentiable and is nonzero.
+\end{lemma}
+\begin{proof}
+    Consider the Taylor expansion of $g(T_n)$ around $g(\theta)$, that is,
+    \[
+        g(T_n) = g(\theta) + (T_n - \theta) [g'(\theta) + \epsilon_n]
+    \]
+    where $\epsilon \to 0$ as $T_n \to \theta$. Therefore, for any $\epsilon > 0$, $|\epsilon_n|<\epsilon$ whenerver 
+    $|T_n - \theta| < \delta$. Hence, for any $\epsilon$ greater than zero, we have 
+    \begin{align*}
+        \mathbb{P} \left[ |\epsilon_n| < \epsilon\right] &= \mathbb{P} \left[ |T_n - \theta| < \delta \right]\\
+        &= \mathbb{P} \left[ \frac{\sqrt{n} |T_n - \theta|}{\sigma_T(\theta)} < \frac{\sqrt{n} \delta}{\sigma_T(\theta)}\right]\\
+        &= \mathbb{P} \left[ |\tau| < \frac{\sqrt{n} \delta}{\sigma_T(\theta)}\right] & \text{where } \tau \sim N(0,1)\\
+        &= \left\{2 \Phi \left( \frac{\sqrt{n} \delta}{\sigma_T(\theta)}\right) - 1 \right\} \to 1 \quad \text{as } n \to \infty.
+    \end{align*}
+    By definition, $\epsilon$ converges to zero in probability. So this yields
+    \[
+        \sqrt{n}\left[ g(T_n) - g(\theta)\right] - \sqrt{n}(T_n - \theta)g'(\theta) = \fbox{$\sqrt{n}(T_n - \theta)\, \epsilon \xrightarrow[]{p} 0$}.
+    \]
+    Therefore, 
+    \[
+        \sqrt{n}\left[ g(T_n) - g(\theta)\right] \xrightarrow[]{\mathcal{D}} \sqrt{n}(T_n - \theta)g'(\theta) \sim N\left(0, \left[\sigma^2_T(\theta) g'(\theta) \right] \right).
+    \]
+    This completes the proof.
+\end{proof}
+
+\section{Stabilization of variance}
+
+\index{Variance stabilization} is a statistical technique to 
+make the spread (variance) of data consistent across its range by removing its dependence on the mean, which simplifies 
+analysis and improves model performance by creating homoscedasticity (constant variance). It is crucial for data like 
+counts (Poisson, Binomial) where variance naturally changes with the average, allowing 
+standard methods (like ANOVA, regression) to work effectively and yield more reliable results, especially for small samples. 
+
+In many real-world datasets (such as 
+\textit{counts of rare events}, \textit{proportions}), the variability (variance) increases as the average value (mean) increases, 
+violating assumptions of many statistical tests.
+
+\begin{theorem}[Variance Stabilizing Transformation]
+    If $\{T_n\}_{n \geq 1}$ is a sequence of statistics such that $\sqrt{n}(T_n - \theta) \sim N\left(0, \sigma^2_T(\theta) \right)$, 
+    where $\sigma^2_T(\theta)$ is a function depends on $\theta$. Then 
+    \begin{equation}
+        g(\theta) \varpropto \int \frac{\mathrm{d}\theta}{\sigma_T(\theta)}
+    \end{equation}
+    is a \textbf{variance stabilizing transformation}.
+\end{theorem}
+\begin{proof}
+    From \cref{lem:las01}, we have 
+    \[
+        \sqrt{n}\left[ g(T_n) - g(\theta)\right] \xrightarrow[]{\mathcal{D}} \widetilde{Z} \sim N\left(0, \left[\sigma^2_T(\theta) g'(\theta) \right]^2 \right)
+    \]
+    provided $g'(\theta)$ exists. We wish to find a transformation $g(T_n)$ whose variance is independent of $\theta$ (or, the variance is stable with respect to $\theta$). 
+To stabilize the variance, we pick a function $g(T_n)$, such that 
+\[
+    [\sigma_T(\theta)\, g'(\theta)]^2 = c,
+\]
+where $c$ is a constant that is independent of $\theta$. The asymptotic variance of the transformed statistic $g(T_n)$ will be independent of $\theta$. 
+
+Now, solving the differential equation $\sigma_T(\theta)\, g'(\theta) = c$.
+\begin{align*}
+    \sigma_T(\theta)\, g'(\theta) = c &\implies g'(\theta) = \frac{c}{\sigma_T(\theta)}\\
+    &\implies \int g'(\theta) \> \mathrm{d}\theta = c \int \frac{\mathrm{d}\theta}{\sigma_T(\theta)}\\
+    &\implies g(\theta) = c \int \frac{\mathrm{d}\theta}{\sigma_T(\theta)}.
+\end{align*}
+$g(\theta)$ is now proportional to the integral of the reciprocal of standard deviation.
+\end{proof}
+
+From the proof we know that $\sqrt{n}\left[ g(T_n) - g(\theta)\right]$ is asymptotically normal with mean $0$ and 
+variance $c^2$, and that 
+\begin{equation}
+    \frac{\sqrt{n}\left[ g(T_n) - g(\theta)\right]}{c} \sim AN(0,1).
+\end{equation}
+When testing $H_0 : \theta = \theta_0$ versus $H_0 : \theta \neq \theta_0$ at significance
+level $\alpha$, we reject $H_0$ if 
+\begin{equation}
+    \left| \frac{\sqrt{n}\left[ g(T_n) - g(\theta)\right]}{c} \right| > z_{\alpha/2}.
+\end{equation}
+
+\subsubsection{Arcsine Square Root Transformation}

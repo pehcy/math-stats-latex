@@ -1,0 +1,557 @@
+\chapter{Multivariate random variables}
+
+\begin{definition}[Bivariate random variable]
+    Consider a probability space $(\Omega, \mathcal{F}, P)$ arising out of a 
+    random experiment. A vector of functions $X = (X_1, X_2)$ that maps 
+    $\Omega$ into $\mathbb{R}^2$ is said to be a bivariate random variable if for each $x_1, x_2 \in \mathbb{R}$, the set
+    \begin{equation}
+        \{ \omega \in \Omega \> | \> X_1(\omega) \leq x_1, X_2(\omega) \leq x_2 \} \in \mathcal{F}.
+    \end{equation}
+\end{definition}
+
+\begin{example}
+    An unbiased coin is tossed twice. Let $X_1$ be the number of heads obtained, and $X_2$ be the number of tails obtained. Then $X = (X_1, X_2)$ is a bivariate random variable 
+    with sample space 
+    \[
+        \Omega = \{ (H,H), (H,T), (T,H), (T,T) \}
+    \]
+    where $H$ represents heads and $T$ represents tails. We take $\mathcal{F}$ to be the power set of $\Omega$.
+    Notice that 
+    \[
+        \{ \omega \in \Omega \> | \> X_1(\omega) \leq x_1 \} = \begin{cases}
+            \varnothing & x_1 < 0\\
+            \{ (T,T) \} & 0 \leq x_1 < 1\\
+            \{ (H,T), (T,H), (T,T) \} & 1 \leq x_1 < 2\\
+            \Omega & x_1 \geq 2
+        \end{cases}
+    \]
+    On the other hand, $X_2$ is defined similarly.
+    \[
+        \{ \omega \in \Omega \> | \> X_2(\omega) \leq x_2 \} = \begin{cases}
+            \varnothing & x_2 < 0\\
+            \{ (H,H) \} & 0 \leq x_2 < 1\\
+            \{ (T,H), (H,T), (H,H) \} & 1 \leq x_2 < 2\\
+            \Omega & x_2 \geq 2
+        \end{cases}
+    \]
+\end{example}
+
+\begin{theorem}
+    Let $F_{X,Y}(x,y)$ be the distribution function of the jointly distributed random variables $X$, $Y$. Then
+    \begin{enumerate}
+        \item $F_{X,Y}(x, -\infty) = F_{X,Y}(-\infty, y) = 0$
+        \item $F_{X,Y}(\infty, \infty) = 1$
+        \item $F_{X,Y}(x + 0, y) = F_{X,Y}(x, y + 0) = F_{X,Y}(x, y)$
+        \item For any $h > 0$ and $k > 0$,
+        \[
+            \Delta F_{X,Y}(x, y) = F_{X,Y}(x+h, y+k) - F_{X,Y}(x+h, y) - F_{X,Y}(x, y+k) + F_{X,Y}(x, y)
+        \]
+    \end{enumerate}
+\end{theorem}
+\begin{proof}
+    \begin{enumerate}
+        \item Let 
+        \[A_n(x) = \{(X, Y): X \leq x, Y \leq -n\}\] 
+        Notice that $A_{n+1}(x) \subseteq A_n(x)$ for all $n \in \mathbb{N}$, that is, $\{A_n\}$ is a monotone decreasing sequence of sets. So,
+        \[
+            \lim_{n \to \infty} A_n = \varnothing.
+        \]
+        Now,
+        \begin{align*}
+            F_{XY}(x, -\infty) &= \lim_{n \to \infty} \mathbb{P}[X \leq x, Y \leq -n]\\
+            &= \lim_{n \to \infty} \mathbb{P}[A_n(x)]\\
+            &= \mathbb{P}\left[ \lim_{n \to \infty} A_n(x) \right] && \text{(by continuity theorem of probability)}\\
+            &= \mathbb{P}[\varnothing] = 0.
+        \end{align*}
+        Similarly, it can be shown that
+        \[
+            F_{XY}(-\infty, y) = \mathbb{P}[X \leq -\infty, Y \leq y] = 0.
+        \]
+
+        \item Let $A_n = \{(X, Y): -n \leq x \leq n, -n \leq y \leq n\}$.
+
+        $A_n \subseteq A_{n+1}$, i.e., $\{A_n\}$ is a monotone expanding sequence of sets.
+        \[
+            \lim_{n \to \infty} A_n = \mathbb{R}^2.
+        \]
+        \begin{align*}
+            F_{XY}(\infty, \infty) &= \lim_{n \to \infty} \mathbb{P}[X \leq n, Y \leq n] = \lim_{n \to \infty} \mathbb{P}(A_n) = \mathbb{P}\left[ \lim_{n \to \infty} A_n \right]\\
+            &= \mathbb{P}[\mathbb{R}^2] && \text{(by continuity of probability)}
+        \end{align*}
+        Therefore, $F_{XY}(\infty, \infty) = 1$.
+
+        \item[(iv)] $F_{XY}(x^+, y)$
+        \[
+            = \lim_{\varepsilon \to 0} F_{XY}(x + \varepsilon, y) = \lim_{n \to \infty} F_{XY}\left(x + \frac{1}{n}, y\right).
+        \]
+        Let $A_n = \{(X, Y): -\infty < X \leq x + \frac{1}{n}, -\infty < Y \leq y\}$.
+
+        $A_n \supseteq A_{n+1}$, so
+        \[
+            \lim_{n \to \infty} A_n = \{(X, Y): -\infty < X \leq x, -\infty < Y \leq y\}.
+        \]
+        So,
+        \begin{align*}
+            \lim_{n \to \infty} F_{XY}\left(x + \frac{1}{n}, y\right) &= \lim_{n \to \infty} \mathbb{P}\left[-\infty < X \leq x + \frac{1}{n}, -\infty < Y \leq y\right]\\
+            &= \lim_{n \to \infty} \mathbb{P}(A_n)\\
+            &= \mathbb{P}\left[ \lim_{n \to \infty} A_n \right]\\
+            &= \mathbb{P}[-\infty < X \leq x, -\infty < Y \leq y]\\
+            &= F_{XY}(x, y).
+        \end{align*}
+        Similarly, it can be shown that
+        \[
+            F_{XY}(x, y^+) = F_{XY}(x, y).
+        \]
+
+        \item[(v)] $F_{XY}(x_1, y) \leq F_{XY}(x_2, y)$ and $F_{XY}(x, y_1) \leq F_{XY}(x, y_2)$.
+
+        \item[(vi)] For every $x_1 > x_2$, $y_1 > y_2$,
+        \[
+            \Delta F_{XY}(x, y) = F_{XY}(x_1, y_1) - F_{XY}(x_1, y_2) - F_{XY}(x_2, y_1) + F_{XY}(x_2, y_2) \geq 0.
+        \]
+    \end{enumerate}
+\end{proof}
+\begin{proof}[Proof of (vi)]
+    \begin{align*}
+        \Delta F_{XY}(x, y) &= F_{XY}(x_1, y_1) - F_{XY}(x_1, y_2) - F_{XY}(x_2, y_1) + F_{XY}(x_2, y_2)\\
+        &= \mathbb{P}[X \leq x_1, Y \leq y_1] - \mathbb{P}[X \leq x_1, Y \leq y_2]\\
+        &\quad - \mathbb{P}[X \leq x_2, Y \leq y_1] + \mathbb{P}[X \leq x_2, Y \leq y_2]\\
+        &= \mathbb{P}[X \leq x_1, y_2 < Y \leq y_1] - \mathbb{P}[X \leq x_2, y_2 < Y \leq y_1]\\
+        &= \mathbb{P}[x_2 < X \leq x_1, y_2 < Y \leq y_1] \geq 0.
+    \end{align*}
+    Since $x_1 > x_2$, $y_1 > y_2$.
+\end{proof}
+
+\section{Conditional distributions}
+
+\begin{definition}[Marginal probability density functions]
+    If $X$ and $Y$ are two jointly continuous random variables with joint probability density function $F_{X,Y}(x,y)$, then the marginal probability density functions of $X$ is given by
+    \begin{equation}
+        F_X(x) = F_{X,Y}(x, \infty).
+    \end{equation}
+    Similarly, the marginal probability density function of $Y$ is 
+    \begin{equation}
+        F_Y(y) = F_{X,Y}(\infty, y).
+    \end{equation}
+\end{definition}
+
+\begin{definition}[Conditional probability density function]
+    Consider two jointly distributed discrete random variables $X$ and $Y$, then the conditional probability mass function of $Y$ given $X = x$ is defined as
+    \begin{equation}
+        F_{Y \mid X}(y \mid x) = \sum_{t \leq y} \mathbb{P}[Y = t \mid X = x] = \sum_{t \leq y} \frac{\mathbb{P}[X = x, Y = t]}{\mathbb{P}[X = x]}. \label{defn:con01}
+    \end{equation}
+\end{definition}
+
+Recall the definition of conditional probabilities: For two sets 
+$A$ and $B$, with $P(A) \neq 0$, the conditional probability of $B$ 
+given that $A$ is true is defined as 
+
+\begin{equation}
+    \mathbb{P}(B \> | \> A) := \frac{\mathbb{P}(A \cap B)}{\mathbb{P}(A)}.
+\end{equation}
+
+From \cref{defn:con01}, we can said that the conditional probability mass function of $Y$ given $X = x$ is
+\begin{align*}
+    F_{Y \mid X}(y \mid x) &= \lim_{\varepsilon \to 0} \mathbb{P}[Y \leq y \mid x - \varepsilon \leq X \leq x + \varepsilon]\\
+    &= \lim_{\varepsilon \to 0} \frac{\mathbb{P}[x - \varepsilon \leq X \leq x + \varepsilon, Y \leq y]}{\mathbb{P}[x - \varepsilon \leq X \leq x + \varepsilon]}.
+\end{align*}
+provided that the limit exists.
+
+If there exists a non-negative function $f_{Y \mid X}(y \mid x)$ such that
+\begin{equation}
+    F_{Y \mid X}(y \mid x) = \int_{-\infty}^{y} f_{Y \mid X}(t \mid x) \, \mathrm{d}t,
+\end{equation}
+then $f_{Y \mid X}(y \mid x)$ is called the conditional probability density function of $Y$ given $X = x$.
+
+\begin{remark}
+    The conditional expectation of $Y$ given $X = x$ is called the 
+    \textbf{regression} of $Y$ on $X$.
+\end{remark}
+
+\begin{example}
+    Let $X$ and $Y$ be two jointly continuous random variable with joint density function
+    \[
+        f_{XY}(x, y) = \begin{cases}
+            x^2 + \frac{1}{3}y, & -1 \leq x \leq 1,\> 0 \leq y \leq 1\\
+            0 & \text{otherwise}
+        \end{cases}.
+    \]
+
+    For $0 \leq y \leq 1$, find the conditional pdf of $X$ given $Y = y$.
+\end{example}
+\begin{solution}
+    First we find the marginal distribution of $Y$, which we can obtain by integrating 
+    along with $x$.
+    \begin{align*}
+        f_Y(y) = \int_{-1}^{1} f_{XY}(x,y)\> \mathrm{d}x &= 
+        \int_{-1}^{1} \left( x^2 + \frac{1}{3}y \right) \> \mathrm{d}x\\
+        &= \frac{1}{3}x^3 + \frac{1}{3}xy \bigg \vert^1_{-1}\\
+        &= \frac{2}{3}(1+y).
+    \end{align*}
+
+    The conditional distribution of $X$ given $Y=y$ is 
+    \[
+        f_{X|Y=y}(x) = \frac{f_{XY}(x,y)}{f_Y(y)} 
+        = \frac{x^2 + \mfrac{1}{3}y}{\mfrac{2}{3}(1+y)}
+        = \frac{3x^2 + y}{2(1+y)}, \quad -1 \leq x \leq 1,\> 0 \leq y \leq 1
+    \]
+\end{solution}
+
+\begin{example}
+    Consider two random variables $X$ and $Y$ with joint probability density function
+    \[
+        f_{X,Y} (x,y) = \begin{cases}
+            x^2 + \frac{1}{3}xy & 0 \leq x \leq 1, 0 \leq y \leq 2\\
+            0 & \text{otherwise}
+        \end{cases}
+    \]
+    Find
+    \begin{enumerate}
+        \item the marginal probability density functions of $X$,
+        \item the marginal probability density functions of $Y$,
+        \item the conditional probability density function of $Y < \frac{1}{2}$ given $X<\frac{1}{2}$.
+    \end{enumerate}
+\end{example}
+\begin{solution}
+    \begin{enumerate}
+        \item The marginal probability density function of $X$ is 
+        \begin{align*}
+            f_X(x) &= \int^2_0 f_{X,Y}(x,y) \, \mathrm{d}y = 
+            \int^2_0 \left( x^2 + \frac{1}{3}xy \right) \, \mathrm{d}y = \left[ x^2 y + \frac{1}{6}xy^2 \right]^2_0 = 2x^2 + \frac{2x}{3}, \quad 0 \leq x \leq 1.
+        \end{align*}
+        and \[\int^1_0 f_X(x) \> \mathrm{d}x = \int_{0}^{1} \left(2x^2 + \frac{2x}{3}\right) \mathrm{d}x = 1. \]
+        So this is a valid probability density function.
+        \item The conditional probability density function of $Y < \frac{1}{2}$ given $X<\frac{1}{2}$ is 
+    \end{enumerate}
+\end{solution}
+
+\begin{example}
+    Let $(X, Y)$ be a bivariate discrete random variable with joint PMF
+    \[
+        f_{XY}(x,y) = \begin{cases}
+            \dfrac{1}{\binom{m+1}{2}} & y = 1, 2, \ldots, \alpha \text{ and } x = y, y+1, \ldots, m\\[6pt]
+            0 & \text{otherwise}
+        \end{cases}
+    \]
+    where $m$ is a positive integer $\geq 1$. Find $\mathbb{E}(X)$, $\mathbb{E}(X \mid Y)$, and $\mathbb{E}[\mathbb{E}(X \mid Y)]$.
+\end{example}
+\begin{solution}
+    The marginal PMF of $X$ is
+    \[
+        f_X(x) = \sum_{y=1}^{x} \frac{1}{\binom{m+1}{2}} = \frac{x}{\binom{m+1}{2}}.
+    \]
+    Therefore,
+    \[
+        \mathbb{E}(X) = \sum_{x=1}^{m} x \cdot \frac{x}{\binom{m+1}{2}} = \frac{1}{\binom{m+1}{2}} \cdot \frac{m(m+1)(2m+1)}{6} = \frac{2m+1}{3}.
+    \]
+    The marginal PMF of $Y$ is
+    \[
+        f_Y(y) = \sum_{x=y}^{m} f_{XY}(x,y) = \frac{m-y+1}{\binom{m+1}{2}}.
+    \]
+    The conditional PMF of $X$ given $Y = y$ is
+    \[
+        f_{X \mid Y}(x \mid y) = \frac{f_{XY}(x,y)}{f_Y(y)} = \frac{\frac{1}{\binom{m+1}{2}}}{\frac{m-y+1}{\binom{m+1}{2}}} = \frac{1}{m-y+1}, \quad x = y, y+1, \ldots, m.
+    \]
+    Thus,
+    \[
+        \mathbb{E}[X \mid Y = y] = \sum_{x=y}^{m} x \cdot \frac{1}{m-y+1} = \frac{1}{m-y+1} \cdot (m-y+1) \cdot \frac{m+y}{2} = \frac{m+y}{2}.
+    \]
+    Now,
+    \begin{align*}
+        \mathbb{E}[\mathbb{E}(X \mid Y)] &= \mathbb{E}\left[ \frac{m+Y}{2} \right]\\
+        &= \frac{m}{2} + \frac{1}{2} \mathbb{E}(Y)\\
+        &= \frac{m}{2} + \frac{1}{2} \left\{ \sum_{y=1}^{m} y \cdot \frac{m-y+1}{\binom{m+1}{2}} \right\}\\
+        &= \frac{m}{2} + \frac{1}{2} \cdot \frac{1}{\binom{m+1}{2}} \left[ \frac{m \cdot m(m+1)}{2} + \frac{m(m+1)}{2} - \frac{m(m+1)(2m+1)}{6} \right]\\
+        &= \frac{m}{2} + \left[ \frac{m}{2} + \frac{1}{2} - \frac{2m+1}{6} \right] = \frac{2m+1}{3}.
+    \end{align*}
+    This verifies the law of iterated expectations: $\mathbb{E}[\mathbb{E}(X \mid Y)] = \mathbb{E}(X)$.
+\end{solution}
+
+\begin{example}
+    Let $X$ and $Y$ be two jointly distributed continuous random variables with joint PDF
+    \[
+        f_{X,Y}(x,y) = \frac{1}{2\pi\sqrt{1-\rho^2}} \exp\left\{ -\frac{1}{2(1-\rho^2)} \left[ (x - \mu_X)^2 - 2\rho(x-\mu_X)(y-\mu_Y) + (y-\mu_Y)^2 \right] \right\}, \quad y \in \mathbb{R}.
+    \]
+    \begin{enumerate}
+        \item Find the marginal PDF of $X$.
+        \item Find the conditional PDF of $Y$ given $X = x$.
+    \end{enumerate}
+\end{example}
+\begin{solution}
+    \begin{enumerate}
+        \item The marginal PDF of $X$ is
+        \begin{align*}
+            f_X(x) &= \int_{-\infty}^{\infty} f_{X,Y}(x,y) \, \mathrm{d}y \\
+            &= \int_{-\infty}^{\infty} \frac{1}{2\pi\sqrt{1-\rho^2}} \exp\left\{ -\frac{1}{2(1-\rho^2)} \left[ (x-\mu_X)^2 - 2\rho(x-\mu_X)(y-\mu_Y) + (y-\mu_Y)^2 \right] \right\} \mathrm{d}y \\
+            &= \frac{e^{-\frac{(x-\mu_X)^2}{2}}}{2\pi\sqrt{1-\rho^2}} \int_{-\infty}^{\infty} \exp\left\{ -\frac{\left[ (y-\mu_Y) - \rho(x-\mu_X) \right]^2}{2(1-\rho^2)} \right\} \mathrm{d}y.
+        \end{align*}
+        Using the fact that $\displaystyle\int_{-\infty}^{\infty} \exp\left\{ -\frac{(z-c)^2}{2\sigma^2} \right\} \mathrm{d}z = \sigma\sqrt{2\pi}$, we have
+        \[
+            f_X(x) = \frac{1}{\sqrt{2\pi}} \exp\left\{ -\frac{(x-\mu_X)^2}{2} \right\}, \quad x \in \mathbb{R}.
+        \]
+        Hence, $X \sim N(\mu_X, 1)$.
+
+        \item The conditional PDF of $Y$ given $X = x$ is
+        \begin{align*}
+            f_{Y \mid X}(y \mid x) &= \frac{f_{X,Y}(x,y)}{f_X(x)} \\
+            &= \frac{1}{\sqrt{2\pi(1-\rho^2)}} \exp\left\{ -\frac{\left[ (y - \mu_Y) - \rho(x - \mu_X) \right]^2}{2(1-\rho^2)} \right\}.
+        \end{align*}
+        Therefore, $Y \mid X = x \sim N\left( \mu_Y + \rho(x - \mu_X), 1 - \rho^2 \right)$.
+
+        The conditional expectation is
+        \[
+            \mathbb{E}[Y \mid X = x] = \mu_Y + \rho(x - \mu_X).
+        \]
+        And the unconditional expectation is
+        \[
+            \mathbb{E}(Y) = \int_{-\infty}^{\infty} y \cdot f_Y(y) \, \mathrm{d}y = \mu_Y.
+        \]
+    \end{enumerate}
+\end{solution}
+
+\begin{example}
+    An exam consists of a problem section and a short-answer. Let $X$ denote the amount of time (in hours) a student spends on the problem section, and let $Y$ denote the amount of time (in hours) the same 
+    student spends on the short-answer section. Suppose that the joint PDF of $X$ and $Y$ is given by
+    \[
+        f_{X, Y}(x, y) = \begin{cases}
+            \displaystyle \frac{432}{5}x^3y & 0 \leq x \leq 1, \frac{x}{3} \leq y \leq \frac{x}{2}.\\
+            0 & \text{otherwise}
+        \end{cases}
+    \]
+    \begin{enumerate}
+        \item Find the probability that a student spends at most 0.25 hours on the short-answer section.
+        \item If the student spends exactly 0.25 hour on the short-answer section, what is the 
+        probability that at most 0.6 hour was spent on the problem section?
+        \item Find the average difference of the amount of time spent on the problem section and 
+        short-answer section of the exam.
+    \end{enumerate}
+\end{example}
+\begin{solution}
+    Given the joint PDF
+    \[
+        X,Y \sim f_{X,Y}(x,y) = \begin{cases}
+            \displaystyle \frac{432}{5} x^3 y & 0 \leq x \leq 1, \frac{x}{3} \leq y \leq \frac{x}{2}\\
+            0 & \text{otherwise}
+        \end{cases}
+    \]
+    \begin{enumerate}
+        \item The probability that a student spends at most 0.25 hours on the short-answer section is
+        \begin{align*}
+            \mathbb{P}[Y > 0.25] &= 1 - \mathbb{P}[Y \leq 0.25]
+            = 1 - \int^{1/4}_0 \int^{3y}_{2y} \frac{432}{5} x^3 y \, \mathrm{d}x \, \mathrm{d}y\\
+            &= 1 - \int^{1/4}_0 \frac{432}{20} x^4y \Big|^{x=3y}_{x=2y} \, \mathrm{d}y\\
+            &= 1 - \int^{1/4}_0 \left( \frac{432}{5}y \cdot \frac{65}{4}y^4 \right) \, \mathrm{d}y\\
+            &= 1 - \int^{1/4}_0 1404y^5 \, \mathrm{d}y\\
+            &= 1 - \frac{1404}{6}y^6 \Big|^{y=1/4}_{y=0}\\
+            &= \fbox{$0.9429$}.
+        \end{align*}
+
+        \item The marginal probability of $X$ where $Y = 0.25$ is 
+        \begin{align*}
+            \int^{3/4}_{1/2} f_{X \mid Y = 0.25} (x, 0.25) \, \mathrm{d}x 
+            &= \int^{3/4}_{1/2} \frac{432}{5} \cdot 0.25x^3 \, \mathrm{d}x\\
+            &= \frac{432}{5} \cdot 0.25 \cdot \frac{x^4}{4} \Big|^{x=3/4}_{x=1/2}\\
+            &= 1.3711
+        \end{align*}
+
+        Given $Y =0.25$, the probability that at most 0.6 hour was spent on the problem section is
+        \begin{align*}
+            \mathbb{P}[X \leq 0.6 \mid Y = 0.25] &= \int^{0.6}_{0.5} f_{X \mid Y = 0.25} (x, 0.25) \, \mathrm{d}x
+            = \frac{\displaystyle \int^{0.6}_{0.5} \frac{432}{5} \cdot 0.25x^3 \, \mathrm{d}x}{\displaystyle \int^{3/4}_{1/2} f_{X \mid Y = 0.25}(x, 0.25) \mathrm{d}x}\\
+            &= \frac{108}{5 (1.3711)} \cdot \left( \frac{x^4}{4} \right)\Big|^{x=0.6}_{x=0.5}\\[0.7em]
+            &= \fbox{$0.2643$}.
+        \end{align*}
+
+        \item Compute the expected value of $X - Y$:
+        \begin{align*}
+            \mathbb{E}[X - Y] &= \mathbb{E}[X] - \mathbb{E}[Y]\\
+            &= \int^1_0 \int^{x/2}_{x/3} x \cdot \frac{432}{5} x^3 y \, \mathrm{d}y \, \mathrm{d}x - 
+            \left[ \int_{0}^{1/3} \int^{3y}_{2y} y \left( \frac{432}{5} x^3 y \right) \, \mathrm{d}x \, \mathrm{d}y 
+            + \int_{1/3}^{1/2} \int_{2y}^{1} y \left( \frac{432}{5} x^3 y \right) \, \mathrm{d}x \, \mathrm{d}y \right]\\
+            &= \int^1_0 \frac{432}{5} \cdot \frac{1}{2}x^4 y^2 \Big|^{y=x/2}_{y=x/3} \, \mathrm{d}x - \left[
+                1404 \int^{1/3}_{0} y^6 \, \mathrm{d}y + \frac{432}{5} \int_{1/3}^{1/2} y^2 \left( \frac{1}{4} - \frac{(2y)^4}{4} \,  \right)\mathrm{d}y
+            \right]\\
+            &= \int_{0}^{1} 6x^6 \, \mathrm{d}x - \left[
+                1404 \cdot \frac{y^7}{7} \Big|^{y=1/3}_{y=0} + \left( \frac{36}{5}y^3 - \frac{1728}{35}y^7 \right) \Big|^{y=1/2}_{y=1/3}
+            \right]\\
+            &= \frac{6}{7} - \left(\frac{4}{35} + \frac{26}{105}\right)\\ 
+            &= \fbox{$\displaystyle \frac{52}{105}$} \quad \text{ hour}.
+        \end{align*}
+        Thus, the average difference of the amount of time spent on the problem section and short-answer section of the exam is
+        $52 / 105 \approx 0.495$ hours.
+    \end{enumerate}
+\end{solution}
+
+\section{Multivariate Normal Distribution}
+
+An absolutely continuous random vector $(X_1, X_2)$ is said to follow a bivariate normal distribution with parameters $(\mu_1, \mu_2, \sigma_1, \sigma_2, \rho)$ if the joint PDF of $(X_1, X_2)$ is
+\[
+    f(x_1, x_2) = \frac{1}{\sigma_1 \sigma_2 \cdot 2\pi \sqrt{1 - \rho^2}} \, e^{-\frac{1}{2} \varphi(x_1, x_2)}, \quad x_1, x_2 \in \mathbb{R}, \; \sigma_1, \sigma_2 \in \mathbb{R}, \; \mu_1, \mu_2 \in \mathbb{R}, \; |\rho| < 1
+\]
+where
+\[
+    \varphi(x_1, x_2) = \frac{1}{1 - \rho^2} \left[ \left( \frac{x_1 - \mu_1}{\sigma_1} \right)^2 - 2\rho \left( \frac{x_1 - \mu_1}{\sigma_1} \right) \left( \frac{x_2 - \mu_2}{\sigma_2} \right) + \left( \frac{x_2 - \mu_2}{\sigma_2} \right)^2 \right].
+\]
+We write $(X_1, X_2) \sim N(\mu_1, \mu_2, \sigma_1, \sigma_2, \rho)$.
+
+The marginal PDF of $X_1$ is
+\begin{align*}
+    f_{X_1}(x_1) &= \int_{-\infty}^{\infty} f(x_1, x_2) \, \mathrm{d}x_2 = \int_{-\infty}^{\infty} \frac{1}{\sigma_1 \sigma_2 2\pi \sqrt{1 - \rho^2}} \, e^{-\frac{1}{2} \varphi(x_1, x_2)} \, \mathrm{d}x_2
+\end{align*}
+where
+\[
+    \varphi(x_1, x_2) = \frac{1}{1 - \rho^2} \left[ \left( \frac{x_2 - \mu_2}{\sigma_2} \right) - \rho \left( \frac{x_1 - \mu_1}{\sigma_1} \right) \right]^2 + \frac{1}{\sigma_1^2} \left( x_1 - \mu_1 \right)^2.
+\]
+Therefore,
+\begin{align*}
+    f_{X_1}(x_1) &= \int_{-\infty}^{\infty} \frac{1}{2\pi \sigma_1 \sigma_2 \sqrt{1 - \rho^2}} \, e^{-\frac{1}{2(1-\rho^2)} \left[ \left( \frac{x_2 - \mu_2}{\sigma_2} \right) - \rho \left( \frac{x_1 - \mu_1}{\sigma_1} \right) \right]^2 - \frac{1}{2} \left( \frac{x_1 - \mu_1}{\sigma_1} \right)^2} \, \mathrm{d}x_2 \\
+    &= \frac{1}{\sigma_1 \sqrt{2\pi}} \, e^{-\frac{1}{2} \left( \frac{x_1 - \mu_1}{\sigma_1} \right)^2}, \quad -\infty < x_1 < \infty
+\end{align*}
+
+since the integrand is in the form of a normal PDF. Similarly, it can be shown that
+\[
+    f_{X_2}(x_2) = \frac{1}{\sigma_2 \sqrt{2\pi}} \, e^{-\frac{1}{2} \left( \frac{x_2 - \mu_2}{\sigma_2} \right)^2}, \quad -\infty < x_2 < \infty.
+\]
+
+\begin{theorem}
+    If the regression of $Y$ on $X$ is linear and the variance of $Y$ is algebraically independent of $X$, then
+    \[
+        V(Y \mid X) = \sigma_Y^2 (1 - \rho^2).
+    \]
+\end{theorem}
+\begin{proof}
+    \begin{align*}
+        V(Y \mid X) &= \mathbb{E}\left[ (Y - \eta_X)^2 \mid X \right]\\
+        &= \mathbb{E}\left[ (Y - \alpha - \beta X)^2 \mid X \right] && \text{Regression is linear}\\
+        &= \mathbb{E}\left[ (Y - \mu_Y) - \beta (X - \mu_X) \right]^2 && \text{Since it is independent of } X\\
+        &= \mathbb{E}\left[ \left\{ (Y - \mu_Y) - \rho \frac{\sigma_Y}{\sigma_X} (X - \mu_X) \right\}^2 \right]\\
+        &= \mathbb{E}(Y - \mu_Y)^2 - 2\rho \frac{\sigma_Y}{\sigma_X} \mathbb{E}(Y - \mu_Y)(X - \mu_X) + \rho^2 \frac{\sigma_Y^2}{\sigma_X^2}\, \mathbb{E}(X - \mu_X)^2\\
+        &= \sigma_Y^2 - 2\rho \frac{\sigma_Y}{\sigma_X} \times \rho \sigma_X \sigma_Y + \rho^2 \frac{\sigma_Y^2}{\sigma_X^2} \times \sigma_X^2\\
+        &= \sigma_Y^2 - 2\rho^2 \sigma_Y^2 + \rho^2 \sigma_Y^2\\
+        &= \sigma_Y^2 (1 - \rho^2).
+    \end{align*}
+\end{proof}
+
+\subsection{Correlation index and Correlation ratio}
+
+When a regression curve is fitted to the conditional mean, we may denote by $\hat{Y}_X$ the estimated value of $\eta_X$ and by $\hat{\varepsilon}$ the residual $Y - \hat{Y}_X$. The variance of $\hat{\varepsilon}$ may be taken as an index of the usefulness of the fitted curve. Note in case, where a linear regression equation is fitted on $\eta_X$.
+
+Then
+\begin{align*}
+    V(\hat{\varepsilon}) &= V(Y - \hat{Y}_X) = V(Y - \alpha - \beta X)\\
+    &= V\left[ (Y - \mu_Y) - \rho \frac{\sigma_Y}{\sigma_X} (X - \mu_X) \right]\\
+    &= V(Y - \mu_Y) + \rho^2 \frac{\sigma_Y^2}{\sigma_X^2} V(X - \mu_X) - 2\rho \frac{\sigma_Y}{\sigma_X} \text{Cov}\left[ (X - \mu_X), (Y - \mu_Y) \right]\\
+    &= \sigma_Y^2 + \rho^2 \frac{\sigma_Y^2}{\sigma_X^2} \cdot \sigma_X^2 - 2\rho \frac{\sigma_Y}{\sigma_X} \cdot \rho \sigma_X \sigma_Y\\
+    &= \sigma_Y^2 (1 - \rho^2).
+\end{align*}
+
+Now, $\text{Cov}(Y, \hat{\varepsilon}) = 0$ from the normal equation. Therefore,
+\begin{align*}
+    \text{Cov}(Y, Y - \hat{Y}_X) &= 0\\
+    \text{Cov}(Y, \hat{Y}_X) &= V(Y).
+\end{align*}
+Hence,
+\[
+    V(\hat{\varepsilon}) = V(Y) - V(\hat{Y}_X).
+\]
+
+Now,
+\[
+    \rho^2_{Y\hat{Y}} = 1 - \frac{V(\hat{\varepsilon})}{V(Y)}, \quad \text{or} \quad \rho^2 = 1 - \frac{V(\hat{\varepsilon})}{V(Y)} = \frac{V(\hat{Y}_X)}{V(Y)} = \frac{V(\hat{Y})}{V(Y)}.
+\]
+
+\section{Regression}
+
+Consider two random variables $X$ and $Y$, where $Y$ is the study of variance and $X$ is 
+the auxilary variable. Our problem is to predict $Y$, when $X$ is known. 
+Let $\eta_X = \mathbb{E}[Y \mid X = x]$ predict at random for the prediction of the form $\phi(X)$ to minimize $\mathbb{E}[(Y - \phi(X))^2]$. Then this is minimum when $\phi(X) = \eta_X$, the conditional mean.
+
+Let $g(X) = \eta_X$, where $g(x)$ is any prediction of $Y$ based on $X$. Then
+\begin{align*}
+    \mathbb{E}[(Y - g(X))^2] &= \mathbb{E}\left\{ \mathbb{E}[(Y - g(X))^2 \mid X] \right\}\\
+    &= \mathbb{E}\left\{ \mathbb{E}[(Y - \eta_X + \eta_X - g(X))^2 \mid X] \right\}\\
+    &= \mathbb{E}\left\{ \mathbb{E}[(Y - \eta_X)^2 \mid X] + (\eta_X - g(X))^2 + 2(Y - \eta_X)(\eta_X - g(X)) \right\}\\
+    &= \mathbb{E}\left\{ \mathbb{E}[(Y - \eta_X)^2 \mid X] \right\} + \mathbb{E}[(\eta_X - g(X))^2].
+\end{align*}
+
+$\mathbb{E}[(Y - g(X))^2]$ is minimum when $g(X) = \eta_X$.
+
+Now,
+\begin{align*}
+    \mathbb{E}[(Y - \eta_X) \cdot (g(X) - \eta_X)] &= \mathbb{E}[(g(X) - \eta_X) \cdot \mathbb{E}[(Y - \eta_X) \mid X]]\\
+    &= \mathbb{E}[(g(X) - \eta_X) \times 0] = 0.
+\end{align*}
+
+\subsection{Correlation coefficient between $Y$ and $\eta_X$}
+
+\begin{align*}
+    \text{Cov}(Y, \eta_X) &= \mathbb{E}[(Y - \mathbb{E}(Y))(\eta_X - \mathbb{E}(\eta_X))]\\
+    &+ \mathbb{E}[(Y - \mathbb{E}(Y))(\eta_X - \mathbb{E}(Y))]\\
+    &= \mathbb{E}\left[ (\eta_X - \mathbb{E}(Y)) \mathbb{E}[(Y - \mathbb{E}(Y)) \mid X] \right]\\
+    &= \mathbb{E}[\eta_X - \mathbb{E}(Y)]^2\\
+    &= V(\eta_X).
+\end{align*}
+
+Therefore,
+\[
+    \rho_{Y, \eta_X} = \frac{V(\eta_X)}{\sqrt{V(Y) \cdot V(\eta_X)}} = \sqrt{\frac{V(\eta_X)}{V(Y)}}.
+\]
+
+Hence, $\rho_{Y, \eta_X}^2 \geq \rho_{Y, g(X)}^2$ for any other prediction $g(X)$.
+
+\begin{align*}
+    \text{Cov}(Y, g(X)) &= \mathbb{E}[(Y - \mathbb{E}(Y))(g(X) - \mathbb{E}(g(X)))]\\
+    &= \mathbb{E}\left[ (g(X) - \mathbb{E}(g(X))) \cdot \mathbb{E}[(Y - \mathbb{E}(Y)) \mid X] \right]\\
+    &= \text{Cov}(\eta_X, g(X)).
+\end{align*}
+
+Therefore,
+\[
+    \rho_{Y, g(X)}^2 = \frac{\text{Cov}^2(Y, g(X))}{V(Y) \cdot V(g(X))} = \frac{\text{Cov}^2(\eta_X, g(X))}{V(Y) \cdot V(g(X))}.
+\]
+
+Hence, $\rho_{Y, g(X)} \leq \rho_{Y, \eta_X}$. This holds when $\eta_X$ and $g(X)$ have a linear relationship.
+
+\begin{remark}
+    The square of the maximum correlation is called the \textbf{correlation ratio} of $Y$ on $X$ and is usually denoted by
+    \[
+        \eta_{YX}^2 = \rho_{Y, \eta_X}^2, \quad \text{or} \quad \eta_{YX} \leq 1.
+    \]
+    It can be shown that
+    \[
+        V(Y) = V(\mathbb{E}[Y \mid X]) + \mathbb{E}[V(Y \mid X)] \geq V(\eta_X),
+    \]
+    since $V(Y \mid X) \geq 0$. Therefore,
+    \[
+        \frac{V(\eta_X)}{V(Y)} \leq 1 \quad \Rightarrow \quad \eta_{YX} \leq 1.
+    \]
+\end{remark}
+
+\subsection{Determination of regression equation or regression curve}
+
+Suppose the regression equation of $Y$ on $X$ is linear. Let $\eta_X = a + bX$. Then
+\[
+    \mathbb{E}(\eta_X) = a + b\mathbb{E}(X),
+\]
+so $\mu_Y = a + b\mu_X$.
+
+Now,
+\begin{align*}
+    \mathbb{E}[X \eta_X] &= a\mu_X + b\mathbb{E}(X^2),\\
+    \mathbb{E}(XY) &= a\mu_X + b(\sigma_X^2 + \mu_X^2).
+\end{align*}
+
+Therefore,
+\begin{align*}
+    \text{Cov}(X, Y) &= a\mu_X + b\sigma_X^2 + b\mu_X^2 - \mu_X(a + b\mu_X) = b\sigma_X^2.
+\end{align*}
+
+Hence,
+\[
+    b = \frac{\text{Cov}(X, Y)}{\sigma_X^2},
+\]
+and the regression equation of $Y$ on $X$ is
+\[
+    \eta_X = \mu_Y + \frac{\text{Cov}(X, Y)}{\sigma_X^2}(X - \mu_X).
+\]
+

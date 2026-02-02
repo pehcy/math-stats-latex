@@ -10,45 +10,6 @@ and an action $a$ is taken.
     L : \Theta \times \mathcal{A} \to \mathbb{R}.
 \end{equation}
 
-\section{Conditional Distributions}
-
-Recall the definition of conditional probabilities: For two sets 
-$A$ and $B$, with $P(A) \neq 0$, the conditional probability of $B$ 
-given that $A$ is true is defined as 
-
-\begin{equation}
-    \mathbb{P}(B \> | \> A) := \frac{\mathbb{P}(A \cap B)}{\mathbb{P}(A)}.
-\end{equation}
-
-\begin{example}
-    Let $X$ and $Y$ be two jointly continuous random variable with joint density function
-    \[
-        f_{XY}(x, y) = \begin{cases}
-            x^2 + \frac{1}{3}y, & -1 \leq x \leq 1,\> 0 \leq y \leq 1\\
-            0 & \text{otherwise}
-        \end{cases}.
-    \]
-
-    For $0 \leq y \leq 1$, find the conditional pdf of $X$ given $Y = y$.
-\end{example}
-\begin{solution}
-    First we find the marginal distribution of $Y$, which we can obtain by integrating 
-    along with $x$.
-    \begin{align*}
-        f_Y(y) = \int_{-1}^{1} f_{XY}(x,y)\> \mathrm{d}x &= 
-        \int_{-1}^{1} \left( x^2 + \frac{1}{3}y \right) \> \mathrm{d}x\\
-        &= \frac{1}{3}x^3 + \frac{1}{3}xy \bigg \vert^1_{-1}\\
-        &= \frac{2}{3}(1+y).
-    \end{align*}
-
-    The conditional distribution of $X$ given $Y=y$ is 
-    \[
-        f_{X|Y=y}(x) = \frac{f_{XY}(x,y)}{f_Y(y)} 
-        = \frac{x^2 + \mfrac{1}{3}y}{\mfrac{2}{3}(1+y)}
-        = \frac{3x^2 + y}{2(1+y)}, \quad -1 \leq x \leq 1,\> 0 \leq y \leq 1
-    \]
-\end{solution}
-
 \begin{example}[Two-sample mean problems]
     Consider the observations $X_1, X_2, \ldots, X_m \sim \mathcal{N}(\mu, \sigma^2)$ response 
     under control treatment. And $Y_1, Y_2, \ldots, Y_n \sim \mathcal{N}(\mu + \Delta, \sigma^2)$

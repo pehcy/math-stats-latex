@@ -210,7 +210,7 @@ We still using the notation $S_{xy}$ and $S_{xx}$ when $y_i$ is replaced by $Y_i
 statistic for $\underline{\theta} = (\alpha, \beta, \sigma^2)$ is given by $(\widehat{\alpha}, \widehat{\beta}, S_{yy})$.
 
 Since $\widehat{\alpha}$ and $\widehat{\beta}$ are both unbiased estimators and functions of the sufficient and complete 
-statistic, thus they are UMVUE of $\alpha$ and $\beta$, respectively.
+statistic, thus they are \index{UMVUE} of $\alpha$ and $\beta$, respectively.
 
 \end{example}
 \begin{example}[(cont.)]
@@ -458,9 +458,15 @@ And we are done.
     \end{enumerate}
 \end{proof}
 
-\subsection{Estimate $\sigma^2$}
+\subsection{Estimate of $\sigma^2$}
 
-The error sum of squares (equivalently, \textit{residual sum of squares}), denoted by $\CS{E}$, is 
+In addition to estimating the slope parameters $\beta_0$ and $\beta_1$, an estimate of $\sigma^2$ is required to test hypotheses and 
+construct confidence interval estimates pertinent to the regression model. For example, the population regression model is 
+\begin{equation}
+    y_i = \beta_0 + \beta_1 x_i + \varepsilon_i \quad \text{where } \varepsilon_i \sim NID(0, \sigma^2).
+\end{equation}
+The variance $\sigma^2$ measure the variability of the random error $\varepsilon_i$ (thus, variability of $y_i$) and can be estimated based on the 
+\textbf{residual} or \textbf{error sum of squares}. The error sum of squares (equivalently, \textit{residual sum of squares}), denoted by $\CS{E}$, is 
 \begin{equation}
     \CS{E} = \sum_{i=1}^{n} (y_i - \widehat{y}_i)^2 = \sum_{i=1}^n \left[y_i - (\widehat{\beta}_0 + \widehat{\beta}_1 x_i ) \right]^2
 \end{equation}

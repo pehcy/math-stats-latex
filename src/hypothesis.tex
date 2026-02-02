@@ -1078,3 +1078,89 @@ $\frac{\alpha}{2}$ points of the chi-square distribution with $n-1$ degrees of f
         mean daily output of the operators at the 5\% significance level.
     \end{Exercise}
 \end{mdframed}
+
+\section*{Practical}
+
+Answer all the questions below with proper explanations and interpretations.
+Do these questions in aids of statistical software such as R, Python, Julia, SAS, etc.
+
+\vspace{-0.25cm}
+\hspace{-0.25cm}
+\begin{Exercise}
+    Downtime in manufacturing is costly and can result in 
+    late deliveries, backlogs, failure to meet orders, and even 
+    loss of market share. 
+
+    Suppose a manufacturing plant has been averaging 23 minutes 
+    of downtime per day for the past several years, but during the 
+    past year, there has been a significant effort by both 
+    management and production employees to reduce downtime. 
+    In an effort to determine if downtime has been significantly reduced,
+    company productivity researchers have randomly sampled 30 days over the past several
+    months from company records and have recorded the daily downtimes shown 
+    below (in minutes):
+
+    \begin{center}
+        \begin{tabular}{|c|c|c|c|c|c|c|c|c|c|c|c|c|c|c|}
+        \hline
+        19 & 22 & 17 & 19 & 30 & 24 & 16 & 18 & 27 & 17 & 24 & 19 & 23 & 27 & 28\\
+        \hline
+        24 & 17 & 18 & 26 & 22 & 19 & 15 & 18 & 25 & 23 & 19 & 26 & 21 & 16 & 21\\
+        \hline
+        \end{tabular}
+    \end{center}
+
+    \begin{enumerate}
+        \item Display a boxplot for the data. Are there any outliers? How do you 
+        classify the shape of the distribution of daily downtimes?
+        \item Obtain the following summary statistics:
+        \begin{itemize}
+            \item mean,
+            \item median,
+            \item standard deviation,
+            \item min-max range,
+            \item quartile deviation.
+        \end{itemize}
+        Comment on the results.
+        \item Using the sample data and a $98\%$ confidence level, estimate the average daily downtimes.
+        \item Use these data and a $5\%$ significance level to determine if downtime has been 
+        significantly reduced.
+    \end{enumerate}
+\end{Exercise}
+
+\begin{Exercise}
+    In the manufacture of integrated circuits chips used in computers, a thin layer 
+    of silicon oxide is placed on the surface of the silicon wafer. The thickness of this oxide layer
+    is critical to the performance of the resulting chip. 
+    Two wafers are rondomly selected from each of 28 lots. Four measurements of the 
+    thickness of the oxide layer (in nanometers) on each wafer are then taken. 
+    The average of the four measurements for each of the two wafers selected from the 
+    28 lots are recorded in the following table.
+
+    \begin{center}
+        \begin{tabular}{|c|c|c|c|c|c|c|c|c|c|c|}
+        \hline
+        \textbf{Wafer 1} & 920.0 & 1042.5 & 942.5 & 1007.5 & 985.0 & 925.0 & 1072.5 & 1000.0 & 1047.5 & 982.5\\
+        & 1050.0 & 1057.5 & 1057.5 & 1070.0 & 970.0 & 997.5 & 1107.5 & 932.5 & 960.0 & \\
+        & 1105.0 & 1037.5 & 1015.0 & 1002.5 & 972.5 & 1070.0 & 1005.0 & 1037.5 & 1057.5 & \\
+        \hline 
+        \textbf{Wafer 2} & 985.0 & 1052.5 & 990.0 & 960.0 & 1067.5 & 930.0 & 1120.0 & 1082.5 & 1057.5 & 1002.5\\
+        & 1060.0 & 1010.0 & 1030.0 & 1002.5 & 1005.0 & 1095.0 & 1000.0 & 1042.5 & 1007.5 & \\
+        & 1097.5 & 1015.0 & 1102.5 & 1057.5 & 1097.5 & 1007.5 & 930.0 & 1020.0 & 955.0 & \\
+        \hline
+        \end{tabular}
+    \end{center}
+
+    \begin{enumerate}
+        \item From the data set, construct side-by-die boxplots for the two wafers. 
+        Comment on the shapes of the two distributions. Does normality seem reasonable 
+        in either distribution? Are the two samples equally variable? Should you pooled the 
+        two samples?
+
+        \item Construct a $95\%$ confidence interval for the difference in mean thickness of the 
+        oxide layer for the two wafers.
+
+        \item Perform an appropriate test to determine whether the mean thickness of the 
+        oxide layer is different for the two sets of wafers. Use a $0.03$ significance level.
+    \end{enumerate}
+\end{Exercise}

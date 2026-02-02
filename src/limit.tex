@@ -411,7 +411,11 @@ a sequence of constants $\{A_n \}$ and $\{B_n \}$ such that $B_n \to \infty$ as 
         \int^\infty_{-\infty} \exp \left( itx - \frac{1}{2}x^2 \right) \> \mathrm{d}x 
         - e^{-t^2/2} \int^\infty_{-\infty} \exp \left\{ - \frac{1}{2} (x - it)^2 \right\} \> \mathrm{d}x - \sqrt{2\pi}.
     \]
-    Note that $e^{-z^2/2}$ is an analytic function and $\oint_\gamma e^{-z^2/2} \> \mathrm{d}z = 0$ on closed path.
+    Note that $e^{-z^2/2}$ is an analytic function and $\oint_\gamma e^{-z^2/2} \> \mathrm{d}z = 0$ on closed path. So
+    \[
+        \int^A_{-A} \exp \left\{ -\frac{1}{2}(x - it)^2 \right\} \> \mathrm{d}x - \int^A_{-A} e^{-x^2/2} \> \mathrm{d}x 
+        + \int_{0}^{it} \exp \left\{ -\frac{1}{2}(A-is)^2 \right\} \> \mathrm{d}s - \int^{it}_{0} \exp \left\{ - \frac{1}{2} (-A-is)^2 \right\} \mathrm{d}s = 0.
+    \]
 \end{proof}
 
 \begin{theorem}[Strong Law of Large Numbers]
@@ -441,6 +445,39 @@ a sequence of constants $\{A_n \}$ and $\{B_n \}$ such that $B_n \to \infty$ as 
         \Rightarrow \frac{\ols{X}_n}{n} \xrightarrow[]{p} \mu.
     \]
 \end{proof}
+
+\section{Central Limit Theorem}
+
+\begin{theorem}[Central Limit Theorem]
+    Let $\{X_n\}_{n \geq 1}$ be a sequence of i.i.d random variable whose moment generating function 
+    exist in a neighborhood of 0. Let $\mathbb{E}[X_i] = \mu$ and $Var[X_i] = \sigma^2 > 0$. Define
+    $\ols{X} = \mfrac{1}{n} \sum^n_{i=1} X_i$. Then 
+    \begin{equation}
+        Z = \frac{\sqrt{n} (\ols{X}_i - \mu)}{\sigma} \xrightarrow[]{\mathcal{D}} \mathcal{N}(0,1)
+    \end{equation}
+    or 
+    \begin{equation}
+        Z = \frac{\sum^n_{i=1} X_i - n\mu}{\sqrt{n} \sigma} \xrightarrow[]{\mathcal{D}} \mathcal{N}(0,1)
+    \end{equation}
+\end{theorem}
+
+\begin{example}
+    Let $\ols{X}_n$ be the sample mean from a random sampling of size 
+    $n = 100$ from $\chi^2_{50}$. Compute approximate value of 
+    $\mathbb{P}(49 < \ols{X} < 51)$.
+\end{example}
+\begin{solution}
+    Because $\ols{X}$ followed Chi-squared distribution with degree of freedom 50, then the mean and variance are 
+    $\mathbb{E}[X_i] = 50$ and $Var[X_i] = 2(50) = 100$. By Central Limit Theorem, 
+    \begin{align*}
+        \mathbb{P}(49 < \ols{X} < 51) &\simeq  
+        \mathbb{P} \left[ \frac{\sqrt{100} (49 - \mathbb{E}[X_i])}{\sqrt{Var[X_i]}} < Z < \frac{\sqrt{100} (51 - \mathbb{E}[X_i])}{\sqrt{Var[X_i]}} \right]\\
+        &\simeq \mathbb{P} \left[ \frac{\sqrt{100} (49 - 50)}{\sqrt{100}} < Z < \frac{\sqrt{100} (51 - 50)}{\sqrt{100}} \right]\\
+        &\simeq \mathbb{P} \left[ -1 < Z < 1 \right]\\
+        &\simeq \Phi(1) - \Phi(-1)\\
+        &\simeq 0.84134 - 0.15866 = 0.68268.
+    \end{align*} 
+\end{solution}
 
 \begin{lemma}
     We can write $f(x) = \mathcal{O}(x)$ if $\frac{f(x)}{x} \to 0$ as $x \to 0$. We have 
@@ -488,39 +525,6 @@ a sequence of constants $\{A_n \}$ and $\{B_n \}$ such that $B_n \to \infty$ as 
     is also $\mathcal{O}\left( \frac{1}{n} \right)$.
 \end{remark}
 
-\section{Central Limit Theorem}
-
-\begin{theorem}[Central Limit Theorem]
-    Let $\{X_n\}_{n \geq 1}$ be a sequence of i.i.d random variable whose moment generating function 
-    exist in a neighborhood of 0. Let $\mathbb{E}[X_i] = \mu$ and $Var[X_i] = \sigma^2 > 0$. Define
-    $\ols{X} = \mfrac{1}{n} \sum^n_{i=1} X_i$. Then 
-    \begin{equation}
-        Z = \frac{\sqrt{n} (\ols{X}_i - \mu)}{\sigma} \xrightarrow[]{\mathcal{D}} \mathcal{N}(0,1)
-    \end{equation}
-    or 
-    \begin{equation}
-        Z = \frac{\sum^n_{i=1} X_i - n\mu}{\sqrt{n} \sigma} \xrightarrow[]{\mathcal{D}} \mathcal{N}(0,1)
-    \end{equation}
-\end{theorem}
-
-\begin{example}
-    Let $\ols{X}_n$ be the sample mean from a random sampling of size 
-    $n = 100$ from $\chi^2_{50}$. Compute approximate value of 
-    $\mathbb{P}(49 < \ols{X} < 51)$.
-\end{example}
-\begin{solution}
-    Because $\ols{X}$ followed Chi-squared distribution with degree of freedom 50, then the mean and variance are 
-    $\mathbb{E}[X_i] = 50$ and $Var[X_i] = 2(50) = 100$. By Central Limit Theorem, 
-    \begin{align*}
-        \mathbb{P}(49 < \ols{X} < 51) &\simeq  
-        \mathbb{P} \left[ \frac{\sqrt{100} (49 - \mathbb{E}[X_i])}{\sqrt{Var[X_i]}} < Z < \frac{\sqrt{100} (51 - \mathbb{E}[X_i])}{\sqrt{Var[X_i]}} \right]\\
-        &\simeq \mathbb{P} \left[ \frac{\sqrt{100} (49 - 50)}{\sqrt{100}} < Z < \frac{\sqrt{100} (51 - 50)}{\sqrt{100}} \right]\\
-        &\simeq \mathbb{P} \left[ -1 < Z < 1 \right]\\
-        &\simeq \Phi(1) - \Phi(-1)\\
-        &\simeq 0.84134 - 0.15866 = 0.68268.
-    \end{align*} 
-\end{solution}
-
 \begin{theorem}[De Moivre-Laplace Limit Theorem]
     Let $\{X_n\}_{n \geq 1}$ be a sequence of identically independent Bernoulli random variable with 
     parameter $p$. Such as 
@@ -540,7 +544,8 @@ a sequence of constants $\{A_n \}$ and $\{B_n \}$ such that $B_n \to \infty$ as 
     \begin{align*}
         \phi_n(t) &= \mathbb{E} \left[ \exp \left\{ \left( \frac{S_n - np}{\sqrt{npq}} \right)it \right\} \right]\\
         &= \prod_{k=1}^{n} \mathbb{E} \left[ \exp \left\{ \frac{it}{\sqrt{n}} \left( \frac{X_k - p}{\sqrt{p(1-p)}} \right)\right\} \right]\\
-        &= \left[ \phi \left( \frac{t}{\sqrt{n}} \right) \right]^n
+        &= \left[ \phi \left( \frac{t}{\sqrt{n}} \right) \right]^n\\
+        &= \left[ 1 - \frac{t^2}{2n} + \mathcal{O} \left( \frac{t^2}{n} \right) \right]^n \label{eq:l1.0} \tag{{\color{orange} $\heartsuit $}}
     \end{align*}
 \end{proof}
 
@@ -599,6 +604,11 @@ a sequence of constants $\{A_n \}$ and $\{B_n \}$ such that $B_n \to \infty$ as 
         f(x) = e^{c - \frac{1}{2}\delta^2} = \frac{1}{\sqrt{2\pi} \, \sqrt{npq}} \exp \left\{ -\frac{1}{2} \left(\frac{x -np}{\sqrt{npq}}\right)^2 \right\} \sim N(np, npq).
     \]
 \end{proof}
+\begin{remark}
+    For a sequence of random variables $\{X_n\}_{n \geq 1}$ where 
+    $\phi_{\ols{X}_n}(t) \to e^{it\mu}$, we said WLLN holds for $\{X_n\}_{n \geq 1}$ since $e^{it\mu}$ is the 
+    cumulative function of a degenerate random variable $X \ni \mathbb{P}[X=\mu]=1$.
+\end{remark}
 
 \begin{theorem}[Lyapunov Limit Theorem]
     Let $\{X_n\}_{n \geq 1}$ be a sequence of identically independent random variables with mean 

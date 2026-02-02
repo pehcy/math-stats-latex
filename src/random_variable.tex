@@ -2,7 +2,7 @@
 
 \section{Density function}
 
-By definition, a random variable $X$ is a function with domain the sample
+By definition, a \index{random variable} $X$ is a function with domain the sample
  space and range a subset of the real numbers. For example, in rolling two
  dice $X$ might represent the sum of the points on the two dice. Similarly, in
  taking samples of college students $X$ might represent the number of hours
@@ -475,9 +475,79 @@ A geometric random variable models the number of successive independent
     which is what we expected.
 \end{proof}
 
-\section{Normal Distribution}
+\subsection{Exponential Distribution}
 
+\begin{theorem}[Memoryless Property]
+    If $X$ is an exponential distribution, then 
+    \begin{equation}
+        \mathbb{P}[X > s + t \> | \> X > s] = \mathbb{P}[X > t].
+    \end{equation}
+    The converse is also true for memoryless property.
+\end{theorem}
+\begin{proof}
+    $(\Rightarrow)$ If $X$ is an exponential distribution with parameter $\theta$, the probability of $X$ greater than 
+    $x$ is 
+    \[
+        \mathbb{P}[X > x] = e^{-x/\theta}.
+    \]
+    We compute the conditional probability $\mathbb{P}[X > s + t \> | \> X > s]$, that is, 
+    \begin{align*}
+        \mathbb{P}[X > s + t \> | \> X > s] &= \frac{\mathbb{P}[X > s + t \cap X > s]}{\mathbb{P}[X > s]}\\
+        &= \frac{\mathbb{P}[X > s + t]}{\mathbb{P}[X > s]} & \text{Since } \{x \> | \> x>s+t\} \subset \{x \> | \> x>s\} \\
+        &= \frac{e^{-(s+t)/\theta}}{e^{-s/\theta}}\\
+        &= e^{-t / \theta}\\
+        &= \mathbb{P}[X > t].
+    \end{align*}
 
+    $(\Leftarrow)$ On the reverse direction, if 
+    \begin{equation}
+        \mathbb{P}[X > s + t \> | \> X > s] = \mathbb{P}[X > t].
+    \end{equation}
+    From here we continue to express the left-hand side, it deduce that 
+    \[
+        \frac{\mathbb{P}[X > s + t \cap X > s]}{\mathbb{P}[X > s]} = \mathbb{P}[X > s+t] 
+        = \mathbb{P}[X > s]\cdot \mathbb{P}[X > t].
+    \]
+    Notice that 
+    \[
+        \mathbb{P}[X > s+t+u] 
+        = \mathbb{P}[X > s] \cdot \mathbb{P}[X > t] \cdot \mathbb{P}[X > u].
+    \]
+    By mathematical induction, we conclude that
+    \begin{equation}
+        \mathbb{P} \left[ X > \sum^n_{i=1} x_i\right] 
+        = \prod_{i=1}^{n} \mathbb{P}[X > x_i]. \label{exp:01}
+    \end{equation}
+    Now, we take a look on the cdf of exponential distribution, 
+    \begin{align*}
+        F_X(x) = \mathbb{P}[X \leq x] &= 1 - \mathbb{P}[X > x]\\
+        &= 1 - \mathbb{P}[X > \underbrace{1+1+\cdots + 1}_{x \text{ times}}] \label{eq:exp1.1} \tag{{\color{myred} $\clubsuit $}}\\
+    \end{align*}
+    Applying the fact \eqref{exp:01}, \eqref{eq:exp1.1} now becomes
+    \[
+        F_X(x) = 1 - \left\{ \mathbb{P}[X > 1]\right\}^x = 1 - e^{-x/\theta}. \label{eq:exp1.2} \tag{{\color{myyellow} $\spadesuit$}}\\
+    \]
+    Differentiating \eqref{eq:exp1.2} with respect to $x$, we obtained
+    \[
+        f_X(x) = \frac{1}{\theta} e^{-x/\theta}, \quad x > 0, \theta > 0.
+    \]
+    This indicates that $X$ is exponential distribution with parameter $\theta$.
+\end{proof}
+
+For real life example, let $X$ represents 
+the lifetime of certain electrical component, say, 
+a NVMe SSD hard disk. The memoryless property states that the 
+probability that a NVMe SSD hard disk will be opperative for after being written at least $s+t$ 
+times, given that it has already wrote for $s$ times, is the same as its initial probability for lasting 
+for at least $t$ units. This implies that the future lifetime often individuals has the same 
+distribution, no matter how aged it is at present. This is exactly what 
+``memoryless property`` means.
+
+Another way of describes this is to say that an ``old`` functioning component has 
+the same lifetime distribution as a ``new`` functioning component, or that 
+component is not subject to failure. If a non-negative continuous 
+random variable $X$ have memoryless property, then $X$ must have an exponential 
+distribution.
 
 \section{Gamma Distribution}
 
