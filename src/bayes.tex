@@ -5,6 +5,39 @@
 The hypothesis testing such as testing $H_0:\theta \in \Theta_0$ against $H_1 : \theta \in \Theta \setminus \Theta_0$.
 One can derives the testing rule using the posterior probability $\pi(H_0 \> | \> \undertilde{x})$ on $H_0$ being true.
 
-\begin{example}
-    
-\end{example}
+\begin{theorem}
+    Suppose assumption hold and $\widehat{\theta}_n$ is a strongly consistent solution of the likelihood 
+    equation, then for any prior density $\pi(\theta)$ which is continuous and positive at $\theta_0$, 
+    \begin{equation}
+        \lim_{n \to \infty} \int_{\mathbb{R}} \left| \pi^*(t \mid X_1, \ldots, X_n) 
+        - \sqrt{\frac{I(\theta_0)}{2\pi}} e^{-\frac{1}{2} t^2 I(\theta_0)} \right| \> \mathrm{d}t = 0
+    \end{equation}
+    with $P_\theta$ probability one, where, $\pi^*(t \mid X_1, \ldots, X_n) $ is the posterior density of 
+    \[
+        t = \sqrt{n} (\theta - \widehat{\theta}_n) \quad \text{given } X_1, X_2, \ldots, X_n \in \mathfrak{X}.
+    \]
+    Also, under the same assumption, holds if $I(\theta_0)$ replaced by 
+    \[
+        \widehat{I}_n = -\frac{1}{n}L^{(2)}_n(\widehat{\theta}_n).
+    \]
+\end{theorem}
+\begin{proof}
+    The posterior density of parameter $\theta$ given $X_1, X_2, \ldots, X_n$ is $\pi(t \mid X_1, \ldots, X_n) $ which equals to
+    \begin{equation}
+        \pi_n(\theta \mid X_1, \ldots, X_n) = \frac{\displaystyle \prod^n_{i=1} f(x_i \mid \theta)\, \pi(\theta) }{\displaystyle \int_{\theta'} \prod^n_{i=1} f(x_i \mid \theta')\, \pi(\theta') \> \mathrm{d}\theta'}
+    \end{equation}
+    Setting $\theta := \theta_n + \mfrac{t}{\sqrt{n}}$. The posterior distribution of $t = \sqrt{n}(\theta - \widehat{\theta}_n)$ is 
+    \begin{equation}
+        \pi^*_n(t \mid X_1, \ldots, X_n) = \frac{\displaystyle \pi ( \widehat{\theta}_n + \mfrac{t}{\sqrt{n}} ) \, \prod^n_{i=1} f \left(x_i \mid \widehat{\theta}_n + \mfrac{t}{\sqrt{n}} \right)}{\displaystyle \int \prod^n_{i=1} f \left(x_i \mid \widehat{\theta}_n + \mfrac{t'}{\sqrt{n}} \right) \> \pi (\widehat{\theta}_n + \mfrac{t'}{\sqrt{n}}) \> \mathrm{d}t'}
+    \end{equation}
+    Notice that 
+    \[
+        \ln \theta = \ln \pi f(x_i \mid \theta ) = \sum \ln f(x_i \mid \theta).
+    \]
+    We continue on evaluating this posterior density
+    \begin{align*}
+        \pi^*_n(t \mid \undertilde{X}_n) &= \frac{\displaystyle \pi ( \widehat{\theta}_n + \mfrac{t}{\sqrt{n}} ) \> \left[ \prod^n_{i=1} f \left(x_i + \widehat{\theta}_n + \mfrac{t}{\sqrt{n}} \right) / \prod^n_{i=1} f(x_i \mid \widehat{\theta}_n) \right]}{\displaystyle \int \pi (\widehat{\theta}_n + \mfrac{t'}{\sqrt{n}} ) \prod^n_{i=1} \frac{f\left( x_i + \widehat{\theta}_n + \frac{t'}{\sqrt{n}} \right)}{f(x_i \mid \widehat{\theta}_n )} \> \mathrm{d}t'}\\
+        &= \frac{\displaystyle \pi ( \widehat{\theta}_n + \mfrac{t}{\sqrt{n}} ) \exp \left\{ L_n( \widehat{\theta}_n + \mfrac{t}{\sqrt{n}} ) - \ln \widehat{\theta}_n \right\}}{\displaystyle \int \pi ( \widehat{\theta}_n + \mfrac{t}{\sqrt{n}} ) \exp \left\{ L_n( \widehat{\theta}_n + \mfrac{t}{\sqrt{n}} ) - \ln \widehat{\theta}_n \right\} \mathrm{d}t'}\\
+        &= c^{-1}_n \pi ( \widehat{\theta}_n + \mfrac{t}{\sqrt{n}} )  \exp \left\{ L_n( \widehat{\theta}_n + \mfrac{t}{\sqrt{n}} ) - \ln \widehat{\theta}_n \right\}.
+    \end{align*}
+\end{proof}

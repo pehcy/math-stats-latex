@@ -36,6 +36,146 @@
     \]
 \end{example}
 
+\begin{definition}[Discrete random vectors]
+    If a two dimensional random variable $X = (X_1, X_2)$ is such that $X_1$ and $X_2$ both take 
+    only finite or countable infinite number of pair of values $(x_1, x_2)$ from $\mathbb{R}^2$, then 
+    the random variable is of discrete type. So there must exist a countable set $\mathcal{A} \subseteq \mathbb{R}^2$ such that 
+    \[
+        \mathbb{P}[(X_1, X_2) \in \mathcal{A}] = 1.
+    \]
+    Consider a function $f_{X_1, X_2}(x_1, x_2)$ defined on $\mathbb{R}^2$ such that
+    \begin{equation}
+        f(x_1, x_2) = \begin{cases}
+            \mathbb{P}[X_1 = x_1, X_2 = x_2] & (x_1, x_2) \in \mathcal{A}\\
+            0 & \text{otherwise}.
+        \end{cases}
+    \end{equation}
+    The function $f_{X_1, X_2}(x_1, x_2)$ is called the \textbf{discrete joint probability mass function} of $X_1$ and $X_2$ and satisfies the following properties:
+    \begin{enumerate}
+        \item $f_{X_1, X_2}(x_1, x_2) \geq 0$ for all $(x_1, x_2) \in \mathbb{R}^2$,
+        \item $\displaystyle \sum_{x_1} \sum_{x_2} f_{X_1, X_2}(x_1, x_2) = 1$.
+    \end{enumerate}
+\end{definition}
+
+\begin{example}
+    Verify whether the following function is a valid joint PMF of two discrete random variables $X_1$ and $X_2$:
+    \[
+        f_{X, Y}(x, y) = \frac{e^{-2}}{x! \, (y-x)!} \quad \text{for } y = 0, 1, 2, \ldots \text{ and } x = 0, 1, \ldots, y.
+    \]
+\end{example}
+\begin{solution}
+    We need to verify that 
+    \[
+        \sum^\infty_{y=0} \sum^y_{x=0} \frac{e^{-2}}{x! \, (y-x)!} = 1.
+    \]
+    Compute
+    \begin{align*}
+        \sum^\infty_{y=0} \sum^y_{x=0} \frac{e^{-2}}{x! \, (y-x)!} &= e^{-2} \sum^\infty_{y=0} \sum^y_{x=0} \frac{1}{x! \, (y-x)!}\\
+        &= e^{-2} \sum^\infty_{y=0} \frac{1}{y!} \sum^y_{x=0} \binom{y}{x}\\
+        &= e^{-2} \sum^\infty_{y=0} \frac{2^y}{y!} = e^{-2} e^2 = 1.
+    \end{align*}
+\end{solution}
+
+\section{continuous random vectors}
+A two dimensional random variable $(X, Y)$ is said to be 
+\textbf{continuous} if $F_{X,Y}(x,y)$ is everywhere continuous in $\mathbb{R}^2$.
+
+\begin{definition}[Absolute continuous random vectors]
+    A two dimensional random variable $(X, Y)$ is said to be \textbf{absolutely continuous} 
+    if there exists a non-negative function $f_{X,Y}(x,y) \in F_{X,Y}$ such that
+    \begin{equation}
+        F_{X,Y}(x, y) = \int_{-\infty}^{x} \int_{-\infty}^{y} f_{X,Y}(u, v) \, \mathrm{d}u \, \mathrm{d}v. \quad 
+        \forall x, y \in \mathbb{R}^2.
+    \end{equation}
+    In such case, the derivative of distribution function exists and is given by
+    \begin{equation}
+        f_{X,Y}(x,y) = \frac{\partial^2}{\partial x \, \partial y} F_{X,Y}(x,y).
+    \end{equation}
+    The derivative $f_{X,Y}(x,y)$ is called the \textbf{joint probability density function} of $X$ and $Y$ 
+    and satisfies the following properties:
+    \begin{enumerate}
+        \item $f_{X,Y}(x,y) \geq 0$ for all $(x,y) \in \mathbb{R}^2$
+        \item $\int_{-\infty}^{\infty} \int_{-\infty}^{\infty} f_{X,Y}(x,y) \, \mathrm{d}x \, \mathrm{d}y = 1$.
+    \end{enumerate}
+\end{definition}
+
+To find the pdf of only $X$, we sum (or integrate) over all possible values of $Y$. 
+Similarly, to find the pdf of only $Y$, we sum (or integrate) over all possible values of $X$.
+
+\begin{definition}[Marginal probability density functions]
+    If $X$ and $Y$ are two jointly continuous random variables with joint probability density function $F_{X,Y}(x,y)$, then the marginal probability density functions of $X$ is given by
+    \begin{equation}
+        F_X(x) = F_{X,Y}(x, \infty) = \int_{- \infty}^{\infty} f_{X,Y}(x,y) \, \mathrm{d}y.
+    \end{equation}
+    Similarly, the marginal probability density function of $Y$ is 
+    \begin{equation}
+        F_Y(y) = F_{X,Y}(\infty, y) = \int_{- \infty}^{\infty} f_{X,Y}(x,y) \, \mathrm{d}x.
+    \end{equation}
+\end{definition}
+\begin{remark}
+    For discrete random variables, 
+    The integration in the continuous case is replaced by summation in the discrete case.
+    \begin{equation}
+        F_X(x) = \sum_{y} f_{X,Y}(x,y).
+    \end{equation}
+    \begin{equation}
+        F_Y(y) = \sum_{x} f_{X,Y}(x,y).
+    \end{equation}
+\end{remark}
+
+\begin{theorem}
+    For any real numbers $a < b$, $c < d$, we have
+    \begin{equation}
+        \mathbb{P}(a \leq X \leq b, c \leq Y \leq d) = F_{X,Y}(b,d) - F_{X,Y}(a,d) - F_{X,Y}(b,c) + F_{X,Y}(a,c).
+    \end{equation}
+\end{theorem}
+
+\begin{example}
+    \label{ex:jointpmf01}
+    In a randomly chosen lot of 1000 bolts, let $X$ be the number of defective bolts that 
+    fail to meet a length specification, and let $Y$ be the number of defective bolts that fail to meet a 
+    diameter specification. The joint probability mass function of $X$ and $Y$ is given in the following
+    table:
+
+    \begin{center}
+        \begin{tabular}{c|ccc}
+            $f(x,y)$ & $y=0$ & $y=1$ & $y=2$ \\
+            \hline
+            $x=0$ & 0.4 & 0.12 & 0.08 \\
+            $x=1$ & 0.15 & 0.08 & 0.03 \\
+            $x=2$ & 0.1 & 0.03 & 0.01 \\
+        \end{tabular}
+    \end{center}
+    \begin{enumerate}
+        \item Find $\mathbb{P}(-0.5 \leq X < 2.3, Y \leq 1.6)$, $F(1.8, 0.4)$, and the 
+        probability that all bolts in the lot meet both specifications.
+        \item Find the marginal probability mass functions of $X$ and $Y$. Are $X$ and 
+        $Y$ independent?
+    \end{enumerate}
+\end{example}
+\begin{solution}
+    \begin{enumerate}
+        \item From the table above, compute
+        \begin{align*}
+            \mathbb{P}(-0.5 \leq X < 2.3, Y \leq 1.6) &= 1 - \mathbb{P}(-0.5 \leq X < 2.3, Y > 1.6)\\
+            &= 1 - \left[ f(0,2) + f(1,2) + f(2,2) \right]\\
+            &= 1 - (0.08 + 0.03 + 0.01) = 0.88.
+        \end{align*}
+        and 
+        \begin{align*}
+            F(1.8, 0.4) &= \mathbb{P}(X \leq 1.8, Y \leq 0.4)\\
+            &= f(0,0) + f(0,1) + f(1,0)\\
+            &= 0.4 + 0.12 + 0.15 = 0.67.
+        \end{align*}
+        The probability that all bolts in the lot meet both specifications is
+        \begin{align*}
+            \mathbb{P}(X = 0, Y = 0) = f(0,0) = 0.4.
+        \end{align*}
+        as there are no defective bolts.
+    \end{enumerate}
+\end{solution}
+
+
 \begin{theorem}
     Let $F_{X,Y}(x,y)$ be the distribution function of the jointly distributed random variables $X$, $Y$. Then
     \begin{enumerate}
@@ -124,17 +264,6 @@
 
 \section{Conditional distributions}
 
-\begin{definition}[Marginal probability density functions]
-    If $X$ and $Y$ are two jointly continuous random variables with joint probability density function $F_{X,Y}(x,y)$, then the marginal probability density functions of $X$ is given by
-    \begin{equation}
-        F_X(x) = F_{X,Y}(x, \infty).
-    \end{equation}
-    Similarly, the marginal probability density function of $Y$ is 
-    \begin{equation}
-        F_Y(y) = F_{X,Y}(\infty, y).
-    \end{equation}
-\end{definition}
-
 \begin{definition}[Conditional probability density function]
     Consider two jointly distributed discrete random variables $X$ and $Y$, then the conditional probability mass function of $Y$ given $X = x$ is defined as
     \begin{equation}
@@ -196,6 +325,15 @@ then $f_{Y \mid X}(y \mid x)$ is called the conditional probability density func
         = \frac{3x^2 + y}{2(1+y)}, \quad -1 \leq x \leq 1,\> 0 \leq y \leq 1
     \]
 \end{solution}
+
+\begin{example}
+    Continue with \cref{ex:jointpmf01}, 
+    \begin{enumerate}
+        \item Find the conditional pmf of $X$ given $Y = 1$,
+        \item Evaluate $\mathbb{P}[X > 0.7 \mid Y = 1]$,
+        \item Compute $\mathbb{E}[3XY + 4X^3 + 5Y^2 \mid Y = 1]$.
+    \end{enumerate}
+\end{example}
 
 \begin{example}
     Consider two random variables $X$ and $Y$ with joint probability density function
@@ -265,6 +403,42 @@ then $f_{Y \mid X}(y \mid x)$ is called the conditional probability density func
         &= \frac{m}{2} + \left[ \frac{m}{2} + \frac{1}{2} - \frac{2m+1}{6} \right] = \frac{2m+1}{3}.
     \end{align*}
     This verifies the law of iterated expectations: $\mathbb{E}[\mathbb{E}(X \mid Y)] = \mathbb{E}(X)$.
+\end{solution}
+
+\begin{example}
+    A two-dimensional random vector $(X_1, X_2)$ has PMF
+    \[
+        f_{X_1, X_2}(x_1, x_2) = \frac{n!}{x_1!\, x_2!\, (n - x_1 - x_2)!}\, p_1^{x_1}\, p_2^{x_2}\, (1 - p_1 - p_2)^{n - x_1 - x_2}
+    \]
+    where $x_1, x_2 = 0, 1, \ldots, n$; $0 \leq p_1, p_2 \leq 1$; $p_1 + p_2 \leq 1$ (Trinomial distribution).
+    Find the marginal distribution of $X_1, X_2$ and the conditional distribution of $X_1 \mid X_2$.
+\end{example}
+\begin{solution}
+    The marginal PMF of $X_1$ is, letting $n_1 = n - x_1$:
+    \begin{align*}
+        f_{X_1}(x_1) &= \sum_{x_2=0}^{n - x_1} \frac{n!}{x_1!\, x_2!\, (n - x_1 - x_2)!}\, p_1^{x_1}\, p_2^{x_2}\, (1 - p_1 - p_2)^{n - x_1 - x_2}\\
+        &= \binom{n}{x_1} p_1^{x_1} \sum_{x_2=0}^{n_1} \binom{n_1}{x_2} p_2^{x_2}\, (1 - p_1 - p_2)^{n_1 - x_2}\\
+        &= \binom{n}{x_1} p_1^{x_1}\, (1 - p_1)^{n - x_1}, \quad x_1 = 0, 1, \ldots, n.
+    \end{align*}
+    Therefore $X_1 \sim \text{Bin}(n, p_1)$.
+
+    Similarly,
+    \[
+        f_{X_2}(x_2) = \binom{n}{x_2} p_2^{x_2}\, (1 - p_2)^{n - x_2}, \quad x_2 = 0, 1, \ldots, n.
+    \]
+    Therefore $X_2 \sim \text{Bin}(n, p_2)$.
+
+    The conditional probability mass function of $X_1 \mid X_2 = x_2$ is
+    \begin{align*}
+        f_{X_1 \mid X_2}(x_1 \mid x_2) &= \frac{f_{X_1, X_2}(x_1, x_2)}{f_{X_2}(x_2)}\\
+        &= \frac{\dfrac{n!}{x_1!\, x_2!\, (n - x_1 - x_2)!}\, p_1^{x_1}\, p_2^{x_2}\, (1 - p_1 - p_2)^{n - x_1 - x_2}}{\dbinom{n}{x_2}\, p_2^{x_2}\, (1 - p_2)^{n - x_2}}\\
+        &= \binom{n - x_2}{x_1} \left( \frac{p_1}{1 - p_2} \right)^{x_1} \left( 1 - \frac{p_1}{1 - p_2} \right)^{n - x_2 - x_1}
+    \end{align*}
+    where $0 \leq x_1 \leq n - x_2$ and $0 \leq \dfrac{p_1}{1 - p_2} \leq 1$.
+    Therefore 
+    \[
+    X_1 \mid X_2 = x_2 \sim \text{Bin}\!\left(n - x_2,\, \dfrac{p_1}{1 - p_2}\right).
+    \]
 \end{solution}
 
 \begin{example}
@@ -380,6 +554,78 @@ then $f_{Y \mid X}(y \mid x)$ is called the conditional probability density func
         Thus, the average difference of the amount of time spent on the problem section and short-answer section of the exam is
         $52 / 105 \approx 0.495$ hours.
     \end{enumerate}
+\end{solution}
+
+\section{Joint Moment Generating Function}
+
+Similar to the univariate case, we can define the joint moment generating function of a random vector $(X, Y)$ as
+the various product moments. The moment generating function for the 
+bivariate case is defined as follows:
+
+\begin{definition}[Moment generating function of bivariate random variable]
+    Let $(X, Y)$ be a random vector with joint probability mass function $f_{X,Y}(x,y)$.
+    A real valued function $M(s,t) : \mathbb{R}^2 \to \mathbb{R}$ is defined by 
+    \begin{equation}
+        M(s, t) = \mathbb{E}[e^{s X + t Y}] = \int_{-\infty}^{\infty} \int_{-\infty}^{\infty} e^{s x + t y} f_{X,Y}(x,y) \, \mathrm{d}x \, \mathrm{d}y.
+    \end{equation}
+    is called the moment generating function of the random vector $(X, Y)$ if the expected value 
+    exists for all $s$ and $t$ in some intervals.
+\end{definition}
+
+From the definition above, one can see that 
+\begin{equation}
+    M(s, 0) = \uexp[x]{e^{sX}}
+\end{equation}
+and 
+\begin{equation}
+    M(0, t) = \uexp[y]{e^{tY}}.
+\end{equation}
+
+We can also obtained $k$-th order marginal moment of $X$ and $Y$ by differentiating the joint moment generating function as follows:
+\begin{equation}
+    \uexp[x]{X^k} = \frac{\partial^k M(s,t)}{\partial s^k} \Big|_{s=0,\, t=0}
+\end{equation}
+\begin{equation}
+    \uexp[y]{Y^k} = \frac{\partial^k M(s,t)}{\partial t^k} \Big|_{s=0,\, t=0}
+\end{equation}
+
+\begin{example}
+    A lottery machine has moments about getting red balls given by
+    \[
+        \mu_X' = \frac{k}{k + x}, \quad \forall x = 1, 2, \ldots; 
+        \text{and } k > 0.
+    \]
+    Show that the pdf of $X$ is given by 
+    \[
+        f(x) = \begin{cases}
+            kx^{k-1} & \text{if } 0 < x < 1\\
+            0 & \text{otherwise}
+        \end{cases}
+    \]
+\end{example}
+
+\begin{solution}
+    The MGF of $X$ constructed from its moment sequence $\{\mu_n'\}$ is
+    \[
+        M_X(t) = \sum_{n=0}^{\infty} \frac{t^n}{n!}\, \mu_n'.
+    \]
+    Now, the MGF of the distribution with pdf $f(x)$ is
+    \begin{align*}
+        M(t) &= \int e^{tx} f(x) \, \mathrm{d}x
+        = \int \left( \sum_{n=0}^{\infty} \frac{t^n x^n}{n!} \right) f(x) \, \mathrm{d}x\\
+        &= \sum_{n=0}^{\infty} \frac{t^n}{n!} \int x^n f(x) \, \mathrm{d}x
+        = \sum_{n=0}^{\infty} \frac{t^n}{n!} \int_0^1 k\, x^{n+k-1} \, \mathrm{d}x\\
+        &= \sum_{n=0}^{\infty} \frac{t^n}{n!} \cdot \frac{k}{n+k}
+        = \sum_{n=0}^{\infty} \frac{t^n}{n!}\, \mu_n'.
+    \end{align*}
+    Hence note that
+    \[
+        \left| \frac{k}{k+n} \cdot \frac{t^n}{n!} \right|
+        < \frac{|t|^n}{n!},
+    \]
+    and $\sum_{n=0}^{\infty} |t|^n / n! = e^{|t|} < \infty$, so the MGF exists.
+    Since $M(t) = M_X(t)$, by the uniqueness of the moment generating function,
+    the random variable $X$ has the pdf $f(x) = kx^{k-1}$ on $(0,1)$.
 \end{solution}
 
 \section{Multivariate Normal Distribution}

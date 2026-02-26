@@ -133,6 +133,47 @@ continuity points of $F(x)$. Symbolically, we denote this as $X_n \xrightarrow[]
     It follows that $\mathbb{P} \left( |X_n| > \epsilon \right) \to 0$ as $n \to \infty$, which proves that $X_n \xrightarrow[]{p} 0$.
 \end{solution}
 
+\begin{theorem}
+    If $X_n$ converges in probability to a random variable $X$, then $X_n$ converges in distribution to $X$.
+\end{theorem}
+\begin{proof}
+    Let $F_n(\cdot)$ and $F(\cdot)$ be the cdf of $X_n$ and $X$ respectively. We want to show that for all continuity points $x$ of $F$, we have
+    \begin{align*}
+        \{ \omega \in \Omega : X_n(\omega) \leq x \} &= 
+        \{ \omega : X(\omega) \leq x', X_n(\omega) \leq x \} \cup 
+        \{ \omega : X(\omega) > x', X_n(\omega) \leq x \}\\
+        &\leq \{ \omega : X(\omega) \leq x' \} \cup \{ \omega : X(\omega) > x', X_n(\omega) \leq x\},
+    \end{align*}
+    where $x' < x$ is a continuity point of $F$. Thus, we have
+    \begin{equation}
+        F_n(x) \leq F(x') + \mathbb{P}[X > x', X_n \leq x].
+    \end{equation}
+    As $X_n \xrightarrow[]{p} X$, we have 
+    \begin{equation}
+        0 \leq \mathbb{P}[X_n > x', X \leq x] \leq \mathbb{P} \left[\, |X_n - X| > x' - x \right]
+        \to 0 \quad \text{as } n \to \infty.
+    \end{equation}
+    for all $x' > x$. Therefore, 
+    \begin{equation}
+        \uplim_{n \to \infty} F_n(x) \leq F(x') \quad \forall x' > x.
+    \end{equation}
+    In the similar manner, by interchanging the roles of $X_n$ and $X$, we have
+    \begin{equation}
+        F(x'') \leq \lowlim_{n \to \infty} F_n(x) \quad \forall x'' < x.
+    \end{equation}
+    Hence for $x'' < x < x'$, 
+    \begin{equation}
+        F(x'') \leq \lowlim_{n \to \infty} F_n(x) \leq \uplim_{n \to \infty} F_n(x) \leq F(x'). \label{eq:ll2.0} \tag{{\color{red} $\heartsuit$}}
+    \end{equation}
+    As $F(\cdot)$ has only countable number of discontinuity points, we choose 
+    $x$ to be a point of continuity of $F$, and consider $x' \downarrow x$ and $x'' \uparrow x$. And \eqref{eq:ll2.0} now becomes
+    \begin{align*}
+        &F(x) \leq \lowlim_{n \to \infty} F_n(x) \leq \uplim_{n \to \infty} F_n(x) \leq F(x) \\
+        &\implies \lowlim_{n \to \infty} F_n(x) = \uplim_{n \to \infty} F_n(x) = F(x)\\
+        &\implies \Lim{n \to \infty} F_n(x) = F(x).
+    \end{align*}
+    at all continuity points of $F(x)$. Thus $X_n \xrightarrow[]{\mathcal{D}} X$. This completes the proof.
+\end{proof}
 
 \begin{theorem}[Slutsky's Theorem]
     If $X_n$ \textit{converges in distribution} to a random variable $X$, and $Y_n$ \textit{converges in probability} to a constant $c$, then 
@@ -399,6 +440,145 @@ a sequence of constants $\{A_n \}$ and $\{B_n \}$ such that $B_n \to \infty$ as 
     So that 
 \end{proof}
 
+\begin{theorem}[Chebyshev's WLLN]
+    Let $\{X_n \}_{n \geq 1}$ be a sequence of independent random variable such that 
+    $\mathbb{E}[X_n] = \mu_n$ and $Var[X_n] = \sigma^2_n < \infty$, then
+    \begin{equation}
+        \lim_{n \to \infty} \left( \frac{1}{n^2} \sum^n_{k=1} \sigma^2_k \right) = 0 
+        \implies \ols{X}_n - \ols{\mu}_n \xrightarrow[]{p} 0 \quad \text{as } n \to \infty \label{eq:ll3.0} \tag{{\color{myyellow} $\clubsuit $}}
+    \end{equation}
+    where 
+    \begin{equation}
+        \ols{X}_n = \frac{1}{n} \sum^n_{k=1} X_k, \quad \ols{\mu}_n = \frac{1}{n} \sum^n_{k=1} \mu_k.
+    \end{equation}
+    \eqref{eq:ll3.0} implies that the sequence $\{X_n \}_{n \geq 1}$ obeys WLLN.
+\end{theorem}
+\begin{proof}
+    We have
+    \begin{equation}
+        \mathbb{E}[X_n] = \frac{1}{n} \sum^n_{k=1} \mathbb{E}[X_k] = \frac{1}{n} \sum^n_{k=1} \mu_k = \ols{\mu}_n
+    \end{equation}
+    and variance
+    \begin{equation}
+        Var[\ols{X}_n] = Var \left( \frac{1}{n} \sum^n_{k=1} X_k \right) = \frac{1}{n^2} \sum^n_{k=1} Var(X_k)
+        = \frac{1}{n} \sum^n_{k=1} \sigma^2_k
+    \end{equation}
+    as all $x_k$ are independent.
+
+    Now, for every $\epsilon > 0$ we have
+    \begin{equation}
+        0 \leq \mathbb{P} \left\{ |\ols{X}_n - \ols{\mu}_n | > \epsilon \right\} < 
+        \fbox{$\displaystyle \frac{Var[\ols{X}_n]}{\epsilon^2} = \frac{1}{\epsilon^2} \, \frac{1}{n^2} \sum^n_{k=1} \sigma^2_k$} \to 0.
+    \end{equation}
+    provided $\frac{1}{n^2} \sum^n_{k=1} \sigma^2_k \to 0$ as $n \to \infty$. Hence,
+    \begin{equation}
+        \lim_{n \to \infty} \left( \frac{1}{n^2} \sum^n_{k=1} \sigma^2_k \right) = 0. \label{eq:ll3.1} \tag{{\color{myred} $\spadesuit $}}
+    \end{equation}
+    From here, we have
+    \begin{align*}
+        \eqref{eq:ll3.1} &\implies \mathbb{P} \left(|\ols{X}_n - \ols{\mu}_n | > \epsilon \right) \to 0 \quad \text{as } n \to \infty\\
+        &\implies \ols{X}_n - \ols{\mu}_n \xrightarrow[]{p} 0\\
+        &\iff \frac{S_n}{n} - \frac{\sum^n_{k=1} \mu_k}{n} \xrightarrow[]{p} 0\\
+        &\implies \frac{S_n - a_n}{b_n} \xrightarrow[]{p} 0
+    \end{align*}
+    where $a_n = \sum_{k=1}^{n} \mu_k$,\quad $b_n > 0$ and $b_n \uparrow \infty$. So 
+     $\{X_n \}_{n \geq 1}$ obeys WLLN with respect to the sequence $\{b_n\}$. This completes the proof.
+\end{proof}
+
+\begin{example}
+    Let
+    \[
+        \mathbb{P}[X_n = -n^p] = \frac{1}{2} = \mathbb{P}[X_n = n^p].
+    \]
+    Show that WLLN holds for the sequence $\{X_n\}_{n \geq 1}$ of independent variables 
+    if $p < 1/2$.
+\end{example}
+\begin{solution}
+    Here, we have $\mu_k = \mathbb{E}[X_k] = 0$, and 
+    \begin{align*}
+        \sigma^2_k = Var[X_k] = \mathbb{E}[X_k^2] - 0 &= \left(-k^p \right)^2 \cdot \frac{1}{2} + \left( k^p \right)^2 \cdot \frac{1}{2}\\
+        &= k^{2p}, \quad \forall k \in \mathbb{N}.
+    \end{align*}
+    Now we want to show that $\frac{1}{n^2} \sum^n_{k=1} \sigma^2_k$ converges. By integral test,
+    \begin{align*}
+        \frac{1}{n^2} \sum^n_{k=1} \sigma^2_k = \frac{1}{n^2} \sum^n_{k=1} k^{2p} 
+        &< \frac{1}{n^2} \int^n_{1} x^{2p} \> \mathrm{d}x\\
+        &= \frac{n^{2p+1} - 1}{n^2(2p+1)}.
+    \end{align*}
+    Now as $n \to \infty$, we have
+    \[
+        0 \leq \frac{1}{n^2} \sum^n_{k=1} \sigma^2_k < \frac{n^{2p+1} - 1}{n^2 (2p + 1)} < \frac{n^{2p + 1}}{2p+1} \to 0
+        \quad 
+        \text{if } 2p-1 < 0 \Rightarrow p < \frac{1}{2}.
+    \]
+    Hence if $p < 1/2$, then $\frac{1}{n^2} \sum^n_{k=1} \sigma^2_k$ must converges to zero in probability. We say 
+    $\{X_n\}_{n \geq 1}$ obeys WLLN if $p < 1/2$.
+\end{solution}
+
+\begin{theorem}[Markov's WLLN]
+    Let $\{X_n \}_{n \geq 1}$ be a sequence of independent random variable such that 
+    $\mathbb{E}[X_n] = \mu_n$ and $Var[X_n] = \sigma^2_n < \infty$, then
+    \begin{equation}
+        \ols{X}_n - \ols{\mu}_n \xrightarrow[]{p} 0,
+    \end{equation}
+    provided
+    \[
+        \frac{1}{n^2} Var\left(\sum^n_{k=1} X_k \right) \to 0 \quad \text{as } n \to \infty. \label{eq:ll4.0} \tag{{\color{red} $\heartsuit$}}
+    \]
+    This theorem states that if $\Lim{n \to \infty} \frac{1}{n^2} Var\left(\sum^n_{k=1} X_k \right) = 0$, then $\{X_n \}_{n \geq 1}$ obeys WLLN.
+\end{theorem}
+\begin{proof}
+    For any $\epsilon > 0$, we have 
+    \begin{align*}
+        0 \leq \mathbb{P} \left( |\ols{X}_n - \ols{\mu}_n| > \epsilon \right) &\leq 
+        \frac{\mathbb{E} \left| \ols{X}_n - \ols{\mu}_n \right|^2}{\epsilon^2}\\
+        &\> = \frac{Var(\ols{X}_n)}{\epsilon^2} 
+        = \frac{\displaystyle \frac{1}{n} Var\left(\sum^n_{k=1} X_k \right)}{\epsilon^2} \to 0 \quad \text{as } n \to \infty.
+    \end{align*}
+    provided \eqref{eq:ll4.0} holds.
+\end{proof}
+
+\begin{remark}
+    Chebyshev's WLLN is a particular case of Markov's WLLN.
+\end{remark}
+
+\begin{theorem}[Bernoulli's Law of Large Numbers]
+    Let $Y$ be the number of occurrences of an event $A$ in $n$ independent
+    trials. The probability of the occurrence of an event $A$ in each trial is $p$.
+    Then $\forall \> \epsilon > 0$, we have
+    \begin{equation}
+        \mathbb{P} \left( \left| \frac{Y}{n} - p \right| < \epsilon \right) \to 1 \quad \text{as } n \to \infty.
+    \end{equation}
+    In other words, the sequence of relative frequencies of the event $A$, said $\frac{Y}{n}$,
+    converges in probability to $p$.
+\end{theorem}
+\begin{proof}
+    Consider the occurrence of success event, $A$ in $n$ independent
+    Bernoulli trials. $Y \sim \text{Bin}(n, p)$.
+    Hence, $\mathbb{E}[Y] = np$,
+    $Var[Y] = np(1-p)$. Altering these equations and we have
+    \[
+        \mathbb{E} \left(\frac{Y}{n}\right) = p, \quad Var\left(\frac{Y}{n}\right) = \frac{p(1-p)}{n}.
+    \]
+    For every $\epsilon > 0$,
+    \begin{equation}
+        \mathbb{P} \left[ \left| \frac{Y}{n} - p \right| \geq \epsilon \right]
+        \leq \frac{\mathbb{E}\left(\frac{Y}{n} - p\right)^2}{\epsilon^2}
+        = \frac{Var\left(\frac{Y}{n}\right)}{\epsilon^2} = \frac{p(1-p)}{n\epsilon^2}
+    \end{equation}
+    Hence, for every $\epsilon > 0$,
+    \[
+        \mathbb{P} \left[ \left| \frac{Y}{n} - p \right| < \epsilon \right]
+        \geq 1 - \frac{p(1-p)}{n\epsilon^2}.
+    \]
+    Notice that by AM-GM inequality, $\frac{p + (1-p)}{2} \geq \sqrt{p(1-p)}$,
+    and $\frac{1}{4} \geq p(1-p)$, we have
+    \[
+        \mathbb{P} \left[ \left| \frac{Y}{n} - p \right| < \epsilon \right]
+        \geq 1 - \frac{1}{4n\epsilon^2} \to 1 \quad \text{as } n \to \infty.
+    \]
+\end{proof}
+
 \begin{lemma}
     Denote $Z$ the ``standard normal random variable`` with density $\frac{1}{\sqrt{2\pi}} e^{-x^2/2}$. Then
     \begin{equation}
@@ -447,6 +627,17 @@ a sequence of constants $\{A_n \}$ and $\{B_n \}$ such that $B_n \to \infty$ as 
 \end{proof}
 
 \section{Central Limit Theorem}
+
+For a sequence $\{X_n\}_{n \geq 1}$ of i.i.d random variables, we have 
+$\ols{X}_n \xrightarrow[]{p} \mu$, given that $\mu$ exists. Hence, 
+WLLN holds for i.i.d sequence $\{X_n\}_{n \geq 1}$ of random variables, since 
+the mean $\mathbb{E} X_i = \mu$ exists. But this gives no idea as to how 
+the distribution of $\ols{X}_n$ can be approximated in large samples. Hence, we consider the 
+condition under which the distribution of 
+\[
+    S_n = \sum^n_{k=1} X_k
+\]
+or $\ols{X}_n$ converges to normal distribution.
 
 \begin{theorem}[Central Limit Theorem]
     Let $\{X_n\}_{n \geq 1}$ be a sequence of i.i.d random variable whose moment generating function 
@@ -652,17 +843,95 @@ The cases when $\delta > 1$ can be reduced to the case $\delta = 1$, thus it is 
     as $n \to \infty$. So Lyapunov's condition is satisfied, and we are done.
 \end{proof}
 
+\begin{example}
+    Evaluate the limit
+    \[
+        \lim_{n \to \infty} \left\{ \frac{1}{\displaystyle 2^{n/2} \, \Gamma \left( \frac{n}{2}\right)} \> \int^{\infty}_{n + \sqrt{2}n} e^{-t/2} \, t^{n/2 - 1} \> \mathrm{d}t \right\}.
+    \]
+\end{example}
+\begin{solution}
+    Let $\{X_n\}$ be a sequence of identically independent random variables following $\text{Gamma}(\frac{1}{2}, \frac{1}{2})$ 
+    with density function 
+    \[
+        f(x) = \begin{cases}
+            \displaystyle \frac{e^{-x/2}\, x^{\frac{1}{2} - 1}}{2^{1/2} \, \Gamma(\frac{1}{2})}, & x > 0\\
+            0, & \text{otherwise}.
+        \end{cases}
+    \]
+    Then the sum of the sequence $S_n = \sum^n_{k=1} X_k$ follows $\text{Gamma}(\frac{1}{2}, \frac{n}{2})$ with 
+    $\mathbb{E}(S_n) = n$ and $Var(S_n) = 2n$. By Lindberg-L\'evy CLT theorem, we have
+    \begin{align*}
+        \lim_{n \to \infty} \mathbb{P} \left[ \frac{S_n - \mathbb{E}(S_n)}{\sqrt{Var(S_n)}} \leq x \right] = \Phi(x)
+        &\implies \lim_{n \to \infty} \mathbb{P} \left[ \frac{S_n - \mathbb{E}(S_n)}{\sqrt{Var(S_n)}} \leq 1 \right] = \Phi(1)\\
+        &\implies \lim_{n \to \infty} \mathbb{P} \left[ S_n \leq n + \sqrt{2}n \right] = \Phi(1)\\
+        &\implies \lim_{n \to \infty} \mathbb{P} \left[ S_n > n + \sqrt{2}n \right] = 1 - \Phi(1).
+    \end{align*}
+    At last we have 
+    \[
+    \lim_{n \to \infty} \left\{ \frac{1}{\displaystyle 2^{n/2} \, \Gamma \left( \frac{n}{2}\right)} \> \int^{\infty}_{n + \sqrt{2}n} e^{-t/2} \, t^{n/2 - 1} \> \mathrm{d}t \right\} = 1 - \Phi(1) = \Phi(-1).
+    \]
+\end{solution}
+
+\begin{example}
+    Let $\{X_n\}$ be a sequence of i.i.d.\ random variables with
+    common mean $\mu$ and finite variance $\sigma^2$. Show that
+    $a_n(\ols{X}_n - \mu) \xrightarrow[]{p} 0$, provided $a_n / \sqrt{n} \to 0$ as $n \to \infty$.
+\end{example}
+\begin{solution}
+    Here, $\{X_n\}$ is a sequence of i.i.d.\ random variables with finite variance.
+    Then by Lindeberg-L\'evy CLT,
+    \[
+        \frac{S_n - n\mu}{\sigma\sqrt{n}} \>
+        \xRightarrow[]{CLT} \frac{\ols{X}_n - \mu}{\sigma / \sqrt{n}} \xrightarrow[]{\mathcal{D}} N(0,1), \quad \text{as } n \to \infty.
+    \]
+    For every $\varepsilon > 0$,
+    \begin{align*}
+        \mathbb{P}\left[ \left| a_n(\ols{X}_n - \mu) \right| < \varepsilon \right]
+        &= \mathbb{P}\left[ \left| \frac{\ols{X}_n - \mu}{\sigma / \sqrt{n}} \right| < \frac{\varepsilon \sqrt{n}}{a_n \sigma} \right]\\
+        &\approx \mathbb{P}\left[ |Z| < \frac{\varepsilon \sqrt{n}}{a_n \sigma} \right] \quad \text{for large } n, \text{ where } Z \sim N(0,1)\\
+        &= 2\Phi\left( \frac{\varepsilon \sqrt{n}}{a_n \sigma} \right) - 1 \to 2\Phi(\infty) - 1 = 1
+    \end{align*}
+    as $a_n / \sqrt{n} \to 0$.
+    Hence, $\mathbb{P}\left( |a_n(\ols{X}_n - \mu)| < \varepsilon \right) \to 1$ as $n \to \infty$ for all 
+    $\varepsilon > 0$. Therefore, we said that $a_n(\ols{X}_n - \mu) \xrightarrow[]{p} 0$.
+\end{solution}
+
 \section*{Tutorials}
 
 \begin{mdframed}
     \vspace{-0.25cm}
     \hspace{-0.25cm}
     \begin{Exercise}
-        Let $X_1, X_2, \ldots, X_{2020}$ be a random sample of size $2020$ 
-        from a Poisson distribution with density function
+        Let $X$ be the geometric random variable with probability mass function
         \[
-            f_{X_i}(x) = \frac{e^{-\lambda} \lambda^x}{x!}, \quad x = 0,1,2,\ldots,\infty.
+            f(x) = \begin{cases}
+                \displaystyle \frac{1}{2^x} & x = 1,2,\ldots\\
+                0 & \text{otherwise}.
+            \end{cases}
         \]
-        What is the distribution of $2020 \ols{X}$?
+        Show that $\mathbb{P}(|X - \mu| \leq 2) > \frac{1}{2}$.
+    \end{Exercise}
+
+    \vspace{0.752cm}
+    \begin{Exercise}
+        You pay \$1 to play a game in which you roll one standard six-sided die. You lose your dollar if the 
+        die is 1, 2, 3 or 4. You get your dollar back if the die is a 5, and if the die is a 6 you get your dollar 
+        back plus \$2 more (total of \$3).
+        \begin{enumerate}
+            \item Calculate expected value and standard deviation for a single toss.
+            \item If you play the game 100 times, what are the expected value and standard error for the sampling 
+                distribution?
+            \item If you play the game 100 times, what is the probability that your average outcome will be positive?
+            \item If you play the game 100 times, your average winnings have a 90\% probability of being below 
+                what value?
+        \end{enumerate}
+    \end{Exercise}
+
+    \vspace{0.752cm}
+    \begin{Exercise}
+        Using CLT to evaluate the limit
+        \[
+            \lim_{n \to \infty} \int^{n}_0 \frac{e^{-x}\, x^{n-1}}{\Gamma(n)} \> \mathrm{d}x.
+        \]
     \end{Exercise}
 \end{mdframed}
