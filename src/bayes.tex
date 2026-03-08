@@ -5,6 +5,15 @@
 The hypothesis testing such as testing $H_0:\theta \in \Theta_0$ against $H_1 : \theta \in \Theta \setminus \Theta_0$.
 One can derives the testing rule using the posterior probability $\pi(H_0 \> | \> \undertilde{x})$ on $H_0$ being true.
 
+\begin{definition}
+    The $100(1-\alpha)\%$ Highest Posterior Density (HPD) credible set for $\theta$ is 
+    the subset $\mathcal{C} \subset \Theta$ that in the form of 
+    \begin{equation}
+        \mathcal{C} = \{ \theta \in \Theta : \pi(\theta|x) \geq K(\alpha) \},
+    \end{equation}
+    where 
+\end{definition}
+
 \begin{theorem}
     Suppose assumption hold and $\widehat{\theta}_n$ is a strongly consistent solution of the likelihood 
     equation, then for any prior density $\pi(\theta)$ which is continuous and positive at $\theta_0$, 
@@ -40,4 +49,9 @@ One can derives the testing rule using the posterior probability $\pi(H_0 \> | \
         &= \frac{\displaystyle \pi ( \widehat{\theta}_n + \mfrac{t}{\sqrt{n}} ) \exp \left\{ L_n( \widehat{\theta}_n + \mfrac{t}{\sqrt{n}} ) - \ln \widehat{\theta}_n \right\}}{\displaystyle \int \pi ( \widehat{\theta}_n + \mfrac{t}{\sqrt{n}} ) \exp \left\{ L_n( \widehat{\theta}_n + \mfrac{t}{\sqrt{n}} ) - \ln \widehat{\theta}_n \right\} \mathrm{d}t'}\\
         &= c^{-1}_n \pi ( \widehat{\theta}_n + \mfrac{t}{\sqrt{n}} )  \exp \left\{ L_n( \widehat{\theta}_n + \mfrac{t}{\sqrt{n}} ) - \ln \widehat{\theta}_n \right\}.
     \end{align*}
+    We want to show that 
+    \[
+        \int_\mathbb{R} \left| c^{-1}_n \pi ( \widehat{\theta}_n + \mfrac{t}{\sqrt{n}} )  \exp \left\{ L_n( \widehat{\theta}_n + \mfrac{t}{\sqrt{n}} ) - \ln \widehat{\theta}_n \right\} 
+        - \sqrt{\frac{I(\theta_0)}{2\pi}} e^{-\frac{1}{2}t^2 I(\theta_0)}\right| \> \mathrm{d}t 
+    \]
 \end{proof}

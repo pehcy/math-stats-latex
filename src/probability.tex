@@ -1,0 +1,143 @@
+\chapter{Probability}
+
+Probability is a measure of chance of occurance of a phenomenon.
+The word ``probability`` may be used to represent ``the degree of belief`` 
+of a person making a statement on the proposition. It is used in the sense 
+
+\begin{definition}[Mutually Exclusive Events]
+    Several events $E_1, E_2, \ldots, E_n$ in relation to a 
+    random experiment are said to be \textbf{mutually exclusive} (or disjoint) if any 
+    two of them cannot occur simultaneously, which means everytime the 
+    experiment is performed is $E_i \cap E_j = \varnothing$ for all $i \neq j, i < j = 1,\ldots n$.
+\end{definition}
+\begin{remark}
+    Mutually exclusive events are not necessarily independent, or vice versa.
+\end{remark}
+
+\begin{definition}[Exhaustive Events]
+    A sequence of events $E_1, E_2, \ldots, E_n$ from a random experiment are said to be 
+    exhaustive events if any of them must necessarily occur, everytime the experiment 
+    is performed that is $\bigcup^n_{i=1} E_i = \Omega$.
+\end{definition}
+
+\begin{example}
+    A fair coin is tossed twice, the sample space is 
+    \[
+        \Omega = \{ HH, TH, HT, TT \}.
+    \]
+    We define two events as following:
+    \[
+        A = \{ \text{Head appeared twice}\} = \{ HH \},
+    \]
+\end{example}
+
+\section{The classical definition of probability}
+
+If a random experiment can result in $N$ finite number of mutually exclusive, exhaustive and 
+equally likely cases and $\hash A$ of them are favorable to the occurance of the event $A$, 
+then the probability of occurance of $A$ is 
+\begin{equation}
+    \mathbb{P}(A) = \frac{\hash A }{N}.
+\end{equation}
+Since $0 \leq \hash A \leq N \implies 0 \leq \mathbb{P}(A) \leq 1$. By classical definition 
+of probability of an event is a rational number lies between 0 and 1. But in general,
+probability is a real number between 0 and 1.
+
+However, the classical probability has its limitation:
+\begin{itemize}
+    \item It is assumed that all the cases are equally likely. The classical definition
+    of probability is found useful when applied to the outcomes of the games of chance. If the 
+    outcomes of experiment are not equally likely then this definition is not applicable.
+    \item The definition of classical probability may breaks down if the number of 
+    all possible outcomes is infinite.
+    \item In real life it is not easy to determine the outcomes as equally likely.
+\end{itemize}
+
+Suppose $E$ is an event of a random experiment. Suppose it is possible to repeat the 
+experiment in a large number of times under essentially similar conditions.
+
+\begin{definition}[Principle of randomness]
+    The limits are invariant with respect to the choice of every subsequence of the 
+    collectives, which is independent of the attribute under consideration. This 
+    implies that all outcomes should have either equal, or known, probability. So that 
+    each individual outcomes unpredictable despite there is a known probability distribution.
+\end{definition}
+
+\section{Axiomatic Explanation}
+
+\begin{axiom}[Kolmogorov's axioms]
+Let $\Omega$ be the sample space of a random experiment and $F$ be a $\sigma$-field 
+of events of $\Omega$. A set function $\mathbb{P}(\cdot)$ defined over $F$ is called 
+a probability measure if it satisfies the following conditions:
+\begin{enumerate}
+    \item[$K1$] (Axiom of non-negativity) $\mathbb{P}(E) \geq 0 \quad \forall E \in F$. 
+    \item[$K2$] (Axiom of unit norm) $\mathbb{P}(\Omega) = 1$.
+    \item[$K3$] (Axiom of countable additivity) Any countable 
+    sequence of disjoint sets $E_1, E_2, \ldots$ in $F$ satisfies 
+    \begin{equation}
+        \mathbb{P} \left( \bigcup^{\infty}_{i=1} E_i \right) = \sum^\infty_{i=1} \mathbb{P}[E_i].
+    \end{equation}
+\end{enumerate}
+\end{axiom}
+
+\begin{theorem}
+    Let $F$ be a $\sigma$-field of events of sample space $\Omega$.
+    \begin{enumerate}
+        \item $\mathbb{P}(\varnothing) = 0$, where $\varnothing$ is empty set.
+        \item $\mathbb{P}(E) \leq 1$, for any event $E \in F$. 
+    \end{enumerate} 
+\end{theorem}
+\begin{proof}
+    In the notion of Kolmogorov's axioms, the probability is interpret as a set function.
+    \begin{enumerate}
+        \item Let $E_1, E_2, \ldots$ be a sequence of disjoint events in $F$. Consider 
+        $E_i = \varnothing$ for all $i$. Then 
+        \[
+            \bigcup^\infty_{i=1} E_i = \varnothing,
+        \]
+        and since $E_i \cap E_j = \varnothing \cap \varnothing =\varnothing, \forall i \neq j$. Hence 
+        $E_i$'s are mutually exclusive.
+
+        Now, with the axiom of countable additivity, we have
+        \[
+            \mathbb{P} \left( \bigcup^{\infty}_{i=1} E_i \right) = \sum^\infty_{i=1} \mathbb{P}[E_i].
+        \]
+        Or,
+        \[
+            \mathbb{P}(\varnothing) = \mathbb{P}(\varnothing) + \mathbb{P}(\varnothing) + \cdots.
+        \]
+        But this can only happens if either $\mathbb{P}(\varnothing) = 0$, $\mathbb{P}(\varnothing) = -\infty$, or 
+        $\mathbb{P}(\varnothing) = +\infty$. Since $\mathbb{P}$ is a real valued function, so 
+        $\mathbb{P}(\varnothing) = -\infty$ and $\mathbb{P}(\varnothing) = +\infty$ are absurd. 
+        The only possible case is $\mathbb{P}(\varnothing) = 0$. This completes the proof.
+
+        \item As $E \subset \Omega$ for each $E \in F$. We have 
+        \[
+            \mathbb{P}(E) \leq \mathbb{P}(\Omega). \label{eq:p1.0} \tag{{\color{red} $\heartsuit $}}
+        \]
+        From the axiom of unit norm, we knew $\mathbb{P}(\Omega) = 1$. Hence, \eqref{eq:p1.0} leads to
+        $\mathbb{P}(E) \leq 1$ for any event $E$. Now we are done.
+
+        \vspace{1.45cm}
+        \textbf{Alternative proof}
+        
+        Notice that $E \cup E^c = \Omega$, and $E \cap E^c = \varnothing$.
+        This implies $E \subset E^c$. By the law of finite additivity in probability measure $\mathbb{P}$,
+        \begin{align*}
+            \mathbb{P}(E \cup E^c) &= \mathbb{P}(E) + \mathbb{P}(E^c) - \mathbb{P}(E \cap E^c)\\
+            \implies \mathbb{P}(\Omega) &= \mathbb{P}(E) + \mathbb{P}(E^c).
+        \end{align*}
+        Thus, we have $0 \leq \mathbb{P}(E^c) = 1 - \mathbb{P}(E)$ by Kolmogorov's axiom I. In result, 
+        $\mathbb{P}(E) \leq 1$.
+    \end{enumerate}
+\end{proof}
+
+\begin{theorem}[Total Probability]
+    Let $(\Omega, F, \mathbb{P})$ be the probability space. Suppose 
+    $\{H_n\}$ is a sequence of mutually exclusive and exhaustive events 
+    such that $\mathbb{P}(H_n) > 0, H_n \in F$ for all $n \in \mathbb{N}$. 
+    Then the probability of any event $A$ in $F$ is given by 
+    \begin{equation}
+        \mathbb{P}(A) = \sum^\infty_{n=1} \mathbb{P}(H_n)\, \mathbb{P}(A \mid H_n).
+    \end{equation}
+\end{theorem}
