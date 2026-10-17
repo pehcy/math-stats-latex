@@ -1,5 +1,226 @@
 \chapter{Sampling Distributions}
 
+\subsection{Sampling design}
+
+A survey population $\mathcal{U} = \{U_1, U_2, \ldots, U_N\}$ is a set of known 
+elements with a finite size $N$. Each $U_i$ 
+are identifiable and measured, with each $U_i$ having 
+an associated value $y_i$. The objective of the experiment
+is to estimate on the basis of a sample drawn from the population $\mathcal{U}$
+with a specified statistic of the population values, $\lambda(y_1, y_2, \ldots, y_N)$.
+
+For instance, we may wish to estimate the population 
+sum $Y = \sum_{i=1}^N y_i$ or population mean $\mu = \frac{1}{N} \sum_{i=1}^N y_i$.
+By the sample of size $n$ drawn from the population $\mathcal{U}$, we mean 
+a non-empty subset $s = (x_1, x_2, \ldots, x_n) \subset \mathcal{U}$, where 
+each $x_i$ is the $i$-th member of the sample. The sample is drawn from the population $\mathcal{U}$ according to a specified sampling design.
+
+We shall write the class of all possible samples $\{ s \}$ by $S$. Thus 
+we can said that a sample $s$ is a point in the sample space $S$. 
+With each sample $s \in S$, there 
+is a probability function of $s$ wrote $\mathbb{P}[s]$, such that 
+\begin{equation}
+    \sum_{s \in S} \mathbb{P}[s] = 1.
+\end{equation}
+
+The probability distribution $\{ \mathbb{P}(s) : s \in S \}$ defined 
+on $S$, the collection of all possible samples, is called the \textbf{sampling design}.
+
+\section{Simple random sampling}
+Consider we have a finite identifiable population of size 
+$N(U_1, U_2, \ldots, U_N)$, where each $U_k$ is the $k$-th 
+members of the population. By a sample we mean, 
+a non-empty collection of units from $(U_1, U_2, \ldots, U_N)$ with, 
+or without repeatations.
+
+\begin{definition}[Simple random sampling]
+    If each unit of the population has an equal probability 
+    of being selected at each drawing, then the sampling is called
+    the \textbf{simple random sampling}.
+\end{definition}
+
+\begin{theorem}
+    In simple random sampling with replacement (SRSWR), the sample space
+    contains $N^n$ samples of size $n$ of the population $\mathcal{U}$. 
+    The probability of being selected is
+    \begin{equation}
+        \uprob[\text{SRSWR}]{S} = \begin{cases}
+            \frac{1}{N^n} & \text{if } \hash(S)=n \text{ is the SRSWR sampling design.}\\
+            0 & \text{otherwise}.
+        \end{cases}
+    \end{equation}
+
+    If the simple random sampling is done without replacement (SRSWOR), the sample space 
+    will contain ${ N \choose n }$ samples of size $n$ of the population $\mathcal{U}$. 
+    \begin{equation}
+        \uprob[\text{SRSWOR}]{S} = \begin{cases}
+            \frac{1}{\displaystyle {N \choose n}} & \text{if } \hash(S)=n \text{ is the SRSWOR sampling design.}\\
+            0 & \text{otherwise}.
+        \end{cases}
+    \end{equation}
+\end{theorem}
+\begin{proof}
+    Let $\mathcal{U} = \{ U_1, U_2, \ldots, U_n \}$ be 
+    a finite population of size $N$. 
+    Consider a sample of size $n$ drawn from $\mathcal{U}$.
+    In Simple random sampling with replacement (SRSWR), 
+    any drawing produces $x_i$ for $i = 1, 2, \ldots, N$, has 
+    equal probability $1/N$ of being selected.
+    Therefore, the probability of selecting a sample $S$ of size $n$ is
+    \begin{equation}
+        \mathbb{P}[\text{Selecting a specified sample of size } n \text{ under SRSWR}] = \underbrace{\frac{1}{N} \cdot \frac{1}{N} \cdots \frac{1}{N}}_{n \text{ times}} = \frac{1}{N^n}.
+    \end{equation}
+
+    We now proceed to the case of simple random sampling without replacement (SRSWOR).
+    In this case, the probability of selecting any unit at the 
+    first drawing is $1/N$. After the first unit is selected, the probability of selecting any unit at the second drawing is $1/(N-1)$.
+    Continuing this process, we have 
+\end{proof}
+
+\subsection{Estimation in Simple Random Sampling}
+
+We assume that each unit $U_i$ in the population $\mathcal{U}$ has an 
+associated value $Y_i$ for the characteristic $y$. The population mean is defined as
+\begin{equation}
+    \mu = \frac{1}{N} \sum_{i=1}^N Y_i.
+\end{equation}
+Let the `$n$` units in the simple random sampling 
+be $x_1, x_2, \ldots, x_n$, with target values $Y_1, Y_2, \ldots, Y_n$, respectively.
+
+\begin{theorem}[Estimation of sample mean in SRSWR]
+    In SRSWR, the sample mean $\overline{y}$ is unbiased for the population mean $\mu$, 
+    and the variance of $\overline{y}$ is
+    \begin{equation}
+        Var(\overline{y}) = \frac{\sigma^2_y}{n} = \frac{N - 1}{Nn} s^2_y,
+    \end{equation}
+    where 
+    \begin{equation}
+        N \sigma^2_y = \sum_{i=1}^N (Y_i - \ols{Y})^2 = (N - 1) s^2_y.
+    \end{equation}
+\end{theorem}
+\begin{proof}
+    Let $y_i$ be the target value of the $i$-th unit drawn from the population for $i=1...n$.
+    \begin{align*}
+        \mathbb{E}(y_i) = \sum^N_{j=1} Y_j \cdot \uprob[\text{SRSWR}]{y_i = Y_j}
+        &= \sum^N_{j=1} Y_j \cdot \frac{1}{N} \\
+        &= \frac{1}{N} \sum^N_{j=1} Y_j \\
+        &= \olsi{Y}.
+    \end{align*}
+
+    Similarly, we have $\mathbb{E}[y_i^2] = \frac{1}{N} \sum^N_{j=1} Y_j^2$. Hence,
+    \begin{align*}
+        Var(y_i) &= \mathbb{E}[y_i^2] - \mathbb{E}[y_i]^2\\
+        &= \frac{1}{N} \sum^N_{j=1} Y_j^2 - \olsi{Y}^2\\
+        &= \frac{1}{N} \sum^N_{j=1} Y_j^2 - \left( \frac{1}{N} \sum^N_{j=1} Y_j \right)^2\\
+        &= \frac{1}{N} \sum^N_{j=1} (Y_j - \olsi{Y})^2\\
+        &= \sigma^2_y = \frac{N - 1}{N} s^2_y.
+    \end{align*}
+
+    Since the drawings are independent, thus 
+    $\cov(y_i, y_j) = 0$ for $i \neq j$. We have
+    \begin{align*}
+        Var(\overline{y}) &= Var \left( \frac{1}{n} \sum^n_{i=1} y_i \right)\\
+        &= \frac{1}{n^2} \sum^n_{i=1} Var(y_i)\\
+        &= \frac{1}{n^2} \sum^n_{i=1} \sigma^2_y\\
+        &= \frac{\sigma^2_y}{n}
+        = \frac{N - 1}{Nn} s^2_y.
+    \end{align*}
+\end{proof}
+
+\begin{corollary}
+    An unbiased estimator of $Var(\overline{y})$ is given by
+    \begin{equation}
+        \widehat{Var}(\overline{y}) = 
+        \begin{cases}
+            \displaystyle \frac{s^2_y}{n} & \text{for SRSWR}\\[0.5em]
+            \displaystyle \frac{1}{n} \left(1 - \frac{n}{N} \right) s^2_y & \text{for SRSWOR}\\
+        \end{cases}
+    \end{equation}
+    And an unbiased estimator of $\widehat{Var}(\widehat{y})$ is given by
+    \begin{equation}
+        \widehat{Var}(\widehat{y}) = 
+        \begin{cases}
+            \displaystyle N^2 \cdot \frac{s^2_y}{n} & \text{for SRSWR}\\[0.5em]
+            \displaystyle N^2 \cdot \left(1 - \frac{n}{N} \right) \frac{s^2_y}{n} & \text{for SRSWOR}\\
+        \end{cases}
+    \end{equation}
+\end{corollary}
+The standard error of the sample mean $\overline{y}$ is 
+\begin{equation}
+    \widehat{\sigma}_{\ols{y}} = \sqrt{\frac{N-n}{n \times N}} s_y.
+\end{equation}
+Similarly,
+\begin{equation}
+    \widehat{\sigma}_{\widehat{y}} = N \sqrt{\frac{N-n}{n \times N}} s_y.
+\end{equation}
+These estimators are slightly biased.
+
+\begin{example}
+    A sample of size 4 is about to be drawn from a population 
+    of size 8. Let $Y_i$ denote the value of the study 
+    variable for the $i$-th unit in the population. Suppose 1st-unit 
+    and 8th-unit are included in every sample and a 
+    simple random sample of size 2 is drawn from the remaining 6 units.
+
+    Show that the estimator 
+    \[
+        \widehat{Y} = \frac{Y_1 + Y_8 + 6 \ols{Y}_2}{8}
+    \]
+    is an unbiased estimator of the population mean $\mu$, where $\ols{Y}_2$ is the sample mean of the 2 units drawn.
+    Hence, find an algebraic expression for the variance of $\widehat{Y}$.
+\end{example}
+\begin{solution}
+    From the problem, we have
+    \begin{equation}
+        \widehat{Y} = \frac{Y_1 + Y_8 + 6 \ols{Y}_2}{8} = \frac{Y_1 + Y_8}{8} + \frac{3}{4} \cdot \frac{1}{2} \sum_{i \in s} Y_i
+    \end{equation}
+    as $\ols{Y}_2$ is the mean of the two units drawn.
+\end{solution}
+
+\section{Student t's distribution}
+
+\begin{theorem}[t-distribution]
+    Suppose $X$ is a standard normal variable, and $Y$ is 
+    Chi square with $n$-degree of freedom. Moreover, we define 
+    $\mathcal{T} = \frac{X}{\sqrt{Y/n}}$.
+    Then $\mathcal{T}$ is said to have a $t$-distribution with $n$-degrees
+    of freedom if the probability density function is of the form
+    \begin{equation}
+        f_{\mathcal{T}}(t) = \frac{1}{\sqrt{n} \, B\left( \frac{1}{2}, \frac{n}{2} \right)} \cdot 
+        \frac{1}{\displaystyle \left(1 + \frac{t^2}{n} \right)^{(n+1)/2}}, \quad \forall t \in \mathbb{R}.
+    \end{equation}
+\end{theorem}
+\begin{proof}
+    We are going to derive the $t$-distribution based on the transformation $\mathcal{T}$. 
+    First off, notice that the joint pdf of $X$ and $Y$ are 
+    \begin{equation}
+        f_{XY}(x,y) = \begin{cases}
+            \displaystyle \frac{1}{\sqrt{2\pi}} \, \frac{e^{-(x^2 + y)/2}}{2^{n/2} \, \Gamma \left( \frac{n}{2} \right)}\, 
+            y^{\frac{n}{2} - 1} & x \in \mathbb{R}, y \in \mathbb{R}^+ \\[0.6em]
+            0 & \text{otherwise}.
+        \end{cases}
+    \end{equation}
+    Now consider the transformation that stated before,
+    \begin{equation}
+        \mathcal{T} = \frac{X}{\sqrt{Y/n}},
+    \end{equation}
+    Now, 
+    \begin{align*}
+        f_{\mathcal{T}Y} (t, y) &= \frac{\displaystyle \exp \left \{ -\frac{1}{2} \left(\frac{t^2 y}{n} + y \right) \right \} }{\sqrt{2\pi} \, 2^{n/2} \, \Gamma \left( \frac{n}{2} \right)} y^{\frac{n}{2} - 1} \cdot 
+        \left \vert \odv{}{t} \> t \sqrt{\frac{y}{n}} \right \vert\\
+        &= \frac{\displaystyle \exp \left \{ -\frac{y}{2} \left(1 + \frac{t^2}{n} \right) \right \} }{\sqrt{\pi} \, 2^{\frac{n+1}{2}} \, \sqrt{n} \, \Gamma \left( \frac{n}{2} \right)} y^{\frac{n+1}{2} - 1}, 
+        \quad t \in \mathbb{R}, y \in \mathbb{R}^+.
+    \end{align*}
+    From here we compute the marginal distribution of $\mathcal{T}$,
+    \begin{align*}
+        f_{\mathcal{T}}(t) &= \int_{0}^{\infty} f_{\mathcal{T}Y} (t, y) \> \mathrm{d}y\\
+        &= \frac{\Gamma \left(\frac{n+1}{2}\right) }{\sqrt{\pi} \, 2^{\frac{n+1}{2}} \, \sqrt{n} \, \sqrt{\frac{n}{2}}} \> 
+        \frac{1}{\displaystyle \left\{ \frac{1}{2} \left( 1 + \frac{t^2}{n} \right) \right\}^{\frac{n+1}{2}}}\\
+        &= \frac{1}{\sqrt{n} \, B\left( \frac{1}{2}, \frac{n}{2} \right)} \cdot 
+        \frac{1}{\displaystyle \left(1 + \frac{t^2}{n} \right)^{(n+1)/2}}, \quad \forall t \in \mathbb{R}.
+    \end{align*}
+\end{proof}
+
 \section{Snedecor's $F$-distribution}
 
 TheF-distribution was named in honor of Sir Ronald Fisher by George
@@ -71,11 +292,54 @@ and the variance is
     \end{align*}
 \end{solution}
 
+\subsection{Sampling from a Bivariate Normal Population}
+
+Let $\mathcal{D} = \{ (X_i, Y_i) \> | \> i = 1, \ldots n\}$ be a paired 
+    sample of size $n$ that draw from a bivariate normal distribution
+    \[
+        (X_i, Y_i) \sim BN(\mu_1, \mu_2, \sigma^2_1, \sigma^2_2, \rho),
+    \]
+    then the joint density function of $\{X_i \}_{i=1, \ldots, n}$ and 
+    $\{Y_i \}_{i=1, \ldots, n}$ is 
+
+Let us take the transformation
+\[
+    (X_1, X_2, \ldots, X_n, Y_1, Y_2, \ldots, Y_n) \mapsto
+    (\xi_1, \xi_2, \ldots, \xi_n, \eta_1, \eta_2, \ldots, \eta_n)
+\]
+where
+\begin{equation}
+    \xi_i = \frac{X_i - \mu_i}{\sigma_i} \quad 
+    \text{and } \quad \eta_i = \frac{1}{\sqrt{1 - \rho^2}} \left(
+        \frac{Y_i - \mu_2}{\sigma_2} - \rho \frac{X_i - \mu_1}{\sigma_1}
+    \right)
+\end{equation}
+
 \section*{Tutorials}
 
 \begin{mdframed}
     \vspace{-0.25cm}
     \hspace{-0.25cm}
+    \begin{Exercise}
+    Consider the following population of 5 measurements:
+    \[
+        15\quad 13\quad 8\quad 17\quad 9
+    \]
+    \begin{enumerate}
+        \item Find the population mean and variance.
+        \item The researcher picks a sample of size 3 from the population. The sample 
+        consists of the measurements 15, 13, and 8. Calculate the sample mean and sampling error 
+        for this sample.
+        \item Referring to part (2), if the researcher mistakenly used the numbers $15, 13, 6$ to calculate
+        the sample mean, find the sampling error and nonsampling error.
+        \item List all the samples of 3 measurements (without replacements) that can be selected from the population. 
+        Calculate the sample mean for each sample.
+        \item For the sampling distribution of the mean, $\ols{X}$. Find $\mu_{\ols{X}}$ and $\sigma_{\ols{X}}$. 
+        Are they equal to the calculation from the shortcut formula?
+    \end{enumerate}
+    \end{Exercise}
+
+    \vspace{0.752cm}
     \begin{Exercise}
         Let $X_1, X_2, \ldots, X_{2020}$ be a random sample of size $2020$ 
         from a Poisson distribution with density function
@@ -83,5 +347,12 @@ and the variance is
             f_{X_i}(x) = \frac{e^{-\lambda} \lambda^x}{x!}, \quad x = 0,1,2,\ldots,\infty.
         \]
         What is the distribution of $2020 \ols{X}$?
+    \end{Exercise}
+
+    \vspace{0.752cm}
+    \begin{Exercise}
+        Explain the differences between the methods 
+        of cluster sampling and stratified sampling. 
+        Give an example of each method.
     \end{Exercise}
 \end{mdframed}

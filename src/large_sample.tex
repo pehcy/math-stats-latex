@@ -66,7 +66,15 @@ standard methods (like ANOVA, regression) to work effectively and yield more rel
 
 In many real-world datasets (such as 
 \textit{counts of rare events}, \textit{proportions}), the variability (variance) increases as the average value (mean) increases, 
-violating assumptions of many statistical tests.
+violating assumptions of many statistical tests. For example,
+we may not have enough points to determine if the variance is related to
+the mean, or whether the normality assumption is satisfied. In this situa-
+tion you may have to guess the appropriate transformation. For count data
+you would use the $\sqrt{X}$ or $\ln X$ transformation. Most count data are more
+overdispersed or clumped than the Poisson distribution, however, and so the
+log X transformation will usually be a better choice than $\sqrt{X}$. You would
+use the $\arcsin(\sqrt{X})$ transformation for proportion data, especially if there
+are some proportions near 0 or 1.
 
 \begin{theorem}[Variance Stabilizing Transformation]
     If $\{T_n\}_{n \geq 1}$ is a sequence of statistics such that $\sqrt{n}(T_n - \theta) \sim N\left(0, \sigma^2_T(\theta) \right)$, 
@@ -108,4 +116,94 @@ level $\alpha$, we reject $H_0$ if
     \left| \frac{\sqrt{n}\left[ g(T_n) - g(\theta)\right]}{c} \right| > z_{\alpha/2}.
 \end{equation}
 
-\subsubsection{Arcsine Square Root Transformation}
+\section{Approximate Tests and Confidence Intervals for proportion}
+
+A variance stabilizing transformation is important for proportions,  
+this is because the variance of a proportion depends on its mean. To 
+see this, imagine that we have observed $n$ different individuals 
+from a population and record their sex. Let $X$ be the number of 
+individuals in the sample that are female. The 
+variable $X$ would be a binomial random variable with 
+parameters $n$ and $p$, where $p$ is the proportion of females in the population,
+thus $\mathbb{E} X = np$ and $\text{Var}(X) = np(1-p)$. Then 
+a \textbf{binomial proportion} of females would be $p = \frac{X}{n}$.
+For the binomial proportion, we have
+\begin{equation}
+    \mathbb{E}(\widehat{p}) = p, \quad \text{Var}(\widehat{p}) = \frac{p(1-p)}{n}.
+\end{equation}
+
+Using the stabilization of variance transformation, the variance-stabilized binomial 
+proportions is $\sin^{-1}(\sqrt{X})$ or $\arcsin(\sqrt{X})$. This transformation maps 
+proportions from 0 to 1 into angles from 0 to $\pi/2$ radians. The largest 
+effect of the transformations is on proportions near 0 or 1.
+
+In general, by CLT, we have 
+\begin{equation}
+    \frac{\widehat{p} - \mathbb{E}(\widehat{p})}{\sqrt{\text{Var}(\widehat{p})}} \sim N(0,1).
+\end{equation}
+Our interest is to test the hypothesis $H_0 : p = p_0$ versus $H_1 : p \neq p_0$ at significance level $\alpha$.
+The test statistic should be 
+\begin{equation}
+    Z = \frac{\widehat{p} - p_0}{\sqrt{\text{Var}(\widehat{p})}} = \frac{\widehat{p} - p_0}{\sqrt{\frac{p_0(1-p_0)}{n}}}.
+\end{equation}
+We reject $H_0$ if $|Z| > z_{\alpha/2}$, where $z_{\alpha/2}$ is the upper $\alpha/2$ quantile of the standard normal distribution.
+
+For large $n$, the estimate of $\sigma^2$ is 
+\begin{equation}
+    \widehat{\sigma}^2_{\widehat{p}} = \frac{\widehat{p} (1 - \widehat{p})}{n} 
+    = \frac{\sqrt{n} (\widehat{p} - p_0)}{\sqrt{\widehat{p}\, (1-\widehat{p})}}
+    \sim N(0,1).
+\end{equation}
+An approximate $100(1-\alpha)\%$ confidence interval for $p$ is
+\begin{equation}
+    \mathbb{P} \left[ \left \vert \frac{\sqrt{n} (\widehat{p} - p_0)}{\sqrt{\widehat{p}\, (1-\widehat{p})}} \right \vert \leq z_{\alpha/2} \right] 
+    = 1 - \alpha.
+\end{equation}
+Hence, solving the inequality to get the confidence interval for $p$ as
+\begin{align*}
+    &\mathbb{P} \left[ -z_{\alpha/2} \leq \frac{\sqrt{n} (\widehat{p} - p_0)}{\sqrt{\widehat{p}\, (1-\widehat{p})}} \leq z_{\alpha/2} \right] = 1 - \alpha\\
+    &\Longleftrightarrow \mathbb{P} \left[ -z_{\alpha/2} \sqrt{\frac{\widehat{p}\, (1-\widehat{p})}{n}} \leq (\widehat{p} - p_0) \leq z_{\alpha/2} \sqrt{\frac{\widehat{p}\, (1-\widehat{p})}{n}} \right] = 1 - \alpha\\
+    &\Longleftrightarrow \mathbb{P} \left[ -\widehat{p} -z_{\alpha/2} \sqrt{\frac{\widehat{p}\, (1-\widehat{p})}{n}} \leq -p_0 \leq -\widehat{p} + z_{\alpha/2} \sqrt{\frac{\widehat{p}\, (1-\widehat{p})}{n}} \right] = 1 - \alpha\\
+    &\Longleftrightarrow \mathbb{P} \left[ \widehat{p} -z_{\alpha/2} \sqrt{\frac{\widehat{p}\, (1-\widehat{p})}{n}} \leq p_0 \leq \widehat{p} + z_{\alpha/2} \sqrt{\frac{\widehat{p}\, (1-\widehat{p})}{n}} \right] = 1 - \alpha\\
+\end{align*}
+
+We now applying arcsine transformation to stabilize the variance of $\widehat{p}$, recall that 
+\begin{equation}
+    \arcsin \sqrt{\widehat{p}} \sim N\left(\arcsin \sqrt{p}, \frac{1}{4n}\right).
+\end{equation}
+An approximate $100(1-\alpha)\%$ confidence interval for $p$ is
+\begin{align*}
+    &\mathbb{P} \left[ \arcsin \sqrt{\widehat{p}} - z_{\alpha / 2} \sqrt{\frac{1}{4n}} \leq \arcsin \sqrt{p} \leq \arcsin \sqrt{\widehat{p}} + z_{\alpha / 2} \sqrt{\frac{1}{4n}} \right] = 1 - \alpha\\
+    &\Longleftrightarrow \mathbb{P} \left[ \sin^2 \left( \arcsin \sqrt{\widehat{p}} - z_{\alpha / 2} \sqrt{\frac{1}{4n}} \right) \leq p \leq \sin^2 \left( \arcsin \sqrt{\widehat{p}} + z_{\alpha / 2} \sqrt{\frac{1}{4n}} \right) \right] = 1 - \alpha\\
+\end{align*}
+
+\begin{remark}
+    In trigonometry, we write $\sin^2 x = (\sin x)^2$.
+\end{remark}
+
+\begin{example}
+    Consider a Poisson distribution with mean $\lambda$. Let an 
+    estimator of $\lambda$ be 
+    \[
+        \widehat{\sqrt{\lambda}} = \frac{n_1 \sqrt{\ols{X_1}} + n_2 \sqrt{\ols{X_2}}}{n_1 + n_2},
+    \]
+    Construct a $100(1-\alpha)\%$ confidence interval for $\sqrt{\lambda}$.
+\end{example}
+\begin{solution}
+    By CLT, $\displaystyle \frac{\widehat{\sqrt{\lambda}} - \sqrt{\lambda}}{\sqrt{\text{Var}(\widehat{\sqrt{\lambda}})}} \sim N(0,1)$
+
+    An $100(1 - \alpha)\%$ confidence interval for $\sqrt{\lambda}$ is
+    \begin{align*}
+        &\mathbb{P} \left[ -z_{\alpha/2} \leq \frac{\widehat{\sqrt{\lambda}} - \sqrt{\lambda}}{\sqrt{\text{Var}(\widehat{\sqrt{\lambda}})}} \leq z_{\alpha/2} \right] = 1 - \alpha\\
+        &\Longleftrightarrow \mathbb{P} \left[ -z_{\alpha/2} \sqrt{\text{Var}(\widehat{\sqrt{\lambda}})} \leq \widehat{\sqrt{\lambda}} - \sqrt{\lambda} \leq z_{\alpha/2} \sqrt{\text{Var}(\widehat{\sqrt{\lambda}})} \right] = 1 - \alpha\\
+        &\Longleftrightarrow \mathbb{P} \left[ \widehat{\sqrt{\lambda}} - z_{\alpha/2} \sqrt{\text{Var}(\widehat{\sqrt{\lambda}})} \leq \sqrt   {\lambda} \leq \widehat{\sqrt{\lambda}} + z_{\alpha/2} \sqrt{\text{Var}(\widehat{\sqrt{\lambda}})} \right] = 1 - \alpha
+    \end{align*}
+
+    Compute $\text{Var}(\widehat{\sqrt{\lambda}})$:
+    \begin{align*}
+        \text{Var}(\widehat{\sqrt{\lambda}}) &= \text{Var}\left( \frac{n_1 \sqrt{\ols{X_1}} + n_2 \sqrt{\ols{X_2}}}{n_1 + n_2} \right)\\
+        &= \frac{n_1^2}{(n_1 + n_2)^2} \text{Var}(\sqrt{\ols{X_1}}) + \frac{n_2^2}{(n_1 + n_2)^2} \text{Var}(\sqrt{\ols{X_2}})\\
+        &= \frac{n_1^2}{(n_1 + n_2)^2} \frac{1}{4 n_1} + \frac{n_2^2}{(n_1 + n_2)^2} \frac{1}{4 n_2}\\
+        &= \frac{1}{4 (n_1 + n_2)}
+    \end{align*}
+\end{solution}
