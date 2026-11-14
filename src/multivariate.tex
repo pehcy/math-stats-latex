@@ -76,7 +76,12 @@
     \end{align*}
 \end{solution}
 
-\section{continuous random vectors}
+\subsection{Marginal distribution of discrete bivariate random variable}
+
+Let $X = (X, Y)$ be a discrete bivariate random variable with joint PMF $f_{X, Y}(x, y)$. 
+Let $\mathcal{X}$ and $\mathcal{Y}$ be the sets of possible values for $X$ and $Y$, respectively.
+
+\section{Continuous random vectors}
 A two dimensional random variable $(X, Y)$ is said to be 
 \textbf{continuous} if $F_{X,Y}(x,y)$ is everywhere continuous in $\mathbb{R}^2$.
 
@@ -98,6 +103,31 @@ A two dimensional random variable $(X, Y)$ is said to be
         \item $\int_{-\infty}^{\infty} \int_{-\infty}^{\infty} f_{X,Y}(x,y) \, \mathrm{d}x \, \mathrm{d}y = 1$.
     \end{enumerate}
 \end{definition}
+
+\begin{example}
+    If the joint cumulative distribution function of $X$ and $Y$ is given by 
+    \[
+        F(x, y) = \frac{1}{5} \left( 2x^3y + 3x^2y^2 \right) \quad 
+        \text{for } 0 < x, y < 1.
+    \]
+    Find the joint probability density function of $X$ and $Y$.
+\end{example}
+\begin{solution}
+    The joint probability density function of $X$ and $Y$ is given by
+    \begin{align*}
+        f_{X,Y}(x,y) &= \frac{\partial^2}{\partial x \, \partial y} F(x,y)\\
+        &= \frac{1}{5} \frac{\partial}{\partial x} \frac{\partial}{\partial y} (2x^3 y + 3x^2 y^2)\\
+        &= \frac{1}{5} \frac{\partial}{\partial x} \left( 2x^3 + 6x^2y \right)\\
+        &= \frac{1}{5} \left( 6x^2 + 12xy \right) \quad 0 < x, y < 1.
+    \end{align*}
+    Hence, the joint probability density function of $X$ and $Y$ is
+    \[
+        f_{X,Y}(x,y) = \begin{cases}
+            \displaystyle \frac{6}{5} \left( x^2 + 2xy \right) & 0 < x, y < 1\\[0.6em]
+            0 & \text{otherwise}
+        \end{cases}
+    \]
+\end{solution}
 
 To find the pdf of only $X$, we sum (or integrate) over all possible values of $Y$. 
 Similarly, to find the pdf of only $Y$, we sum (or integrate) over all possible values of $X$.
@@ -558,36 +588,42 @@ then $f_{Y \mid X}(y \mid x)$ is called the conditional probability density func
 
 \section{Joint Moment Generating Function}
 
-Similar to the univariate case, we can define the joint moment generating function of a random vector $(X, Y)$ as
+Similar to the univariate case, we can define the joint moment generating function of random variables $X$ and $Y$ as
 the various product moments. The moment generating function for the 
 bivariate case is defined as follows:
 
 \begin{definition}[Moment generating function of bivariate random variable]
-    Let $(X, Y)$ be a random vector with joint probability mass function $f_{X,Y}(x,y)$.
-    A real valued function $M(s,t) : \mathbb{R}^2 \to \mathbb{R}$ is defined by 
+    Let $X$ and $Y$ be random variables with joint probability mass function $f_{X,Y}(x,y)$.
+    A real valued function $M : \mathbb{R}^2 \to \mathbb{R}$ is defined by 
     \begin{equation}
         M(s, t) = \mathbb{E}[e^{s X + t Y}] = \int_{-\infty}^{\infty} \int_{-\infty}^{\infty} e^{s x + t y} f_{X,Y}(x,y) \, \mathrm{d}x \, \mathrm{d}y.
     \end{equation}
-    is called the moment generating function of the random vector $(X, Y)$ if the expected value 
-    exists for all $s$ and $t$ in some intervals.
+    is called the moment generating function of $X$ and $Y$ if the expected value 
+    exists for all $s$ and $t$ in some interval $-h < s < h$ and for all $t$ in some 
+    interval $-k < t < k$ for some positive $h$ and $k$.
 \end{definition}
 
 From the definition above, one can see that 
 \begin{equation}
-    M(s, 0) = \uexp[x]{e^{sX}}
+    M(s, 0) = \uexp[x \sim X]{e^{sX}}
 \end{equation}
 and 
 \begin{equation}
-    M(0, t) = \uexp[y]{e^{tY}}.
+    M(0, t) = \uexp[y \sim Y]{e^{tY}}.
 \end{equation}
 
 We can also obtained $k$-th order marginal moment of $X$ and $Y$ by differentiating the joint moment generating function as follows:
 \begin{equation}
-    \uexp[x]{X^k} = \frac{\partial^k M(s,t)}{\partial s^k} \Big|_{s=0,\, t=0}
+    \uexp[x \sim X]{X^k} = \frac{\partial^k M(s,t)}{\partial s^k} \Big|_{s=0,\, t=0}
 \end{equation}
 \begin{equation}
-    \uexp[y]{Y^k} = \frac{\partial^k M(s,t)}{\partial t^k} \Big|_{s=0,\, t=0}
+    \uexp[y \sim Y]{Y^k} = \frac{\partial^k M(s,t)}{\partial t^k} \Big|_{s=0,\, t=0}
 \end{equation}
+for all $k = 1, 2, 3, \ldots$; and the mixed moments of $X$ and $Y$ can be obtained by differentiating the joint moment generating function as follows:
+\begin{equation}
+    \uexp[x \sim X, y \sim Y]{X^k Y^l} = \frac{\partial^{k+l} M(s,t)}{\partial s^k \partial t^l} \Big|_{s=0,\, t=0}
+\end{equation}
+for all $k, l = 1, 2, 3, \ldots$.
 
 \begin{example}
     A lottery machine has moments about getting red balls given by
@@ -611,10 +647,10 @@ We can also obtained $k$-th order marginal moment of $X$ and $Y$ by differentiat
     \]
     Now, the MGF of the distribution with pdf $f(x)$ is
     \begin{align*}
-        M(t) &= \int e^{tx} f(x) \, \mathrm{d}x
-        = \int \left( \sum_{n=0}^{\infty} \frac{t^n x^n}{n!} \right) f(x) \, \mathrm{d}x\\
-        &= \sum_{n=0}^{\infty} \frac{t^n}{n!} \int x^n f(x) \, \mathrm{d}x
-        = \sum_{n=0}^{\infty} \frac{t^n}{n!} \int_0^1 k\, x^{n+k-1} \, \mathrm{d}x\\
+        M(t) &= \int^1_0 e^{tx} f(x) \, \mathrm{d}x
+        = \int^1_0 \left( \sum_{n=0}^{\infty} \frac{t^n x^n}{n!} \right) f(x) \, \mathrm{d}x\\
+        &= \sum_{n=0}^{\infty} \frac{t^n}{n!} \int^1_0 x^n f(x) \, \mathrm{d}x
+        = \sum_{n=0}^{\infty} \frac{t^n}{n!} \int^1_0 k\, x^{n+k-1} \, \mathrm{d}x\\
         &= \sum_{n=0}^{\infty} \frac{t^n}{n!} \cdot \frac{k}{n+k}
         = \sum_{n=0}^{\infty} \frac{t^n}{n!}\, \mu_n'.
     \end{align*}

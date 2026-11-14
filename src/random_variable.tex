@@ -549,6 +549,71 @@ component is not subject to failure. If a non-negative continuous
 random variable $X$ have memoryless property, then $X$ must have an exponential 
 distribution.
 
+\section{Negative Binomial Distribution}
+
+Let $X$ denote the trial number on which the $r$-th success occurs 
+in a sequence of independent Bernoulli trials with success probability $p$. 
+This is equivalent to saying that the random variable $X$ represents 
+the number of trials needed to achieve the $r$-th successes. 
+
+\begin{align*}
+    \mathbb{P}[X = x] &= \mathbb{P}(\text{First } x - 1 \text{ trials contain } r - 1 \text{ successes and the } x\text{-th trial is a success})\\
+    &= { x - 1 \choose r - 1} p^{r-1} (1-p)^{x-r} \cdot p\\
+    &= { x - 1 \choose r - 1} p^{r} (1-p)^{x-r}\\
+\end{align*}
+
+A negative binomial distribution will be appropriate for modeling 
+if the counts of an event which occurs in clusters such as:
+\begin{itemize}
+    \item \textbf{Games and Sports}: the number of attempts until 
+a player achieves a fixed number of successes.
+    \item \textbf{Manufacturing and Quality control}: number of items inspected 
+    until a certain number of defective items are found.
+    \item \textbf{Clinical Studies}: number of individuals tested until a certain number of positive cases are identified.
+    until the desired number of outcomes is observed. 
+\end{itemize}
+
+\begin{example}
+    What is the probability that the $5$-th head is observed on the 
+    tenth toss of a fair coin?
+\end{example}
+\begin{solution}
+    Let $X$ denote the number of tosses until the $5$-th head is observed. 
+    Then $X$ is a negative binomial random variable with parameters $r = 5$ 
+    and $p = \mfrac{1}{2}$. Thus
+    \begin{align*}
+        \mathbb{P}[\text{5-th head on 10-th toss}] &= \mathbb{P}[X = 10]\\
+        &= { 10 - 1 \choose 5 - 1} \left( \frac{1}{2} \right)^5 \left( 1 - \frac{1}{2} \right)^{10-5}\\
+        &= \frac{63}{512}.
+    \end{align*}
+\end{solution}
+
+\begin{theorem}
+    Let $r$ be a nonzero positive integer. Then 
+    \begin{equation}
+        (1 - y)^{-r} = \sum^\infty_{x = r} {x-1 \choose r-1} y^{x-r}
+    \end{equation}
+    where $|y| < 1$.
+\end{theorem}
+\begin{proof}
+    This theorem can be proved using the geometric series 
+    \begin{equation}
+        \sum^\infty_{n=0} y^n = \frac{1}{1-y}, \quad |y| < 1.
+    \end{equation}
+    Differentiating both sides with respect to $y$ gives
+    \begin{equation}
+        \sum^\infty_{n-1=0} n y^{n-1} = (1-y)^{-2}
+    \end{equation}
+    Differentiating both sides again for 2nd time gives
+    \begin{equation}
+        \sum^\infty_{n-2=0} n(n-1) y^{n-2} = 2(1-y)^{-3}
+    \end{equation}
+    Continuing this process for $k$-th time gives
+    \[
+        \sum^\infty_{n-k=0} n(n-1)\cdots(n-k+1) y^{n-k} = k!\, (1-y)^{-(k+1)}
+    \]
+\end{proof}
+
 \section{Gamma Distribution}
 
 Some random variables can yield distributions of data are skewed right and is non-symmetric.
