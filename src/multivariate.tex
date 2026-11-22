@@ -81,11 +81,11 @@
 Let $X = (X, Y)$ be a discrete bivariate random variable with joint PMF $f_{X, Y}(x, y)$. 
 Let $\mathcal{X}$ and $\mathcal{Y}$ be the sets of possible values for $X$ and $Y$, respectively.
 
-\section{Continuous random vectors}
+\section{Continuous random variables}
 A two dimensional random variable $(X, Y)$ is said to be 
 \textbf{continuous} if $F_{X,Y}(x,y)$ is everywhere continuous in $\mathbb{R}^2$.
 
-\begin{definition}[Absolute continuous random vectors]
+\begin{definition}[Absolute continuous random variables]
     A two dimensional random variable $(X, Y)$ is said to be \textbf{absolutely continuous} 
     if there exists a non-negative function $f_{X,Y}(x,y) \in F_{X,Y}$ such that
     \begin{equation}
@@ -291,6 +291,84 @@ Similarly, to find the pdf of only $Y$, we sum (or integrate) over all possible 
     \end{align*}
     Since $x_1 > x_2$, $y_1 > y_2$.
 \end{proof}
+
+\section{Independence of random variables}
+
+In this section, we will discuss the independence of two random variables $X$ and $Y$. The 
+conditional probability density function $g$ of $X$ given $Y = y$ usually 
+depends on $y$. However, if $g$ does not depend on $y$, then we say that $X$ and $Y$ are independent. 
+This motivates the following definition.
+
+\begin{definition}[Independent random variables]
+    Two random variables $X$ and $Y$ are said to be independent if their joint density function satisfies
+    \[
+        f_{XY}(x, y) = f_X(x)\, f_Y(y)
+    \]
+    for all $x, y \in \mathbb{R}$, where $f_X$ and $f_Y$ are the marginal density functions of $X$ and $Y$, respectively.
+\end{definition}
+
+\begin{example}
+    Let $X$ and $Y$ be two jointly continuous random variable with joint density function
+    \[
+        f_{XY}(x, y) = \begin{cases}
+            e^{-(x+y)} & 0 < x,y < \infty\\
+            0 & \text{otherwise}
+        \end{cases}.
+    \]
+    Find the marginal pdfs of $X$ and $Y$. Are $X$ and $Y$ independent?
+\end{example}
+\begin{solution}
+    The marginal pdf of $X$ is
+    \begin{align*}
+        g(x) &= \int_{0}^{\infty} f_{XY}(x,y) \, \mathrm{d}y\\
+        &= \int_{0}^{\infty} e^{-(x+y)} \, \mathrm{d}y\\
+        &= e^{-x} \int_{0}^{\infty} e^{-y} \, \mathrm{d}y\\
+        &= e^{-x}, \quad 0 < x < \infty.
+    \end{align*}
+    Similarly, the marginal pdf of $Y$ is
+    \[
+        h(y) = \int_{0}^{\infty} f_{XY}(x,y) \, \mathrm{d}x = \int_{0}^{\infty} e^{-(x+y)} \, \mathrm{d}x = e^{-y}, \quad 0 < y < \infty.
+    \]
+    Now, since 
+    \[
+        g(x)h(y) = e^{-x} \cdot e^{-y} = e^{-(x+y)} = f_{XY}(x,y),
+    \]
+    we conclude that $X$ and $Y$ are independent.
+\end{solution}
+
+Notice that if joint density $f(x,y)$ of $X$ and $Y$ can be factored into two 
+nonnegative functions, one solely depending on $x$ and the other solely 
+depending on $y$, then $X$ and $Y$ are independent. 
+We can use this factorization approach to predict whether two random variables are independent.
+
+\begin{theorem}
+    If $X$ and $Y$ are independent random variables, then 
+    \begin{equation}
+        \mathbb{E}[XY] = \mathbb{E}[X] \cdot \mathbb{E}[Y].
+    \end{equation}
+\end{theorem}
+\begin{proof}
+    Let us assume that $X$ and $Y$ are \textit{continuous} random variables. Then
+    \begin{equation*}
+        \mathbb{E}[XY] = \int_{-\infty}^{\infty} \int_{-\infty}^{\infty} xy f_{XY}(x,y) \, \mathrm{d}x \, \mathrm{d}y \label{eq:mlt1.1} \tag{{\color{cyan} $\clubsuit $}}
+    \end{equation*}
+    Recall that $X$ and $Y$ are independent if and only if $f_{XY}(x,y) = f_X(x) f_Y(y)$. Now, 
+    \eqref{eq:mlt1.1} becomes
+    \begin{align*}
+        \eqref{eq:mlt1.1} = \mathbb{E}[XY] &= \int_{-\infty}^{\infty} \int_{-\infty}^{\infty} xy f_X(x) f_Y(y) \, \mathrm{d}x \, \mathrm{d}y\\
+        &= \int_{-\infty}^{\infty} x f_X(x) \, \mathrm{d}x \int_{-\infty}^{\infty} y f_Y(y) \, \mathrm{d}y\\
+        &= \mathbb{E}[X] \cdot \mathbb{E}[Y].
+    \end{align*}
+    If $X$ and $Y$ are \textit{discrete} random variables, then replace the integrals with proper 
+    summations to prove the same result.
+\end{proof}
+
+\begin{theorem}
+    Let $X$ and $Y$ be two random variables. Then for any two real numbers $a$ and $b$, 
+    \begin{equation}
+        Var(aX + bY) = a^2 Var(X) + b^2 Var(Y) + 2ab\, \text{Cov}(X,Y).
+    \end{equation}
+\end{theorem}
 
 \section{Conditional distributions}
 
@@ -626,6 +704,47 @@ for all $k = 1, 2, 3, \ldots$; and the mixed moments of $X$ and $Y$ can be obtai
 for all $k, l = 1, 2, 3, \ldots$.
 
 \begin{example}
+    If the joint moment generating function of two random variables $X$ and 
+    $Y$ is 
+    \[
+        M(s, t) = \exp \left( s + 3t + 2s^2 + 18t^2 + 12st \right).
+    \]
+    Determine the covariance of $X$ and $Y$.
+\end{example}
+\begin{solution}
+    Compute $\partial M/ \partial s$ and $\partial M/ \partial t$, respectively,
+    \[
+        \frac{\partial M}{\partial s} = (1 + 4s + 12t) M(s,t), \quad \text{ and } \quad 
+        \frac{\partial M}{\partial t} = (3 + 36t + 12s) M(s,t)
+    \]
+    Hence, 
+    \[
+        \mu_X = \frac{\partial M}{\partial s} \big \vert_{s=0, t=0} = 1, \quad 
+        \mu_Y = \frac{\partial M}{\partial t} \big \vert_{s=0, t=0} = 3.
+    \]
+    Now, we compute the product moment of $X$ and $Y$.
+    \begin{align*}
+        \frac{\partial^2 M(s,t)}{\partial s\, \partial t} &= 
+        \frac{\partial}{\partial t} \left( \frac{\partial M}{\partial s} \right)\\
+        &= \frac{\partial}{\partial t} \left[ (1 + 4s + 12t) M(s,t) \right]\\
+        &= (1 + 4s + 12t) \frac{\partial M}{\partial t} + 12 M(s,t).
+    \end{align*}
+    Thus
+    \begin{align*}
+        \mathbb{E}(XY) &= \frac{\partial^2 M(s,t)}{\partial s\, \partial t} \bigg \vert_{s=0, t=0}\\ 
+        &= 1 \cdot \frac{\partial M}{\partial t} \big \vert_{s=0, t=0} + 12 M(0,0)\\[0.5em]
+        &= 1(3) + 12(1)\\
+        &= 15
+    \end{align*}
+    and the covariance of $X$ and $Y$ is given by
+    \begin{align*}
+        \text{Cov}(X, Y) &= \mathbb{E}(XY) - \mathbb{E}[X] \, \mathbb{E}[Y]\\
+        &= 15 - 3(1)\\
+        &= 12.
+    \end{align*}
+\end{solution}
+
+\begin{example}
     A lottery machine has moments about getting red balls given by
     \[
         \mu_X' = \frac{k}{k + x}, \quad \forall x = 1, 2, \ldots; 
@@ -837,3 +956,112 @@ and the regression equation of $Y$ on $X$ is
     \eta_X = \mu_Y + \frac{\text{Cov}(X, Y)}{\sigma_X^2}(X - \mu_X).
 \]
 
+\section*{Tutorials}
+
+\begin{mdframed}
+    \vspace{-0.25cm}
+    \hspace{-0.25cm}
+    \begin{Exercise}
+        A candy company distributes boxes of chocolates with a mixture of creams, toffees, and cordials.
+        Suppose that the weight of each box is 1 kilogram, but the individual weights of creams, toffees, and cordials are 
+        vary from box to box. For a randomly selected box, let $X$ and $Y$ represent the 
+        weights of creams and toffees, respectively, and suppose that their joint density function 
+        is given by
+        \[
+            f_{X,Y}(x,y) = \begin{cases}
+                24xy & 0 < x < 1, 0 < y < 1, x + y < 1\\
+                0 & \text{otherwise}
+            \end{cases}
+        \]
+        \begin{enumerate}
+            \item Find the probability that in a given box the cordials account 
+            for less than 60\% of the weight.
+            \item Find the marginal densities for the weight of the creams and the weight of the toffees.
+            \item Find $f(y|x)$, $\mu_{Y|x}$, and $\sigma^2_{Y|x}$ when $x = 0.3$.
+            \item Find $f(x|y)$, $\mu_{X|y}$, and $\sigma^2_{X|y}$ for all $y$.
+            \item Suppose a randomly selected box contains 0.4 kg of toffees, find the probability that 
+                the box contains at least 0.3 kg of creams.
+            \item Find $\text{Cov}(X, Y)$ and $\rho$.
+        \end{enumerate}
+    \end{Exercise}
+    \begin{Answer}
+        \begin{enumerate}
+            \item The probability that cordials amount less than 60\% of the weight is
+            \begin{align*}
+                \mathbb{P}[1 - X - Y  < 0.6] &= 1 - \mathbb{P}[X + y \leq 0.4]\\
+                &= 1 - \int^{0.4}_0 \int^{0.4-x}_{0} 24xy \, \mathrm{d}y \mathrm{d}x\\
+                &= 1 - \int^{0.4}_0 \left[ 12xy^2 \right]^{y=0.4-x}_{y=0} \, \mathrm{d}x\\
+                &= 1 - \int^{0.4}_0 12x(0.4 - x)^2 \, \mathrm{d}x\\
+                &= 1 - \int^{0.4}_0 12x \left(0.16 - 0.8x + x^2 \right) \, \mathrm{d}x\\
+                &= 1 - \left[ 0.96x^2 - 3.2x^3 + 3x^4 \right]^{x=0.4}_{x=0}\\
+                &= 0.9744.
+            \end{align*}
+
+            \item The marginal density function for $X$ and $Y$ are
+            \[
+                X \sim g(x) = \int^{1-x}_0 24xy \, \mathrm{d}y=
+                12xy^2 \bigg \vert^{y=1-x}_{y=0} = 12x(1-x)^2,\quad 0 \leq x \leq 1.
+            \]
+            and
+            \[
+                Y \sim h(y) = \int^{1-x}_0 24xy \, \mathrm{d}x =
+                12x^2y \bigg \vert^{x=1-y}_{x=0} = 12y(1-y)^2, \quad 0 \leq y \leq 1.
+            \]
+
+            \item The conditional distribution of $Y | X = 0.3$ is
+            \begin{align*}
+                Y | X = 0.3 \sim f(y|0.3) &= \frac{f(0.3, y)}{g(0.3)}
+                = \frac{24(0.3)y}{12 * 0.3 * (1-0.3)^2}\\
+                &= \frac{24}{5.88}y
+            \end{align*}
+            for $0 \leq y \leq 1 - 0.3 \iff 0 \leq y \leq 0.7$.
+
+            Now, we compute
+            \begin{align*}
+                \mu_{Y|0.3} &= \int^{0.7}_{0} y f(y|0.3) \, \mathrm{d}y
+                = \frac{24}{5.88} \int^{0.7}_{0} y^2 \, \mathrm{d}y
+                = \frac{24}{5.88} \times \frac{0.7^3}{3}\\
+                &=0.4667.
+            \end{align*}
+            \begin{align*}
+                \mu_{Y^2|0.3} &= \int^{0.7}_{0} y^2 f(y|0.3) \, \mathrm{d}y
+                = \frac{24}{5.88} \int^{0.7}_{0} y^3 \, \mathrm{d}y
+                = \frac{24}{5.88} \times \frac{0.7^4}{4}\\
+                &=0.02719.
+            \end{align*}
+            Thus
+            \[
+                \sigma^2_{Y|0.3} = \mu_{Y^2|0.3} - (\mu_{Y|0.3})^2 = 0.02719 - 0.4667^2 
+                = \fbox{$0.027189$}.
+            \]
+        \end{enumerate}
+    \end{Answer}
+
+    \begin{Exercise}
+        Let $X$ and $Y$ be two independent random variables with moment generating functions
+        \[
+            M_X(t) = e^{t^2 + 2t}, \quad \text{ and } \quad M_Y(t) = e^{3t^2 + t} \quad \forall t \in \mathbb{R}.
+        \]
+        Determine the moment generating function of $X + 2Y$.
+    \end{Exercise}
+
+    \begin{Exercise}
+        Suppose that $X$ and $Y$ are two random variables with joint moment generating function
+        \[
+            M(s,t) = \left( \frac{1}{4}e^s + \frac{3}{8}e^t + \frac{3}{8}\right)^{10}, \quad \forall s, t \in \mathbb{R}.
+        \]
+        What is the covariance of $X$ and $Y$?
+    \end{Exercise}
+
+    \begin{Exercise}
+        Let the regression line be $\mathbb{E}[Y|X = x] = 2 + 5x$, and skedastic curve $Var[Y|X = x] = 3$, and let $X$ have the 
+        probability mass function
+        \[
+            f_X(x) = \begin{cases}
+                \displaystyle \frac{1}{4}x e^{-x/2} &\text{if } x > 0\\[0.6em]
+                0 &\text{otherwise}.
+            \end{cases}
+        \]
+        What is the mean and variance of $Y$?
+    \end{Exercise}
+\end{mdframed}
